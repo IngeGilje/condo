@@ -1,5 +1,5 @@
 
-class Condo extends Condos {
+class Appartments extends Condos {
 
   // Condo information
   arrayCondo;
@@ -7,43 +7,43 @@ class Condo extends Condos {
   // Find selected condo id
   getSelectedCondoId(className) {
 
-    let condoId = 0;
+    let appartmentId = 0;
 
     // Check if HTML class exist
     if (isClassDefined(className)) {
 
-      condoId = Number(document.querySelector(`.${className}`).value);
-      condoId = (condoId === 0)
-        ? this.arrayCondo.at(-1)?.condoId ?? 0
-        : condoId;
+      appartmentId = Number(document.querySelector(`.${className}`).value);
+      appartmentId = (appartmentId === 0)
+        ? this.arrayCondo.at(-1)?.appartmentId ?? 0
+        : appartmentId;
     } else {
 
       // Get last id in last object in condo array
-      condoId = (this.arrayCondo.length > 0)
-        ? this.arrayCondo.at(-1)?.condoId ?? 0
+      appartmentId = (this.arrayCondo.length > 0)
+        ? this.arrayCondo.at(-1)?.appartmentId ?? 0
         : 0;
     }
 
-    return condoId;
+    return appartmentId;
   }
 
-  getCondoNameById(condoId) {
+  getCondoNameById(appartmentId) {
 
     //let condoName;
-    const rowNumberCondo = this.arrayCondo.findIndex(condo => condo.condoId === condoId);
-     const condoName = this.arrayCondo[rowNumberCondo]?.name ?? '';
+    const rowNumberCondo = this.arrayCondo.findIndex(condo => condo.appartmentId === appartmentId);
+    const condoName = this.arrayCondo[rowNumberCondo]?.name ?? '';
     return condoName;
   }
 
   // Select condo Id
-  selectCondoId(condoId, className) {
+  selectCondoId(appartmentId, className) {
 
     // Check if condo id exist
-    const rowNumberCondo = this.arrayCondo.findIndex(condo => condo.condoId === condoId);
+    const rowNumberCondo = this.arrayCondo.findIndex(condo => condo.appartmentId === appartmentId);
     if (rowNumberCondo !== -1) {
 
       document.querySelector(`.select-${className}`).value =
-        condoId;
+        appartmentId;
       return true;
     } else {
 
@@ -51,7 +51,7 @@ class Condo extends Condos {
     }
   }
 
-  showSelectedCondos(className, style, condoId, selectNone, selectAll, enableChanges) {
+  showSelectedCondos(className, style, appartmentId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -71,12 +71,12 @@ class Condo extends Condos {
 
         html += `
         <option 
-          value=${condo.condoId}
-          ${(condo.condoId === condoId) ? 'selected' : ''}
+          value=${condo.appartmentId}
+          ${(condo.appartmentId === appartmentId) ? 'selected' : ''}
         >
           &nbsp;&nbsp;${condo.name.trim()}&nbsp;&nbsp;
         </option>`;
-        if (condo.condoId === condoId) selectedValue = true;
+        if (condo.appartmentId === appartmentId) selectedValue = true;
       });
     } else {
 
@@ -124,7 +124,7 @@ class Condo extends Condos {
   }
 
   // Show condos
-  showSelectedCondosNew(className, label, condoId, selectNone, selectAll, enableChanges) {
+  showSelectedCondosNew(className, label, appartmentId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -149,12 +149,12 @@ class Condo extends Condos {
 
         html += `
         <option 
-          value=${condo.condoId}
-          ${(condo.condoId === condoId) ? 'selected' : ''}
+          value=${condo.appartmentId}
+          ${(condo.appartmentId === appartmentId) ? 'selected' : ''}
         >
           ${condo.name.trim()}
         </option>`;
-        if (condo.condoId === condoId) selectedValue = true;
+        if (condo.appartmentId === appartmentId) selectedValue = true;
       });
     } else {
 
@@ -204,7 +204,7 @@ class Condo extends Condos {
   }
 
   // Show condos 
-  showLineFilterCondos(className, label, condoId, selectNone, selectAll, enableChanges) {
+  showLineFilterCondos(className, label, appartmentId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -224,8 +224,8 @@ class Condo extends Condos {
       >
     `;
     */
-   
-   let html = `
+
+    let html = `
     <!-- start showLineFilterCondos -->
     <div 
       class="filter-field"
@@ -254,12 +254,12 @@ class Condo extends Condos {
 
         html += `
         <option 
-          value=${condo.condoId}
-          ${(condo.condoId === condoId) ? 'selected' : ''}
+          value=${condo.appartmentId}
+          ${(condo.appartmentId === appartmentId) ? 'selected' : ''}
         >
           ${condo.name.trim()}
         </option>`;
-        if (condo.condoId === condoId) selectedValue = true;
+        if (condo.appartmentId === appartmentId) selectedValue = true;
       });
     } else {
 
@@ -315,8 +315,8 @@ class Condo extends Condos {
 
     // Get condo
     const URL = (this.serverStatus === 1)
-      ? '/api/condo'
-      : 'http://localhost:3000/condo';
+      ? '/api/appartments'
+      : 'http://localhost:3000/appartments';
     try {
       // POST request
       const response = await fetch(URL, {
@@ -339,8 +339,8 @@ class Condo extends Condos {
   // Get the highest ID in the table
   async getHighestCondoId(condominiumId) {
     const URL = (this.serverStatus === 1)
-      ? '/api/condo'
-      : 'http://localhost:3000/condo';
+      ? '/api/appartments'
+      : 'http://localhost:3000/appartments';
     try {
 
       const response = await fetch(URL, {
@@ -361,10 +361,12 @@ class Condo extends Condos {
   }
 
   // update condo row in condo table
-  async updateCondoTable(condoId, user, name, street, address2, postalCode, city, squareMeters) {
+  async updateCondoTable(appartmentId, user, name, street, address2, postalCode, city, squareMeters) {
 
     if (address2 === 'undefined') address2 = '';
-    const URL = (this.serverStatus === 1) ? '/api/condo' : 'http://localhost:3000/condo';
+    const URL = (this.serverStatus === 1)
+      ? '/api/appartments'
+      : 'http://localhost:3000/appartments';
     try {
 
       // POST request
@@ -375,7 +377,7 @@ class Condo extends Condos {
         },
         body: JSON.stringify({
           action: 'update',
-          condoId: condoId,
+          appartmentId: appartmentId,
           user: user,
           name: name,
           street: street,
@@ -395,10 +397,11 @@ class Condo extends Condos {
   // insert condo row in condo table
   async insertCondoTable(condominiumId, user, name, street, address2, postalCode, city, squareMeters) {
     if (address2 === 'undefined') address2 = '';
-    const URL = (this.serverStatus === 1) ? '/api/condo' : 'http://localhost:3000/condo';
+    const URL = (this.serverStatus === 1)
+      ? '/api/appartments'
+      : 'http://localhost:3000/appartments';
     try {
       // POST request
-      //const response = await fetch(`${URL}:3000/condo?action=insert&condominiumId=${condominiumId}&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -424,12 +427,13 @@ class Condo extends Condos {
   }
 
   // delete condo row
-  async deleteCondoTable(condoId, user) {
+  async deleteCondoTable(appartmentId, user) {
 
-    const URL = (this.serverStatus === 1) ? '/api/condo' : 'http://localhost:3000/condo';
+    const URL = (this.serverStatus === 1)
+      ? '/api/appartments'
+      : 'http://localhost:3000/appartments';
     try {
       // POST request
-      //const response = await fetch(`${URL}:3000/condo?action=delete&condoId=${condoId}&user=${user}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -437,7 +441,7 @@ class Condo extends Condos {
         },
         body: JSON.stringify({
           action: 'delete',
-          condoId: condoId,
+          appartmentId: appartmentId,
           user: user
         })
       });

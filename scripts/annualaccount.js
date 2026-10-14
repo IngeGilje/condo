@@ -8,7 +8,7 @@ const objBudgets = new Budgets('budgets');
 const objAccounts = new Accounts('accounts');
 const objBankAccounts = new BankAccounts('bankaccounts');
 const objTransactions = new Transactions('bankTransactions');
-const objCondo = new Condo('condo');
+const objAppartments = new Appartments('appartments');
 const objCommonCosts = new CommonCosts('commoncosts');
 
 const enableChanges = (objCommonCosts.securityLevel > 5);
@@ -41,7 +41,7 @@ async function main() {
       const resident = 'Y';
       await objUsers.loadUsersTable(objCommonCosts.condominiumId, resident, objCommonCosts.nineNine);
       await objCondominiums.loadCondominiumsTable();
-      await objCondo.loadCondoTable(objCommonCosts.condominiumId);
+      await objAppartments.loadCondoTable(objCommonCosts.condominiumId);
       await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
       await objBudgets.loadBudgetsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine, objCommonCosts.nineNine);
       await objBankAccounts.loadBankAccountsTable(objCommonCosts.condominiumId);
@@ -73,11 +73,10 @@ async function main() {
 
       // Show remote Heating
       // Get row number for payment Remote Heating Account Id
-      //const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCommonCosts.condominiumId);
       if (rowNumberCondominium !== -1) {
 
         // Show annual accounts
-        const orderBy = 'condoId ASC';
+        const orderBy = 'appartmentId ASC';
         await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, deleted, objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, fromDate, toDate);
         showAnnualAccounts();
 
@@ -135,7 +134,7 @@ async function events() {
       const year = Number(document.querySelector('.filterAccountYear').value);
       await objBudgets.loadBudgetsTable(objCommonCosts.condominiumId, year, objCommonCosts.nineNine);
 
-      const orderBy = 'condoId ASC';
+      const orderBy = 'appartmentId ASC';
       await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, deleted, objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, fromDate, toDate);
       showAnnualAccounts();
 
@@ -347,23 +346,23 @@ function showIncomeNextYear() {
   }
   //html += "</tr>"
 
-  objCondo.arrayCondo.forEach((condo) => {
+  objAppartments.arrayCondo.forEach((condo) => {
 
     // insert a table row (<tr></td>)
     html += objCommonCosts.insertTableRow('');
 
     // condo name
-    className = `name${condo.condoId}`;
+    className = `name${condo.appartmentId}`;
     html += showTableText(className, condo.name);
 
     // Square meters
     let squareMeters = formatNumberToNorAmount(condo.squareMeters);
-    className = `squareMeters${condo.condoId}`;
+    className = `squareMeters${condo.appartmentId}`;
     html += showTableText(className, squareMeters);
 
     // fixed cost per month per condo
     fixedCostCondoMonth = formatNumberToNorAmount(fixedCostCondoMonth);
-    className = `fixedCostCondoMonth${condo.condoId}`;
+    className = `fixedCostCondoMonth${condo.appartmentId}`;
     html += showTableText(className, fixedCostCondoMonth);
 
     // Common cost per month per condo
@@ -372,7 +371,7 @@ function showIncomeNextYear() {
     squareMeters = formatNorAmountToNumber(squareMeters);
     let commonCostsMonth = ((squareMeters * commonCostSquareMeter) / 100) + formatNorAmountToNumber(fixedCostCondoMonth);
     commonCostsMonth = formatNumberToNorAmount(commonCostsMonth);
-    className = `commonCostsMonth${condo.condoId}`;
+    className = `commonCostsMonth${condo.appartmentId}`;
     html += showTableText(className, commonCostsMonth);
 
     // Common cost per year per condo
@@ -381,7 +380,7 @@ function showIncomeNextYear() {
     //let commonCostsCondoYear = (commonCostsMonth + fixedCostCondoMonth) * 12;
     let commonCostsCondoYear = commonCostsMonth * 12;
     commonCostsCondoYear = formatNumberToNorAmount(commonCostsCondoYear);
-    className = `commonCostsCondoYear${condo.condoId}`;
+    className = `commonCostsCondoYear${condo.appartmentId}`;
     html += showTableText(className, commonCostsCondoYear);
 
     html += "</tr>";

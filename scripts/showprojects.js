@@ -5,7 +5,7 @@ const today = new Date();
 const objUsers = new Users('users');
 const objCondominiums = new Condominiums('condominiums');
 const objAccounts = new Accounts('accounts');
-const objCondo = new Condo('condo');
+const objAppartments = new Appartments('appartments');
 const objTransactions = new Transactions('transactions');
 const objProjects = new Projects('projects');
 
@@ -15,7 +15,7 @@ const applicationName = "showprojects";
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramTransactionId = Number(queryParameters.get("transactionId"));
-const paramCondoId = Number(queryParameters.get("condoId"));
+const paramCondoId = Number(queryParameters.get("appartmentId"));
 const paramAccountId = Number(queryParameters.get("accountId"));
 const paramFromDate = Number(queryParameters.get("fromDate"));
 const paramToDate = Number(queryParameters.get("toDate"));
@@ -49,7 +49,7 @@ async function main() {
       const resident = 'Y';
       await objUsers.loadUsersTable(objProjects.condominiumId, resident, objProjects.nineNine);
       await objCondominiums.loadCondominiumsTable();
-      await objCondo.loadCondoTable(objProjects.condominiumId);
+      await objAppartments.loadCondoTable(objProjects.condominiumId);
       await objProjects.loadProjectsTable(objProjects.condominiumId);
       //const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objProjects.condominiumId);
@@ -60,9 +60,9 @@ async function main() {
         ? 0
         : objProjects.arrayProjects.at(-1)?.projectId ?? 0;
 
-      const condoId = 0;
+      const appartmentId = 0;
 
-      showFilter(projectId, "", condoId);
+      showFilter(projectId, "", appartmentId);
 
       // Show project
       // Get row number for condominium
@@ -74,12 +74,12 @@ async function main() {
 
         // show bank account transactions this project
         const projectId = Number(document.querySelector('.filterProjectId').value);
-        const condoId = Number(document.querySelector('.filterCondoId').value);
+        const appartmentId = Number(document.querySelector('.filterCondoId').value);
 
         let amount = document.querySelector('.filterAmount').value;
         amount = formatNorAmountToNumber(amount);
         document.querySelector('.filterAmount').value = formatNumberToNorAmount(amount);
-        showProjectTransactions(projectId, condoId, amount);
+        showProjectTransactions(projectId, appartmentId, amount);
 
         // Events
         events();
@@ -101,12 +101,12 @@ async function events() {
       || (event.target.classList.contains('filterAmount')));
 
     const projectId = Number(document.querySelector('.filterProjectId').value);
-    const condoId = Number(document.querySelector('.filterCondoId').value);
+    const appartmentId = Number(document.querySelector('.filterCondoId').value);
 
     let amount = document.querySelector('.filterAmount').value;
     amount = formatNorAmountToNumber(amount);
     document.querySelector('.filterAmount').value = formatNumberToNorAmount(amount);
-    showProjectTransactions(projectId, condoId, amount);
+    showProjectTransactions(projectId, appartmentId, amount);
   });
 
   // change bank account transaction
@@ -132,7 +132,7 @@ async function events() {
       const rowNumberTransaction = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
       if (rowNumberTransaction !== -1) {
 
-        const condoId = objTransactions.arrayTransactions[rowNumberTransaction].condoId;
+        const appartmentId = objTransactions.arrayTransactions[rowNumberTransaction].appartmentId;
         const projectId = objTransactions.arrayTransactions[rowNumberTransaction].projectId;
         const accountId = objTransactions.arrayTransactions[rowNumberTransaction].accountId;
         const fromDate = objTransactions.arrayTransactions[rowNumberTransaction].date;
@@ -144,7 +144,7 @@ async function events() {
         let URL = (objTransactions.serverStatus === 1)
           ? 'http://ingegilje.no/'
           : 'http://localhost/';
-        URL = `${URL}transaction.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}&projectId=${projectId}&backApplication=${applicationName}.html`;
+        URL = `${URL}transaction.html?transactionId=${transactionId}&appartmentId=${appartmentId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}&projectId=${projectId}&backApplication=${applicationName}.html`;
         window.location.href = URL;
       }
     };
@@ -152,7 +152,7 @@ async function events() {
 }
 
 // Show filter
-function showFilter(projectId, amount, condoId) {
+function showFilter(projectId, amount, appartmentId) {
 
   // Start frame
   let html = startLineFilter('filter-frame');
@@ -161,7 +161,7 @@ function showFilter(projectId, amount, condoId) {
   html += objProjects.showSelectedProjectsNew('filterProjectId', 'Prosjekt', projectId, 'Velg prosjekt', '', true);
 
   // Show condos
-  html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true)
+  html += objAppartments.showSelectedCondosNew('filterCondoId', 'Leilighet', appartmentId, '', 'Vis alle', true)
 
   // Amount
   html += inputText('filterAmount', 'Beløp', amount, 11, true);
@@ -172,7 +172,7 @@ function showFilter(projectId, amount, condoId) {
 }
 
 // show bank account transactions this project
-function showProjectTransactions(projectId, condoId, amount) {
+function showProjectTransactions(projectId, appartmentId, amount) {
 
   let html = startTable("Prosjekt", "");
   html += tableHeader('Dato', 'Konto', 'Leilighet', 'Innbetaling', 'Utbetaling', '');
@@ -182,7 +182,7 @@ function showProjectTransactions(projectId, condoId, amount) {
 
   for (const bankTransaction of objTransactions.arrayTransactions) {
     if ((bankTransaction.projectId === projectId)
-      && ((bankTransaction.condoId === condoId) || (condoId === objProjects.nineNine))
+      && ((bankTransaction.appartmentId === appartmentId) || (appartmentId === objProjects.nineNine))
       && ((bankTransaction.income === amount) || (bankTransaction.payment === amount) || (amount === 0))) {
 
       // Insert Table Row
@@ -200,9 +200,9 @@ function showProjectTransactions(projectId, condoId, amount) {
       html += showTableText(className, accountName);
 
       // condo
-      className = `condoId${bankTransaction.transactionId}`;
-      //html += objCondo.showSelectedCondos(className, '', bankTransaction.condoId, '-', '', false);
-      const condoName = objCondo.getCondoNameById(bankTransaction.condoId)
+      className = `appartmentId${bankTransaction.transactionId}`;
+      //html += objAppartments.showSelectedCondos(className, '', bankTransaction.appartmentId, '-', '', false);
+      const condoName = objAppartments.getCondoNameById(bankTransaction.appartmentId)
       html += showTableText(className, condoName);
 
       // income

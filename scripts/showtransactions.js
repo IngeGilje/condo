@@ -3,7 +3,7 @@
 // Activate objects
 const today = new Date();
 const objUsers = new Users('users');
-const objCondo = new Condo('condo');
+const objAppartments = new Appartments('appartments');
 const objAccounts = new Accounts('accounts');
 const objBankAccounts = new BankAccounts('bankaccounts');
 const objSuppliers = new Suppliers('suppliers');
@@ -17,7 +17,7 @@ const applicationName = "showtransactions";
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramTransactionId = Number(queryParameters.get("transactionId"));
-const paramCondoId = Number(queryParameters.get("condoId"));
+const paramCondoId = Number(queryParameters.get("appartmentId"));
 const paramAccountId = Number(queryParameters.get("accountId"));
 const paramProjectId = Number(queryParameters.get("projectId"));
 const paramFromDate = Number(queryParameters.get("fromDate"));
@@ -55,7 +55,7 @@ async function main() {
       await objAccounts.loadAccountsTable(objTransactions.condominiumId);
       await objBankAccounts.loadBankAccountsTable(objTransactions.condominiumId);
       await objUserBankAccounts.loadUserBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine, objTransactions.nineNine);
-      await objCondo.loadCondoTable(objTransactions.condominiumId);
+      await objAppartments.loadCondoTable(objTransactions.condominiumId);
       await objCondominiums.loadCondominiumsTable();
       await objSuppliers.loadSuppliersTable(objTransactions.condominiumId);
 
@@ -68,7 +68,7 @@ async function main() {
         && (paramAmount === 0)) {
 
         const amount = 0;
-        let condoId = objTransactions.nineNine;
+        let appartmentId = objTransactions.nineNine;
         let accountId = objTransactions.nineNine;
 
         // From date
@@ -80,7 +80,7 @@ async function main() {
         let toDate = getCurrentISODate();
         toDate = Number(formatISODateToNumber(toDate));
 
-        showFilter(condoId, accountId, fromDate, toDate, amount);
+        showFilter(appartmentId, accountId, fromDate, toDate, amount);
       } else {
 
         showFilter(paramCondoId, paramAccountId, paramFromDate, paramToDate, paramAmount);
@@ -136,7 +136,7 @@ async function events() {
         transactionId = Number(className.slice(prefix.length));
       }
 
-      const condoId = Number(document.querySelector('.filterCondoId').value);
+      const appartmentId = Number(document.querySelector('.filterCondoId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
       fromDate = formatISODateToNumber(fromDate);
@@ -147,7 +147,7 @@ async function events() {
       let URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}voucher.html?backApplication=${applicationName}.html&transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}`;
+      URL = `${URL}voucher.html?backApplication=${applicationName}.html&transactionId=${transactionId}&appartmentId=${appartmentId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}`;
       window.location.href = URL;
     };
   });
@@ -177,7 +177,7 @@ async function events() {
       if (rowNumberTransaction !== -1) {
         projectId = objTransactions.arrayTransactions[rowNumberTransaction].projectId
       }
-      const condoId = Number(document.querySelector('.filterCondoId').value);
+      const appartmentId = Number(document.querySelector('.filterCondoId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
       fromDate = formatISODateToNumber(fromDate);
@@ -188,8 +188,8 @@ async function events() {
       let URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      //URL = `${URL}transaction.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}&projectId=${projectId}`;
-      URL = `${URL}transaction.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}&projectId=${projectId}&backApplication=${applicationName}.html`;
+      //URL = `${URL}transaction.html?transactionId=${transactionId}&appartmentId=${appartmentId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}&projectId=${projectId}`;
+      URL = `${URL}transaction.html?transactionId=${transactionId}&appartmentId=${appartmentId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}&projectId=${projectId}&backApplication=${applicationName}.html`;
 
       window.location.href = URL;
     };
@@ -197,15 +197,15 @@ async function events() {
 }
 
 // Show filter
-function showFilter(condoId, accountId, fromDate, toDate, amount) {
+function showFilter(appartmentId, accountId, fromDate, toDate, amount) {
 
   // Start frame
   //let html = startLineFilter('filter-frame');
   html = startLineFilter();
 
   // Show condos
-  //html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true);
-  html += objCondo.showLineFilterCondos('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true);
+  //html += objAppartments.showSelectedCondosNew('filterCondoId', 'Leilighet', appartmentId, '', 'Vis alle', true);
+  html += objAppartments.showLineFilterCondos('filterCondoId', 'Leilighet', appartmentId, '', 'Vis alle', true);
 
   // Show accounts
   html += objAccounts.showLineFilterAccounts('filterAccountId', 'Konto', accountId, '', 'Vis alle', true);
@@ -241,7 +241,7 @@ function showTransactions() {
   let toDate = document.querySelector('.filterToDate').value;
   toDate = Number(objTransactions.formatDateToNumber(toDate));
 
-  // condoId
+  // appartmentId
   let fromCondoId = Number(document.querySelector('.filterCondoId').value);
   if (fromCondoId === objTransactions.nineNine) fromCondoId = 0;
   let toCondoId = Number(document.querySelector('.filterCondoId').value);
@@ -275,7 +275,7 @@ function showTransactions() {
 
     // Check for valid transaction
     if ((bankTransaction.date >= fromDate && bankTransaction.date <= toDate)
-      && (bankTransaction.condoId >= fromCondoId && bankTransaction.condoId <= toCondoId)
+      && (bankTransaction.appartmentId >= fromCondoId && bankTransaction.appartmentId <= toCondoId)
       && (bankTransaction.accountId >= fromAccountId && bankTransaction.accountId <= toAccountId)
       && ((amount >= fromAmount && amount <= toAmount))) {
 
@@ -296,9 +296,9 @@ function showTransactions() {
       html += showTableText(className, accountName);
 
       // condos
-      className = `condoId${bankTransaction.transactionId}`;
-      //html += objCondo.showSelectedCondos(className, '', bankTransaction.condoId, '-', '', false);
-      const condoName = objCondo.getCondoNameById(bankTransaction.condoId);
+      className = `appartmentId${bankTransaction.transactionId}`;
+      //html += objAppartments.showSelectedCondos(className, '', bankTransaction.appartmentId, '-', '', false);
+      const condoName = objAppartments.getCondoNameById(bankTransaction.appartmentId);
       html += showTableText(className, condoName);
 
       // income

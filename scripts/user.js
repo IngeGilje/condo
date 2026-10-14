@@ -2,7 +2,7 @@
 
 // Activate objects
 const today = new Date();
-const objCondo = new Condo('condo');
+const objAppartments = new Appartments('appartments');
 const objCondominiums = new Condominiums('condominiums');
 const objUsers = new Users('users');
 
@@ -184,9 +184,9 @@ function showUser(userId) {
 
   let html = startGrid('Bruker');
 
-  // condoId
-  const condoId = objUsers.arrayUsers[rowNumberUser]?.condoId ?? 0;
-  html += objCondo.showSelectedCondosNew('condoId', 'Leilighet', condoId, '', 'Velg leilighet', enableChanges);
+  // appartmentId
+  const appartmentId = objUsers.arrayUsers[rowNumberUser]?.appartmentId ?? 0;
+  html += objAppartments.showSelectedCondosNew('appartmentId', 'Leilighet', appartmentId, '', 'Velg leilighet', enableChanges);
   html += "<div></div>";
 
   // email
@@ -280,9 +280,9 @@ async function updateUserRow(userId) {
     showMessage('Ugyldig email.');
   }
 
-  // condoId
-  const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = validateIntervalNew('condoId', 'Ugyldig Leilighet', condoId, 0, objUsers.nineNine);
+  // appartmentId
+  const appartmentId = Number(document.querySelector('.appartmentId').value);
+  const validCondoId = validateIntervalNew('appartmentId', 'Ugyldig Leilighet', appartmentId, 0, objUsers.nineNine);
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;
@@ -315,11 +315,11 @@ async function updateUserRow(userId) {
     if (rowNumberUser !== -1) {
 
       // update the users row
-      await objUsers.updateUsersTable(condominiumId, resident, objUsers.user, email, userId, condoId, firstName, lastName, phone);
+      await objUsers.updateUsersTable(condominiumId, resident, objUsers.user, email, userId, appartmentId, firstName, lastName, phone);
     } else {
 
       // Insert a accounts row
-      await objUsers.insertUsersTable(resident, condominiumId, objUsers.user, email, condoId, firstName, lastName, phone, securityLevel, password);
+      await objUsers.insertUsersTable(resident, condominiumId, objUsers.user, email, appartmentId, firstName, lastName, phone, securityLevel, password);
       await objUsers.getHighestUserId(condominiumId);
       userId = objUsers.arrayUsers.at[-1].userId;
     }
@@ -379,7 +379,7 @@ function resetValues() {
   document.querySelector('.email').value = '';
 
   // reset condo Id
-  document.querySelector('.condoId').value = 0;
+  document.querySelector('.appartmentId').value = 0;
 
   // reset first name
   document.querySelector('.firstName').value = '';
@@ -415,5 +415,5 @@ async function loadAllTables(condominiumId) {
 
   await objUsers.loadUsersTable(condominiumId, resident, objUsers.nineNine);
   await objCondominiums.loadCondominiumsTable(condominiumId);
-  await objCondo.loadCondoTable(condominiumId);
+  await objAppartments.loadCondoTable(condominiumId);
 };

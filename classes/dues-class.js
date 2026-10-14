@@ -53,7 +53,7 @@ class Dues extends Condos {
   }
 
   // get dues
-  //async loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate, alternativArray = false) {
+  //async loadDuesTable(condominiumId, accountId, appartmentId, fromDate, toDate, alternativArray = false) {
   async loadDuesTable(condominiumId) {
 
     const URL = (this.serverStatus === 1)
@@ -106,7 +106,7 @@ class Dues extends Condos {
   }
 
   // update due row in dues table
-  async updateDuesTable(user, dueId, condoId, accountId, projectId, amount, date, kilowattHour, text) {
+  async updateDuesTable(user, dueId, appartmentId, accountId, projectId, amount, date, kilowattHour, text) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/dues'
@@ -123,7 +123,7 @@ class Dues extends Condos {
           action: 'update',
           dueId: dueId,
           user: user,
-          condoId: condoId,
+          appartmentId: appartmentId,
           accountId: accountId,
           projectId: projectId,
           amount: amount,
@@ -140,7 +140,7 @@ class Dues extends Condos {
   }
 
   // insert due row in dues table
-  async insertDuesTable(condominiumId, user, condoId, accountId, projectId, amount, date, kilowattHour, text) {
+  async insertDuesTable(condominiumId, user, appartmentId, accountId, projectId, amount, date, kilowattHour, text) {
 
     const URL = (this.serverStatus === 1) ? '/api/dues' : 'http://localhost:3000/dues';
     try {
@@ -154,7 +154,7 @@ class Dues extends Condos {
         body: JSON.stringify({
           action: 'insert',
           condominiumId: condominiumId,
-          condoId: condoId,
+          appartmentId: appartmentId,
           user: user,
           accountId: accountId,
           projectId: projectId,
@@ -196,14 +196,14 @@ class Dues extends Condos {
   }
 
   // get dues from start (20200101) to toDate
-  async getDues(condominiumId, condoId, toDate) {
+  async getDues(condominiumId, appartmentId, toDate) {
 
     let openingBalance = 0;
 
      this.arrayDues.forEach((due) => {
       if ((due.condominium === condominiumId)
         && (due.condominium === condominiumId)
-        && (due.condoId === condoId)
+        && (due.appartmentId === appartmentId)
         && (due.date >= 20200101 && due.date <= toDate)) {
 
         openingBalance -= due.amount;
@@ -293,14 +293,14 @@ class Dues extends Condos {
     return html;
   }
 
-  // get last dueId for fromDate, toDate, condoId, accountId, projectId
-  getFirstDueId(fromDate, toDate, condoId, accountId,projectId) {
+  // get last dueId for fromDate, toDate, appartmentId, accountId, projectId
+  getFirstDueId(fromDate, toDate, appartmentId, accountId,projectId) {
 
     let dueId = 0;
     this.arrayDues.forEach((due) => {
 
       if (((due.date >= fromDate) && (due.date <= toDate))
-        && ((due.condoId === condoId) || (condoId === 0))
+        && ((due.appartmentId === appartmentId) || (appartmentId === 0))
       && ((due.accountId === accountId) || (accountId === 0))
         && ((due.projectId === projectId) || (projectId === 0))) {
 

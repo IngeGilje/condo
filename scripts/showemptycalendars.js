@@ -3,7 +3,7 @@
 // Activate classes
 const today = new Date();
 const objUsers = new Users('users');
-const objCondo = new Condo('condo');
+const objAppartments = new Appartments('appartments');
 const objEmptyCalendars = new EmptyCalendars("emptycalendars");
 
 const enableChanges = (objEmptyCalendars.securityLevel > 5);
@@ -40,7 +40,7 @@ async function main() {
       let html = objEmptyCalendars.showMenu(objEmptyCalendars.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      await objCondo.loadCondoTable(objEmptyCalendars.condominiumId);
+      await objAppartments.loadCondoTable(objEmptyCalendars.condominiumId);
 
       // Show filter
       calendarDate = getCurrentDate();
@@ -147,8 +147,8 @@ function showEmptyCalendars(year, month) {
         // New table row
         html += "<tr>";
 
-        // condoId 1
-        const condoName = objCondo.getCondoNameById(emptycalendar.condoId);
+        // appartmentId 1
+        const condoName = objAppartments.getCondoNameById(emptycalendar.appartmentId);
         html += showTableText("condoId22", condoName);
 
         // date 2

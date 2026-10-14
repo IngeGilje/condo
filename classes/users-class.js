@@ -170,7 +170,7 @@ class Users extends Condos {
   }
 
   // update user row in users table
-  async updateUsersTable(condominiumId, resident, user, email, userId, condoId, firstName, lastName, phone) {
+  async updateUsersTable(condominiumId, resident, user, email, userId, appartmentId, firstName, lastName, phone) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/users'
@@ -189,7 +189,7 @@ class Users extends Condos {
           condominiumId: condominiumId,
           email: email,
           userId: userId,
-          condoId: condoId,
+          appartmentId: appartmentId,
           firstName: firstName,
           lastName: lastName,
           phone: phone,
@@ -233,12 +233,12 @@ class Users extends Condos {
   }
 
   // insert user row in users table
-  async insertUsersTable(resident, condominiumId, user, email, condoId, firstName, lastName, phone, securityLevel, password) {
+  async insertUsersTable(resident, condominiumId, user, email, appartmentId, firstName, lastName, phone, securityLevel, password) {
 
     const URL = (this.serverStatus === 1) ? '/api/users' : 'http://localhost:3000/users';
     try {
 
-      //const response = await fetch(`${URL}:3000/users?action=insert&condominiumId=${condominiumId}&user=${user}&email=${email}&condoId=${condoId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
+      //const response = await fetch(`${URL}:3000/users?action=insert&condominiumId=${condominiumId}&user=${user}&email=${email}&appartmentId=${appartmentId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -249,7 +249,7 @@ class Users extends Condos {
           condominiumId: condominiumId,
           user: user,
           email: email,
-          condoId: condoId,
+          appartmentId: appartmentId,
           firstName: firstName,
           lastName: lastName,
           phone: phone,

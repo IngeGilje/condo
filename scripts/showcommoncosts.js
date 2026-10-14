@@ -7,7 +7,7 @@ const objCondominiums = new Condominiums('condominiums');
 const objBudgets = new Budgets('budgets');
 const objAccounts = new Accounts('accounts');
 const objTransactions = new Transactions('bankTransactions');
-const objCondo = new Condo('condo');
+const objAppartments = new Appartments('appartments');
 const objCommonCosts = new CommonCosts('commoncosts');
 
 // Fixed values
@@ -47,7 +47,7 @@ async function main() {
       const resident = 'Y';
       await objUsers.loadUsersTable(objCommonCosts.condominiumId, resident, objCommonCosts.nineNine);
       await objCondominiums.loadCondominiumsTable();
-      await objCondo.loadCondoTable(objCommonCosts.condominiumId);
+      await objAppartments.loadCondoTable(objCommonCosts.condominiumId);
       await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
       await objBudgets.loadBudgetsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine, objCommonCosts.nineNine);
       //await objBankAccounts.loadBankAccountsTable(objCommonCosts.condominiumId);
@@ -156,7 +156,7 @@ function showCommonCosts() {
     fixedCostCondoMonth = Number(objCommonCosts.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo);
   }
 
-  objCondo.arrayCondo.forEach((condo) => {
+  objAppartments.arrayCondo.forEach((condo) => {
 
     const year = Number(document.querySelector(".filterYear").value);
     const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.year === year);
@@ -166,17 +166,17 @@ function showCommonCosts() {
     html += objCommonCosts.insertTableRow('');
 
     // condo name
-    let className = `name${condo.condoId}`;
+    let className = `name${condo.appartmentId}`;
     html += showTableText(className, condo.name);
 
     // Square meters
     let squareMeters = formatNumberToNorAmount(condo.squareMeters);
-    className = `squareMeters${condo.condoId}`;
+    className = `squareMeters${condo.appartmentId}`;
     html += showTableText(className, squareMeters);
 
     // fixed cost 
     fixedCostCondoMonth = formatNumberToNorAmount(fixedCostCondoMonth);
-    className = `fixedCostCondoMonth${condo.condoId}`;
+    className = `fixedCostCondoMonth${condo.appartmentId}`;
     html += showTableText(className, fixedCostCondoMonth);
 
     // Common cost per month
@@ -185,7 +185,7 @@ function showCommonCosts() {
     squareMeters = formatNorAmountToNumber(squareMeters);
     fixedCostCondoMonth = formatNorAmountToNumber(fixedCostCondoMonth);
     let commonCostsMonth = (((squareMeters * commonCostSquareMeter) / 100) + (fixedCostCondoMonth));
-    className = `commonCostsMonth${condo.condoId}`;
+    className = `commonCostsMonth${condo.appartmentId}`;
     commonCostsMonth = formatNumberToNorAmount(commonCostsMonth);
     html += showTableText(className, commonCostsMonth);
 
@@ -193,12 +193,12 @@ function showCommonCosts() {
     commonCostsMonth = formatNorAmountToNumber(commonCostsMonth);
     let commonCostsCondoYear = commonCostsMonth * 12;
     commonCostsCondoYear = formatNumberToNorAmount(commonCostsCondoYear);
-    className = `commonCostsCondoYear${condo.condoId}`;
+    className = `commonCostsCondoYear${condo.appartmentId}`;
     html += showTableText(className, commonCostsCondoYear);
 
     /*
     // Change commoncosts row
-    className = `change${condo.condoId}`;
+    className = `change${condo.appartmentId}`;
     html += showTableButton(className, 'Rediger');
     html += "</tr>";
     */

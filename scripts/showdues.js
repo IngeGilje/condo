@@ -3,7 +3,7 @@
 // Activate classes
 const today = new Date();
 const objUsers = new Users('users');
-const objCondo = new Condo('condo');
+const objAppartments = new Appartments('appartments');
 const objDues = new Dues('dues');
 
 // Fixed values
@@ -40,7 +40,7 @@ async function main() {
 
       const resident = 'Y';
       await objUsers.loadUsersTable(objDues.condominiumId, resident, objDues.nineNine);
-      await objCondo.loadCondoTable(objDues.condominiumId);
+      await objAppartments.loadCondoTable(objDues.condominiumId);
 
       // Show filter
       const date = getCurrentDate();
@@ -73,8 +73,8 @@ async function events() {
 
       const year = Number(document.querySelector(".filterYear").value);
       const month = Number(document.querySelector(".filterMonth").value);
-      const condoId = Number(document.querySelector(".filterCondoId").value);
-      showFilter(year, month, condoId);
+      const appartmentId = Number(document.querySelector(".filterCondoId").value);
+      showFilter(year, month, appartmentId);
       await objDues.loadDuesTable(objDues.condominiumId);
 
       showDues();
@@ -119,7 +119,7 @@ async function events() {
 };
 
 // Show filter
-function showFilter(year, month, condoId) {
+function showFilter(year, month, appartmentId) {
 
   // Start frame
   let html = startLineFilter('filter-frame');
@@ -131,7 +131,7 @@ function showFilter(year, month, condoId) {
   html += showSelectedMonthsNew('filterMonth', 'Måned', Number(month), enableChanges);
 
   // condo
-  html += objCondo.showSelectedCondosNew('filterCondoId', 'leilighet', condoId, 'Velg leilighet', '', true);
+  html += objAppartments.showSelectedCondosNew('filterCondoId', 'leilighet', appartmentId, 'Velg leilighet', '', true);
 
   // End table filter
   html += endLineFilter();
@@ -161,7 +161,7 @@ function showDues() {
     const month = String(date).slice(4, 6);
     if ((Number(year) === filterYear)
       && (Number(month) === filterMonth || filterMonth === objDues.nineNine)
-      && (due.condoId === filterCondoId || filterCondoId === 0)) {
+      && (due.appartmentId === filterCondoId || filterCondoId === 0)) {
 
       // insert a table row (<tr></td>)
       html += objDues.insertTableRow('');
@@ -172,10 +172,10 @@ function showDues() {
       date = formatNumberToNorDate(date);
       html += showTableText(className, date);
 
-      // condoId
-      const condoId = due.condoId;
-      className = `condoId${due.dueId}`;
-      const condoName = objCondo.getCondoNameById(due.condoId);
+      // appartmentId
+      const appartmentId = due.appartmentId;
+      className = `appartmentId${due.dueId}`;
+      const condoName = objAppartments.getCondoNameById(due.appartmentId);
       html += showTableText(className, condoName);
 
       // kilowattHour

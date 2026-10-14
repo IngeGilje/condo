@@ -3,7 +3,7 @@
 // Activate classes
 const today = new Date();
 const objUsers = new Users('users');
-const objCondo = new Condo('condo');
+const objAppartments = new Appartments('appartments');
 const objEmptyCalendars = new EmptyCalendars("emptycalendars");
 
 const enableChanges = (objEmptyCalendars.securityLevel > 5);
@@ -40,7 +40,7 @@ async function main() {
       let html = objEmptyCalendars.showMenu(objEmptyCalendars.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      await objCondo.loadCondoTable(objEmptyCalendars.condominiumId);
+      await objAppartments.loadCondoTable(objEmptyCalendars.condominiumId);
 
       // Show filter
       let emptyCalendarId = 0;
@@ -190,8 +190,8 @@ function showEmptyCalendar(emptyCalendarId) {
   html += inputDate('emptyingCalendarDate', 'Dato', emptyingCalendarDate, enableChanges);
 
   // condo
-  const condoId = objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar]?.condoId ?? 0;
-  html += objCondo.showSelectedCondosNew('condoId', 'Ansvarlig', condoId, 'Velg ansvarlig', '', true);
+  const appartmentId = objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar]?.appartmentId ?? 0;
+  html += objAppartments.showSelectedCondosNew('appartmentId', 'Ansvarlig', appartmentId, 'Velg ansvarlig', '', true);
 
   // residual waste 
   let residualWaste = objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar]?.residualWaste ?? "N";
@@ -278,9 +278,9 @@ async function updateEmptyingCalendarRow(emptyCalendarId) {
 
   emptyCalendarId = Number(emptyCalendarId);
 
-  // condoId
-  condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = validateIntervalNew('condoId', 'Ugyldig ansvarlig', condoId, 1, objCondo.nineNine);
+  // appartmentId
+  appartmentId = Number(document.querySelector('.appartmentId').value);
+  const validCondoId = validateIntervalNew('appartmentId', 'Ugyldig ansvarlig', appartmentId, 1, objAppartments.nineNine);
 
   // date
   let date = document.querySelector('.emptyingCalendarDate').value;
@@ -323,11 +323,11 @@ async function updateEmptyingCalendarRow(emptyCalendarId) {
     if (rowNumberEmptyCalendar !== -1) {
 
       // update a emptycalendars row
-      await objEmptyCalendars.updateEmptyCalendarTable(emptyCalendarId, objEmptyCalendars.user, condoId, date, residualWaste, paper, food, plastic, christmasTree);
+      await objEmptyCalendars.updateEmptyCalendarTable(emptyCalendarId, objEmptyCalendars.user, appartmentId, date, residualWaste, paper, food, plastic, christmasTree);
     } else {
 
       // Insert a emptycalendars row
-      await objEmptyCalendars.insertEmptyCalendarTable(objEmptyCalendars.condominiumId, objEmptyCalendars.user, condoId, date, residualWaste, paper, food, plastic, christmasTree);
+      await objEmptyCalendars.insertEmptyCalendarTable(objEmptyCalendars.condominiumId, objEmptyCalendars.user, appartmentId, date, residualWaste, paper, food, plastic, christmasTree);
       await objEmptyCalendars.getHighestEmptyCalendarId(objEmptyCalendars.condominiumId);
       emptyCalendarId = objEmptyCalendars.arrayEmptyCalendars.at(-1)?.emptyCalendarId ?? 0;
     }
@@ -394,8 +394,8 @@ function resetValues() {
 
   document.querySelector('.filterEmptyCalendarId').value = 0;
 
-  // condoId
-  document.querySelector('.condoId').value = 0;
+  // appartmentId
+  document.querySelector('.appartmentId').value = 0;
 
   // date
   document.querySelector('.emptyingCalendarDate').value = 0;

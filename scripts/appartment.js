@@ -1,11 +1,11 @@
-// Condo maintenance
+// Appartment maintenance
 
 // Activate classes
 const today = new Date();
 const objUsers = new Users('users');
-const objCondo = new Condo('condo');
+const objAppartments = new Appartments('appartments');
 
-const enableChanges = (objCondo.securityLevel > 5);
+const enableChanges = (objAppartments.securityLevel > 5);
 const applicationName = "condo";
 
 // Exit application if no activity for 1 hour
@@ -19,7 +19,7 @@ async function main() {
   if (await objUsers.checkServer()) {
 
     // Validate LogIn
-    if ((objCondo.condominiumId === 0) || (objCondo.user === null)) {
+    if ((objAppartments.condominiumId === 0) || (objAppartments.user === null)) {
 
       // LogIn is not valid
       const URL = (objUsers.serverStatus === 1)
@@ -29,26 +29,26 @@ async function main() {
     } else {
 
       // Show menu
-      let html = objCondo.showMenu(objCondo.securityLevel);
+      let html = objAppartments.showMenu(objAppartments.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUsers.loadUsersTable(objCondo.condominiumId, resident, objCondo.nineNine);
-      await objCondo.loadCondoTable(objCondo.condominiumId);
+      await objUsers.loadUsersTable(objAppartments.condominiumId, resident, objAppartments.nineNine);
+      await objAppartments.loadCondoTable(objAppartments.condominiumId);
 
-      //let condoId = 0;
-      //if (objCondo.arrayCondo.length > 0) condoId = objCondo.arrayCondo.at(-1)?.condoId;
-      const condoId = objCondo.arrayCondo.at(-1)?.condoId ?? 0;
+      //let appartmentId = 0;
+      //if (objAppartments.arrayCondo.length > 0) appartmentId = objAppartments.arrayCondo.at(-1)?.appartmentId;
+      const appartmentId = objAppartments.arrayCondo.at(-1)?.appartmentId ?? 0;
 
-      // get condoId
-      //const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === objCondo.userId);
-      //if (rowNumberUser !== -1) condoId = objUsers.arrayUsers[rowNumberUser].condoId;
+      // get appartmentId
+      //const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === objAppartments.userId);
+      //if (rowNumberUser !== -1) appartmentId = objUsers.arrayUsers[rowNumberUser].appartmentId;
 
       // Show filter
-      showFilter(condoId);
+      showFilter(appartmentId);
 
       // Show result
-      showCondo(condoId);
+      showCondo(appartmentId);
 
       // Events
       events();
@@ -75,8 +75,8 @@ async function events() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('filterCondoId')) {
 
-      const condoId = Number(document.querySelector('.filterCondoId').value);
-      showCondo(condoId);
+      const appartmentId = Number(document.querySelector('.filterCondoId').value);
+      showCondo(appartmentId);
     };
   });
 
@@ -85,8 +85,8 @@ async function events() {
     if (event.target.classList.contains('update')) {
 
       // Update a condo row
-      const condoId = Number(document.querySelector(".filterCondoId").value);
-      updateCondoRow(condoId);
+      const appartmentId = Number(document.querySelector(".filterCondoId").value);
+      updateCondoRow(appartmentId);
     };
   });
 
@@ -95,8 +95,8 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      const condoId = Number(document.querySelector('.filterCondoId').value);
-      await deleteCondoRow(condoId);
+      const appartmentId = Number(document.querySelector('.filterCondoId').value);
+      await deleteCondoRow(appartmentId);
     };
   });
   */
@@ -112,8 +112,8 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('okButton')) {
 
-      const condoId = Number(document.querySelector('.filterCondoId').value);
-      await deleteCondoRow(condoId);
+      const appartmentId = Number(document.querySelector('.filterCondoId').value);
+      await deleteCondoRow(appartmentId);
       //document.querySelector('.showDialog').style.display = "none";
       const dialog = document.querySelector('.dialog');
       dialog.close();
@@ -142,7 +142,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      let url = (objCondo.serverStatus === 1)
+      let url = (objAppartments.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}login.html`;
@@ -152,7 +152,7 @@ async function events() {
 }
 
 // Show filter
-function showFilter(condoId) {
+function showFilter(appartmentId) {
 
   // Start frame
   //let html = startLineFilter('filter-frame');
@@ -161,7 +161,7 @@ function showFilter(condoId) {
   let html = startBoxFilter("leilighet");
 
   // Show condo
-  html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', '', true);
+  html += objAppartments.showSelectedCondosNew('filterCondoId', 'Leilighet', appartmentId, '', '', true);
 
   // End filter
   html += endBoxFilter();
@@ -169,25 +169,25 @@ function showFilter(condoId) {
 }
 
 // Maintain condo information
-function showCondo(condoId) {
+function showCondo(appartmentId) {
 
   // row number user
-  const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
+  const rowNumberCondo = objAppartments.arrayCondo.findIndex(condo => condo.appartmentId === appartmentId);
 
   let html = startGrid('Leilighet');
 
   // condo
-  const name = objCondo.arrayCondo[rowNumberCondo]?.name ?? '';
+  const name = objAppartments.arrayCondo[rowNumberCondo]?.name ?? '';
   html += inputText('name', 'Leilighet', name, 45, enableChanges);
   html += "<div></div>";
   //html += "<div></div>";
 
   // street
-  const street = objCondo.arrayCondo[rowNumberCondo]?.street ?? '';
+  const street = objAppartments.arrayCondo[rowNumberCondo]?.street ?? '';
   html += inputText('street', 'Gate', street, 45, enableChanges);
 
   // address 2
-  const address2 = objCondo.arrayCondo[rowNumberCondo]?.address2 ?? '';
+  const address2 = objAppartments.arrayCondo[rowNumberCondo]?.address2 ?? '';
   html += inputText('address2', 'Addresse 2', address2, 45, enableChanges);
   //html += "<div></div>";
 
@@ -195,18 +195,18 @@ function showCondo(condoId) {
   /*
   const postalCode = (rowNumberCondo === -1)
     ? ''
-    : objCondo.arrayCondo[rowNumberCondo].postalCode;
+    : objAppartments.arrayCondo[rowNumberCondo].postalCode;
   */
-  const postalCode = objCondo.arrayCondo[rowNumberCondo]?.postalCode ?? '';
+  const postalCode = objAppartments.arrayCondo[rowNumberCondo]?.postalCode ?? '';
   html += inputText('postalCode', 'PostNummer', postalCode, 4, enableChanges);
 
   // City
-  const city = objCondo.arrayCondo[rowNumberCondo]?.city ?? '';
+  const city = objAppartments.arrayCondo[rowNumberCondo]?.city ?? '';
   html += inputText('city', 'Poststed', city, 45, enableChanges);
   //html += "<div></div>";
 
   // squareMeters
-  let squareMeters = objCondo.arrayCondo[rowNumberCondo]?.squareMeters ?? '';
+  let squareMeters = objAppartments.arrayCondo[rowNumberCondo]?.squareMeters ?? '';
   squareMeters = formatNumberToNorAmount(squareMeters);
   html += inputText('squareMeters', 'Areal i m2', squareMeters, 11, enableChanges);
   html += "<div></div>";
@@ -232,7 +232,7 @@ function showCondo(condoId) {
 }
 
 // Update a condo row
-async function updateCondoRow(condoId) {
+async function updateCondoRow(appartmentId) {
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -256,27 +256,27 @@ async function updateCondoRow(condoId) {
 
   // validate squaremeters
   let squareMeters = Number(formatNorAmountToNumber(document.querySelector('.squareMeters').value));
-  const validSquareMeters = validateIntervalNew('squareMeters', 'Ugyldig Areal', squareMeters, 1, objCondo.nineNine);
+  const validSquareMeters = validateIntervalNew('squareMeters', 'Ugyldig Areal', squareMeters, 1, objAppartments.nineNine);
 
   if (validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
 
     document.querySelector('.showMessage').style.display = "none";
 
-    // Check if the condoId exist
-    const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
+    // Check if the appartmentId exist
+    const rowNumberCondo = objAppartments.arrayCondo.findIndex(condo => condo.appartmentId === appartmentId);
     if (rowNumberCondo !== -1) {
 
       // update a condo row
-      await objCondo.updateCondoTable(condoId, objCondo.user, name, street, address2, postalCode, city, squareMeters);
+      await objAppartments.updateCondoTable(appartmentId, objAppartments.user, name, street, address2, postalCode, city, squareMeters);
     } else {
 
       // Insert the condo row in condo table
-      await objCondo.insertCondoTable(objCondo.condominiumId, objCondo.user, name, street, address2, postalCode, city, squareMeters);
-      await objCondo.getHighestCondoId(objCondo.condominiumId);
-      condoId = objCondo.arrayCondo[0].condoId;
+      await objAppartments.insertCondoTable(objAppartments.condominiumId, objAppartments.user, name, street, address2, postalCode, city, squareMeters);
+      await objAppartments.getHighestCondoId(objAppartments.condominiumId);
+      appartmentId = objAppartments.arrayCondo[0].appartmentId;
     }
 
-    await objCondo.loadCondoTable(objCondo.condominiumId);
+    await objAppartments.loadCondoTable(objAppartments.condominiumId);
 
     removeMessage();
 
@@ -285,10 +285,10 @@ async function updateCondoRow(condoId) {
     }
 
     // Show filter
-    showFilter(condoId);
+    showFilter(appartmentId);
 
     // Show condo
-    showCondo(condoId);
+    showCondo(appartmentId);
   }
 }
 
@@ -323,26 +323,26 @@ function resetValues() {
 }
 
 // Delete condo row
-async function deleteCondoRow(condoId) {
+async function deleteCondoRow(appartmentId) {
 
   // Check if condo row exist
-  const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
+  const rowNumberCondo = objAppartments.arrayCondo.findIndex(condo => condo.appartmentId === appartmentId);
   if (rowNumberCondo !== -1) {
 
     // delete condo row
-    await objCondo.deleteCondoTable(condoId, objCondo.user);
-    await objCondo.getHighestCondoId(objCondo.condominiumId);
+    await objAppartments.deleteCondoTable(appartmentId, objAppartments.user);
+    await objAppartments.getHighestCondoId(objAppartments.condominiumId);
 
     // Check for empty array
-    condoId = 0;
-    if (objCondo.arrayCondo.length > 0) condoId = objCondo.arrayCondo[0].condoId;
+    appartmentId = 0;
+    if (objAppartments.arrayCondo.length > 0) appartmentId = objAppartments.arrayCondo[0].appartmentId;
   }
 
-  await objCondo.loadCondoTable(objCondo.condominiumId);
+  await objAppartments.loadCondoTable(objAppartments.condominiumId);
 
   // Show filter
-  showFilter(condoId);
+  showFilter(appartmentId);
 
   // Show account
-  showCondo(condoId);
+  showCondo(appartmentId);
 }

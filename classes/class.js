@@ -130,7 +130,7 @@ class Condos {
       securityLevel: 6
     },
     {
-      applicationName: 'condo.html',
+      applicationName: 'appartment.html',
       className: "condo",
       text: "Rediger Leilighet",
       securityLevel: 6
@@ -497,7 +497,7 @@ class Condos {
   // get condo Id from From Bank Account
   getCondoId(fromBankAccount) {
 
-    let condoId = 0;
+    let appartmentId = 0;
 
     // Validate Bank Account
     const bankAccountPattern = /^\d{11}$/;
@@ -511,11 +511,11 @@ class Condos {
         if (userId >= 0) {
 
           const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
-          if (rowNumberUser !== -1) condoId = Number(objUsers.arrayUsers[rowNumberUser].condoId);
+          if (rowNumberUser !== -1) appartmentId = Number(objUsers.arrayUsers[rowNumberUser].appartmentId);
         }
       }
     }
-    return condoId;
+    return appartmentId;
   }
 
   // Show icon

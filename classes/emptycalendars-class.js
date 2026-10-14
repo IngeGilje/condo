@@ -179,7 +179,7 @@ class EmptyCalendars extends Condos {
   }
 
   // update empty calendar row in empty calendar table
-  async updateEmptyCalendarTable(emptyCalendarId, user, condoId, date, residualWaste, paper, food, plastic, christmasTree) {
+  async updateEmptyCalendarTable(emptyCalendarId, user, appartmentId, date, residualWaste, paper, food, plastic, christmasTree) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/emptycalendars'
@@ -196,7 +196,7 @@ class EmptyCalendars extends Condos {
           action: 'update',
           emptyCalendarId: emptyCalendarId,
           user: user,
-          condoId: condoId,
+          appartmentId: appartmentId,
           date: date,
           residualWaste: residualWaste,
           paper: paper,
@@ -213,7 +213,7 @@ class EmptyCalendars extends Condos {
   }
 
   // insert empty calendar row in empty calendar table
-  async insertEmptyCalendarTable(condominiumId, user, condoId, date, residualWaste, paper, food, plastic, christmasTree) {
+  async insertEmptyCalendarTable(condominiumId, user, appartmentId, date, residualWaste, paper, food, plastic, christmasTree) {
     const URL = (this.serverStatus === 1)
       ? '/api/emptycalendars'
       : 'http://localhost:3000/emptycalendars';
@@ -228,9 +228,9 @@ class EmptyCalendars extends Condos {
           action: 'insert',
           condominiumId: condominiumId,
           user: user,
-          condoId: condoId,
+          appartmentId: appartmentId,
           date: date,
-          condoId: condoId,
+          appartmentId: appartmentId,
           residualWaste: residualWaste,
           paper: paper,
           food: food,

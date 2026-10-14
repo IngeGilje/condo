@@ -3,7 +3,7 @@
 // Activate objects
 const today = new Date();
 const objUsers = new Users('users');
-const objCondo = new Condo('condo');
+const objAppartments = new Appartments('appartments');
 const objAccounts = new Accounts('accounts');
 const objBankAccounts = new BankAccounts('bankaccounts');
 const objSuppliers = new Suppliers('suppliers');
@@ -18,7 +18,7 @@ const applicationName = "transaction";
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramTransactionId = Number(queryParameters.get("transactionId"));
-const paramCondoId = Number(queryParameters.get("condoId"));
+const paramCondoId = Number(queryParameters.get("appartmentId"));
 const paramAccountId = Number(queryParameters.get("accountId"));
 const paramProjectId = Number(queryParameters.get("projectId"));
 const paramFromDate = Number(queryParameters.get("fromDate"));
@@ -56,7 +56,7 @@ async function main() {
       await objAccounts.loadAccountsTable(objTransactions.condominiumId);
       await objBankAccounts.loadBankAccountsTable(objTransactions.condominiumId);
       await objUserBankAccounts.loadUserBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine, objTransactions.nineNine);
-      await objCondo.loadCondoTable(objTransactions.condominiumId);
+      await objAppartments.loadCondoTable(objTransactions.condominiumId);
       await objCondominiums.loadCondominiumsTable();
       await objSuppliers.loadSuppliersTable(objTransactions.condominiumId);
       await objProjects.loadProjectsTable(objTransactions.condominiumId);
@@ -114,7 +114,7 @@ async function events() {
       let URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}${paramBackApplication}?transactionId=${paramTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}&backApplication=${paramBackApplication}`;
+      URL = `${URL}${paramBackApplication}?transactionId=${paramTransactionId}&appartmentId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}&backApplication=${paramBackApplication}`;
       window.location.href = URL;
       */
       history.back();
@@ -187,9 +187,9 @@ async function events() {
        let URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      const condoId = Number(document.querySelector('.condoId').value);
+      const appartmentId = Number(document.querySelector('.appartmentId').value);
       const accountId = Number(document.querySelector('.accountId').value);
-      URL = `${URL}voucher.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}`;
+      URL = `${URL}voucher.html?transactionId=${transactionId}&appartmentId=${appartmentId}&accountId=${accountId}`;
       window.location.href = URL;
     };
   });
@@ -268,12 +268,12 @@ function showTransaction(transactionId) {
 
   // Condo
   /*
-  let condoId = (rowNumberTransaction === -1)
+  let appartmentId = (rowNumberTransaction === -1)
     ? ''
-    : objTransactions.arrayTransactions[rowNumberTransaction].condoId;
+    : objTransactions.arrayTransactions[rowNumberTransaction].appartmentId;
   */
-  const condoId = objTransactions.arrayTransactions[rowNumberTransaction]?.condoId ?? 0;
-  html += objCondo.showSelectedCondosNew('condoId', 'Leilighet', condoId, 'Velg leilighet', '', enableChanges);
+  const appartmentId = objTransactions.arrayTransactions[rowNumberTransaction]?.appartmentId ?? 0;
+  html += objAppartments.showSelectedCondosNew('appartmentId', 'Leilighet', appartmentId, 'Velg leilighet', '', enableChanges);
 
   // Account
   /*
@@ -373,11 +373,11 @@ async function updateTransactionRow(transactionId) {
   className = 'accountId';
   const validAccountId = validateIntervalNew(className, 'Ugyldig konto', accountId, 1, objTransactions.nineNine);
 
-  // condoId
-  className = `.condoId`;
-  let condoId = Number(document.querySelector(className).value);
-  className = `condoId`;
-  const validCondoId = validateIntervalNew(className, 'Ugyldig Leilighet', condoId, 0, objTransactions.nineNine);
+  // appartmentId
+  className = `.appartmentId`;
+  let appartmentId = Number(document.querySelector(className).value);
+  className = `appartmentId`;
+  const validCondoId = validateIntervalNew(className, 'Ugyldig Leilighet', appartmentId, 0, objTransactions.nineNine);
 
   // projectId 
   className = `.projectId`;
@@ -419,11 +419,11 @@ async function updateTransactionRow(transactionId) {
     if (rowNumberTransaction !== -1) {
 
       // update the transactions row
-      await objTransactions.updateTransactionsTable(transactionId, objTransactions.condominiumId, objTransactions.user, condoId, accountId, projectId, income, payment, kilowattHour, transactionDate, text);
+      await objTransactions.updateTransactionsTable(transactionId, objTransactions.condominiumId, objTransactions.user, appartmentId, accountId, projectId, income, payment, kilowattHour, transactionDate, text);
     } else {
 
       // insert transactions row
-      await objTransactions.insertTransactionsTable(objTransactions.condominiumId, objTransactions.user, condoId, accountId, projectId, income, payment, kilowattHour, transactionDate, text, 'N');
+      await objTransactions.insertTransactionsTable(objTransactions.condominiumId, objTransactions.user, appartmentId, accountId, projectId, income, payment, kilowattHour, transactionDate, text, 'N');
       await objAccounts.getHighestAccountId(objAccounts.condominiumId);
       await objTransactions.getHighestTransactionId(objTransactions.condominiumId);
       transactionId = objTransactions.arrayTransactions[0].transactionId;
@@ -456,7 +456,7 @@ function resetValues() {
   document.querySelector('.transactionDate').value = '';
 
   // condo Id
-  document.querySelector('.condoId').value = 0;
+  document.querySelector('.appartmentId').value = 0;
 
   // account Id
   document.querySelector('.accountId').value = 0;

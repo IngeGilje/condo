@@ -12,7 +12,7 @@ const applicationName = "voucher";
 
 const queryParameters = new URLSearchParams(window.location.search);
 const paramTransactionId = Number(queryParameters.get("transactionId"));
-const paramCondoId = Number(queryParameters.get("condoId"));
+const paramCondoId = Number(queryParameters.get("appartmentId"));
 const paramAccountId = Number(queryParameters.get("accountId"));
 const paramProjectId = Number(queryParameters.get("projectId"));
 const paramFromDate = Number(queryParameters.get("fromDate"));
@@ -75,7 +75,7 @@ async function events() {
       let URL = (objVoucher.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}showtransactions.html?transactionId=${paramTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}`;
+      URL = `${URL}showtransactions.html?transactionId=${paramTransactionId}&appartmentId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}`;
       window.location.href = URL;
       */
       history.back();

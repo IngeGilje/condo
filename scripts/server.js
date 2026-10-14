@@ -502,7 +502,7 @@ async function main() {
             const user = req.body.user;
             const condominiumId = req.body.condominiumId;
             const email = req.body.email;
-            const condoId = Number(req.body.condoId);
+            const appartmentId = Number(req.body.appartmentId);
             const firstName = req.body.firstName;
             const lastName = req.body.lastName;
             const phone = req.body.phone;
@@ -515,7 +515,7 @@ async function main() {
               condominiumId = '${condominiumId}',
               lastUpdate = '${lastUpdate}',
               email = '${email}',
-              condoId = ${condoId},
+              appartmentId = ${appartmentId},
               firstName = '${firstName}',
               lastName = '${lastName}',
               phone = '${phone}'
@@ -593,7 +593,7 @@ async function main() {
             const user = req.body.user;
 
             const email = req.body.email;
-            const condoId = Number(req.body.condoId);
+            const appartmentId = Number(req.body.appartmentId);
             const firstName = req.body.firstName;
             const lastName = req.body.lastName;
             const phone = req.body.phone;
@@ -609,7 +609,7 @@ async function main() {
             user,
             lastUpdate,
             email,
-            condoId,
+            appartmentId,
             firstName,
             lastName,
             phone,
@@ -623,7 +623,7 @@ async function main() {
             '${user}',
             '${lastUpdate}',
             '${email}',
-            ${condoId},
+            ${appartmentId},
             '${firstName}',
             '${lastName}',
             '${phone}',
@@ -1340,7 +1340,7 @@ async function main() {
             SELECT * FROM dues
             WHERE condominiumId = ${condominiumId}
             AND deleted <> 'Y'
-            ORDER BY condoId, date DESC;
+            ORDER BY appartmentId, date DESC;
             `;
 
             console.log('SQLquery :', SQLquery);
@@ -1388,7 +1388,7 @@ async function main() {
 
             const dueId = req.body.dueId;
             const user = req.body.user;
-            const condoId = Number(req.body.condoId);
+            const appartmentId = Number(req.body.appartmentId);
             const accountId = req.body.accountId;
             const projectId = req.body.projectId;
             const amount = req.body.amount;
@@ -1402,7 +1402,7 @@ async function main() {
             SET
               user = '${user}',
               lastUpdate = '${lastUpdate}',
-              condoId = ${condoId},
+              appartmentId = ${appartmentId},
               accountId = ${accountId},
               projectId = ${projectId},
               amount = ${amount},
@@ -1430,7 +1430,7 @@ async function main() {
 
             const condominiumId = req.body.condominiumId;
             const user = req.body.user;
-            const condoId = Number(req.body.condoId);
+            const appartmentId = Number(req.body.appartmentId);
             const accountId = req.body.accountId;
             const projectId = req.body.projectId;
             const amount = req.body.amount;
@@ -1445,7 +1445,7 @@ async function main() {
               condominiumId,
               user,
               lastUpdate,
-              condoId,
+              appartmentId,
               accountId,
               projectId,
               amount,
@@ -1457,7 +1457,7 @@ async function main() {
               ${condominiumId},
               '${user}',
               '${lastUpdate}',
-              ${condoId},
+              ${appartmentId},
               ${accountId},
               ${projectId},
               ${amount},
@@ -1509,10 +1509,10 @@ async function main() {
       }
     });
 
-    // Requests for condo
+    // Requests for appartments
     routePath = "";
-    if (serverStatus === 1) routePath = "/api/condo";
-    if (serverStatus === 2) routePath = "/condo";
+    if (serverStatus === 1) routePath = "/api/appartments";
+    if (serverStatus === 2) routePath = "/appartments";
     app.post(routePath, async (req, res) => {
 
       const action = req.body.action;
@@ -1525,14 +1525,13 @@ async function main() {
           try {
 
             const condominiumId = Number(req.body.condominiumId);
-            //const condoId = Number(req.body.condoId);
-
+ 
             let SQLquery = `
-            SELECT * FROM condo
+            SELECT * FROM appartments
             WHERE condominiumId = ${condominiumId}
             AND deleted <> 'Y'`;
-            //if (condoId !== nineNine) SQLquery += ` AND condoId = ${condoId}`;
-            SQLquery += ` ORDER BY condoId;`;
+            //if (appartmentId !== nineNine) SQLquery += ` AND appartmentId = ${appartmentId}`;
+            SQLquery += ` ORDER BY appartmentId;`;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -1555,10 +1554,10 @@ async function main() {
           try {
 
             let SQLquery = `
-            SELECT * FROM condo
+            SELECT * FROM appartments
             WHERE condominiumId = ${condominiumId}
             AND deleted <> 'Y'
-            ORDER BY condoId DESC
+            ORDER BY appartmentId DESC
             LIMIT 1;`;
 
             console.log('SQLquery :', SQLquery);
@@ -1578,7 +1577,7 @@ async function main() {
 
           try {
 
-            const condoId = Number(req.body.condoId);
+            const appartmentId = Number(req.body.appartmentId);
             const user = req.body.user;
             const name = req.body.name;
             const street = req.body.street;
@@ -1587,9 +1586,9 @@ async function main() {
             const city = req.body.city;
             const squareMeters = req.body.squareMeters;
 
-            // Update condo table
+            // Update appartments table
             const SQLquery = `
-            UPDATE condo
+            UPDATE appartments
             SET
               user = '${user}',
               lastUpdate = '${lastUpdate}',
@@ -1599,7 +1598,7 @@ async function main() {
               postalCode = '${postalCode}',
               city = '${city}',
               squareMeters = '${squareMeters}'
-            WHERE condoId = ${condoId};`;
+            WHERE appartmentId = ${appartmentId};`;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -1629,7 +1628,7 @@ async function main() {
 
             // Insert new row
             const SQLquery = `
-            INSERT INTO condo(
+            INSERT INTO appartments(
               deleted,
               condominiumId,
               user,
@@ -1672,16 +1671,16 @@ async function main() {
 
             const user = req.body.user;
 
-            const condoId = Number(req.body.condoId);
+            const appartmentId = Number(req.body.appartmentId);
 
             // Delete table
             const SQLquery = `
-            UPDATE condo
+            UPDATE appartments
             SET
               deleted = 'Y',
               lastUpdate = '${lastUpdate}',
               user = '${user}'
-            WHERE condoId = ${condoId};`;
+            WHERE appartmentId = ${appartmentId};`;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -2124,7 +2123,7 @@ async function main() {
           const orderBy = req.body.orderBy;
           const condominiumId = Number(req.body.condominiumId);
           const deleted = req.body.deleted;
-          const condoId = Number(req.body.condoId);
+          const appartmentId = Number(req.body.appartmentId);
           const accountId = Number(req.body.accountId);
           const projectId = Number(req.body.projectId);
           const amount = Number(req.body.amount);
@@ -2142,8 +2141,8 @@ async function main() {
             SQLquery += `
              AND date BETWEEN ${fromDate} AND ${toDate}
             `;
-            if (condoId !== nineNine) SQLquery += `
-              AND condoId = ${condoId}
+            if (appartmentId !== nineNine) SQLquery += `
+              AND appartmentId = ${appartmentId}
              `;
             if (accountId !== nineNine) SQLquery += ` 
               AND accountId = ${accountId}
@@ -2205,7 +2204,7 @@ async function main() {
           try {
 
             const user = req.body.user;
-            const condoId = Number(req.body.condoId);
+            const appartmentId = Number(req.body.appartmentId);
             const accountId = req.body.accountId;
             const projectId = Number(req.body.projectId);
             const income = req.body.income;
@@ -2222,7 +2221,7 @@ async function main() {
               deleted = 'N',
               user = '${user}',
               lastUpdate = '${lastUpdate}',
-              condoId = ${condoId},
+              appartmentId = ${appartmentId},
               accountId = ${accountId},
               projectId = ${projectId},
               income = ${income},
@@ -2252,7 +2251,7 @@ async function main() {
             const condominiumId = req.body.condominiumId;
             const user = req.body.user;
 
-            const condoId = Number(req.body.condoId);
+            const appartmentId = Number(req.body.appartmentId);
             const accountId = Number(req.body.accountId);
             const projectId = Number(req.body.projectId);
             const income = req.body.income;
@@ -2268,7 +2267,7 @@ async function main() {
               condominiumId,
               user,
               lastUpdate,
-              condoId,
+              appartmentId,
               accountId,
               projectId,
               income,
@@ -2281,7 +2280,7 @@ async function main() {
               ${condominiumId},
               '${user}',
               '${lastUpdate}',
-              ${condoId},
+              ${appartmentId},
               ${accountId},
               ${projectId},
               ${income},
@@ -2426,7 +2425,7 @@ async function main() {
 
           const remoteHeatingId = req.body.remoteHeatingId;
           const user = req.body.user;
-          const condoId = Number(req.body.condoId);
+          const appartmentId = Number(req.body.appartmentId);
           const date = req.body.date;
           const kilowattHour = req.body.kilowattHour;
           const amount = req.body.amount;
@@ -2438,7 +2437,7 @@ async function main() {
           SET
             user = '${user}',
             lastUpdate = '${lastUpdate}',
-            condoId = ${condoId},
+            appartmentId = ${appartmentId},
             date = ${date},
             kilowattHour = ${kilowattHour},
             amount = ${amount},
@@ -2465,7 +2464,7 @@ async function main() {
 
           const user = req.body.user;
           const condominiumId = req.body.condominiumId;
-          const condoId = Number(req.body.condoId);
+          const appartmentId = Number(req.body.appartmentId);
           const date = req.body.date;
           const kilowattHour = req.body.kilowattHour;
           const amount = req.body.amount;
@@ -2478,7 +2477,7 @@ async function main() {
             condominiumId,
             user,
             lastUpdate,
-            condoId,
+            appartmentId,
             date,
             kilowattHour,
             amount,
@@ -2488,7 +2487,7 @@ async function main() {
             ${condominiumId},
             '${user}',
             '${lastUpdate}',
-            ${condoId},
+            ${appartmentId},
             ${date},
             ${kilowattHour},
             ${amount},
@@ -3125,7 +3124,7 @@ async function main() {
         try {
           const emptyCalendarId = req.body.emptyCalendarId;
           const user = req.body.user;
-          const condoId = Number(req.body.condoId);
+          const appartmentId = Number(req.body.appartmentId);
           const date = req.body.date;
           const residualWaste = req.body.residualWaste;
           const paper = req.body.paper;
@@ -3140,7 +3139,7 @@ async function main() {
               user = '${user}',
               deleted = 'N',
               lastUpdate = '${lastUpdate}',
-              condoId = ${condoId},
+              appartmentId = ${appartmentId},
               date = ${date},
               residualWaste = '${residualWaste}',
               paper = '${paper}',
@@ -3168,7 +3167,7 @@ async function main() {
 
           const condominiumId = req.body.condominiumId;
           const user = req.body.user;
-          const condoId = Number(req.body.condoId);
+          const appartmentId = Number(req.body.appartmentId);
           const date = req.body.date;
           const residualWaste = req.body.residualWaste;
           const paper = req.body.paper;
@@ -3183,7 +3182,7 @@ async function main() {
               condominiumId,
               user,
               lastUpdate,
-              condoId,
+              appartmentId,
               date,
               residualWaste,
               paper,
@@ -3196,7 +3195,7 @@ async function main() {
               ${condominiumId},
               '${user}',
               '${lastUpdate}',
-              ${condoId},
+              ${appartmentId},
               ${date},
               '${residualWaste}',
               '${paper}',

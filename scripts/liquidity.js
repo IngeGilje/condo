@@ -39,7 +39,7 @@ async function main() {
 
       await objBankAccounts.loadBankAccountsTable(objLiquidity.condominiumId);
 
-      const orderBy = 'condoId ASC';
+      const orderBy = 'appartmentId ASC';
       const fromDate = 20200101;
       let toDate = getCurrentDate();
       toDate = formatNorDateToNumber(toDate);
@@ -56,7 +56,7 @@ async function main() {
     }
   } else {
 
-        showMessage('Server er ikke startet.'); 
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -76,9 +76,6 @@ async function events() {
 // Show filter
 function showFilter() {
 
-  // Start frame
-  //let html = startLineFilter("filter-frame");
-
   // Start filter
   let html = startBoxFilter("Tømmekalender");
 
@@ -96,7 +93,6 @@ function showFilter() {
 function showLiquidity() {
 
   const canvas = document.getElementById("showLiquidity");
-
   const year = document.querySelector('.filterYear').value;
 
   let month = 0;
@@ -105,7 +101,7 @@ function showLiquidity() {
   for (month = 1; month < 13; month++) {
     if (month < 10) month = "0" + String(month);
     let date = year + String(month) + "31";
-    arrayMonth[month - 1] = objTransactions.getBankBalance(Number(date))/100;
+    arrayMonth[month - 1] = objTransactions.getBankBalance(Number(date)) / 100;
   }
 
   // Remove previous chart

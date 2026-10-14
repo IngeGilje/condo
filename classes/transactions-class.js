@@ -80,7 +80,7 @@ class Transactions extends Condos {
   }
 
   // get transactions
-  async loadTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, projectId, amount, fromDate, toDate, alternativeArray = false) {
+  async loadTransactionsTable(orderBy, condominiumId, deleted, appartmentId, accountId, projectId, amount, fromDate, toDate, alternativeArray = false) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/transactions'
@@ -99,7 +99,7 @@ class Transactions extends Condos {
           orderBy: orderBy,
           condominiumId: condominiumId,
           deleted: deleted,
-          condoId: condoId,
+          appartmentId: appartmentId,
           accountId: accountId,
           projectId: projectId,
           amount: amount,
@@ -173,8 +173,8 @@ class Transactions extends Condos {
   }
 
 
-  // update Transactions row
-  async updateTransactionsTable(transactionId, condominiumId, user, condoId, accountId, projectId, income, payment, kilowattHour, date, text) {
+  // update transactions row
+  async updateTransactionsTable(transactionId, condominiumId, user, appartmentId, accountId, projectId, income, payment, kilowattHour, date, text) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/transactions'
@@ -191,7 +191,7 @@ class Transactions extends Condos {
           transactionId: transactionId,
           condominiumId: condominiumId,
           user: user,
-          condoId: condoId,
+          appartmentId: appartmentId,
           accountId: accountId,
           projectId: projectId,
           income: income,
@@ -235,7 +235,7 @@ class Transactions extends Condos {
   }
 
   // insert Transactions row
-  async insertTransactionsTable(condominiumId, user, condoId, accountId, projectId, income, payment, kilowattHour, date, text, imported = 'Y') {
+  async insertTransactionsTable(condominiumId, user, appartmentId, accountId, projectId, income, payment, kilowattHour, date, text, imported = 'Y') {
 
     const URL = (this.serverStatus === 1)
       ? '/api/transactions'
@@ -252,7 +252,7 @@ class Transactions extends Condos {
           action: 'insert',
           condominiumId: condominiumId,
           user: user,
-          condoId: condoId,
+          appartmentId: appartmentId,
           accountId: accountId,
           projectId: projectId,
           income: income,
@@ -279,7 +279,6 @@ class Transactions extends Condos {
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/transactions?action=delete&transactionId=${transactionId}&user=${user}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -323,12 +322,12 @@ class Transactions extends Condos {
   }
 
   // get Transactions from start (20200101) to toDate
-  async getTransactions(condominiumId, condoId, toDate) {
+  async getTransactions(condominiumId, appartmentId, toDate) {
 
     let openingBalance = 0;
 
     const orderBy = 'date ASC';
-    await this.loadTransactionsTable(orderBy, condominiumId, 'N', condoId, this.nineNine, this.nineNine, 0, 20200101, toDate, true);
+    await this.loadTransactionsTable(orderBy, condominiumId, 'N', appartmentId, this.nineNine, this.nineNine, 0, 20200101, toDate, true);
     objTransactions.#arrayTransactions.forEach((bankAccountMovement) => {
 
       openingBalance += bankAccountMovement.income;

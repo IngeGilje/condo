@@ -2,7 +2,7 @@
 
 // Activate objects
 const today = new Date();
-const objCondo = new Condo('condo');
+const objAppartments = new Appartments('appartments');
 const objCondominiums = new Condominiums('condominiums');
 const objUsers = new Users('users');
 //const objPassword = new Password('password');
@@ -42,7 +42,7 @@ async function main() {
         ? await objUsers.loadUsersTable(objUsers.condominiumId, resident, objUsers.nineNine)
         : await objUsers.loadUsersTable(objUsers.condominiumId, resident, objUsers.userId);
       await objCondominiums.loadCondominiumsTable(objUsers.condominiumId);
-      await objCondo.loadCondoTable(objUsers.condominiumId);
+      await objAppartments.loadCondoTable(objUsers.condominiumId);
 
       // Show filter
       showFilter(objUsers.userId);

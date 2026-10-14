@@ -4,7 +4,7 @@
 const today = new Date();
 const objUsers = new Users('users');
 const objAccounts = new Accounts('accounts');
-const objCondo = new Condo('condo');
+const objAppartments = new Appartments('appartments');
 const objTransactions = new Transactions('transactions');
 const objDues = new Dues('dues');
 
@@ -41,20 +41,20 @@ async function main() {
 
       const resident = 'Y';
       await objUsers.loadUsersTable(objDues.condominiumId, resident, objDues.nineNine);
-      await objCondo.loadCondoTable(objDues.condominiumId);
+      await objAppartments.loadCondoTable(objDues.condominiumId);
       //const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objDues.condominiumId);
 
       // Show filter
       // get current condo id
-      let condoId = 0;
+      let appartmentId = 0;
       const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === objDues.userId);
       if (rowNumberUser !== -1) {
-        condoId = objUsers.arrayUsers[rowNumberUser].condoId;
+        appartmentId = objUsers.arrayUsers[rowNumberUser].appartmentId;
       }
-      showFilter(condoId);
+      showFilter(appartmentId);
 
-      condoId = Number(document.querySelector('.filterCondoId').value);
+      appartmentId = Number(document.querySelector('.filterCondoId').value);
       const accountId = objDues.nineNine;
       const deleted = 'N';
       let fromDate = document.querySelector('.filterFromDate').value;
@@ -63,7 +63,7 @@ async function main() {
       toDate = objDues.formatDateToNumber(toDate);
       await objDues.loadDuesTable(objDues.condominiumId);
       const orderBy = 'date DESC';
-      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, deleted, condoId, objDues.nineNine, objDues.nineNine, 0, fromDate, toDate);
+      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, deleted, appartmentId, objDues.nineNine, objDues.nineNine, 0, fromDate, toDate);
 
       // Show dues
       showDues();
@@ -94,7 +94,7 @@ async function events() {
       || event.target.classList.contains('filterToDate')) {
 
       // condo
-      const condoId = Number(document.querySelector('.filterCondoId').value);
+      const appartmentId = Number(document.querySelector('.filterCondoId').value);
 
       const accountId = objDues.nineNine;
       const deleted = 'N';
@@ -106,8 +106,8 @@ async function events() {
       toDate = formatISODateToNumber(toDate);
 
       await objDues.loadDuesTable(objDues.condominiumId);
-      const orderBy = 'condoId ASC';
-      await objTransactions.loadTransactionsTable(orderBy, objDues.condominiumId, deleted, condoId, objDues.nineNine, objDues.nineNine, 0, fromDate, toDate);
+      const orderBy = 'appartmentId ASC';
+      await objTransactions.loadTransactionsTable(orderBy, objDues.condominiumId, deleted, appartmentId, objDues.nineNine, objDues.nineNine, 0, fromDate, toDate);
 
       // Show dues
       showDues();
@@ -134,13 +134,13 @@ async function events() {
 }
 
 // Show filter
-function showFilter(condoId) {
+function showFilter(appartmentId) {
 
   // Start filter
   let html = startLineFilter('filter-frame');
 
   // Show condos
-  html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true);
+  html += objAppartments.showSelectedCondosNew('filterCondoId', 'Leilighet', appartmentId, '', 'Vis alle', true);
 
   // From date
   let fromDate = `${String(today.getFullYear())}-01-01`;
@@ -174,9 +174,9 @@ function showDues() {
 
   objDues.arrayDues.forEach((due) => {
 
-    if ((due.condoId === filterCondoId || filterCondoId === objDues.nineNine)
+    if ((due.appartmentId === filterCondoId || filterCondoId === objDues.nineNine)
       && (due.date >= filterFromDate && due.date <= filterToDate)
-      && (due.condoId > 0)) {
+      && (due.appartmentId > 0)) {
 
       // insert a table row (<tr></td>)
       html += objDues.insertTableRow('');
@@ -188,8 +188,8 @@ function showDues() {
 
       // condo
       className = `condo${due.dueId}`;
-      //html += objCondo.showSelectedCondos(className, '', due.condoId, 'Velg leilighet', '', false);
-      const condoName = objCondo.getCondoNameById(due.condoId);
+      //html += objAppartments.showSelectedCondos(className, '', due.appartmentId, 'Velg leilighet', '', false);
+      const condoName = objAppartments.getCondoNameById(due.appartmentId);
       html += showTableText(className, condoName);
 
       // account
@@ -258,17 +258,17 @@ function showTransactions() {
   html += tableHeader('', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
 
   objTransactions.arrayTransactions.forEach((bankTransaction) => {
-    if ((bankTransaction.condoId === filterCondoId || filterCondoId === objDues.nineNine)
+    if ((bankTransaction.appartmentId === filterCondoId || filterCondoId === objDues.nineNine)
       && (bankTransaction.date >= filterFromDate && bankTransaction.date <= filterToDate)
-      && (bankTransaction.condoId > 0)) {
+      && (bankTransaction.appartmentId > 0)) {
 
       // insert a table row (<tr></td>)
       html += objDues.insertTableRow('', '');
 
       // condos
       className = `condo${bankTransaction.transactionId}`;
-      //html += objCondo.showSelectedCondos(className, '', Number(bankTransaction.condoId), 'Velg leilighet', '', false);
-      const condoName = objCondo.getCondoNameById(bankTransaction.condoId);
+      //html += objAppartments.showSelectedCondos(className, '', Number(bankTransaction.appartmentId), 'Velg leilighet', '', false);
+      const condoName = objAppartments.getCondoNameById(bankTransaction.appartmentId);
       html += showTableText(className, condoName);
 
       // date
@@ -333,7 +333,7 @@ function showHowMuchToPay() {
   // How much to pay
   let sumToPay = 0;
   objDues.arrayDues.forEach((due) => {
-    if ((due.condoId === filterCondoId || filterCondoId === objDues.nineNine)
+    if ((due.appartmentId === filterCondoId || filterCondoId === objDues.nineNine)
       && (due.date >= filterFromDate && due.date <= filterToDate)) {
 
       sumToPay += due.amount;
@@ -343,9 +343,9 @@ function showHowMuchToPay() {
   // How much is payd
   objTransactions.arrayTransactions.forEach((bankTransaction) => {
 
-    if ((bankTransaction.condoId === filterCondoId || filterCondoId === objDues.nineNine)
+    if ((bankTransaction.appartmentId === filterCondoId || filterCondoId === objDues.nineNine)
       && (bankTransaction.date >= filterFromDate && bankTransaction.date <= filterToDate)
-      && (bankTransaction.condoId > 0)) {
+      && (bankTransaction.appartmentId > 0)) {
 
       // Accomulate
       sumIncome += Number(bankTransaction.income);
@@ -375,13 +375,13 @@ function showHowMuchToPay() {
   toDate = objDues.formatDateToNumber(toDate);
 
   // get current condo id
-  let condoId = 0;
+  let appartmentId = 0;
   const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === objDues.userId);
   if (rowNumberUser !== -1) {
-    condoId = objUsers.arrayUsers[rowNumberUser].condoId;
+    appartmentId = objUsers.arrayUsers[rowNumberUser].appartmentId;
   }
-  let openingBalance = objTransactions.getTransactions(objDues.condominiumId, condoId, toDate);
-  openingBalance += objDues.getDues(objDues.condominiumId, condoId, toDate);
+  let openingBalance = objTransactions.getTransactions(objDues.condominiumId, appartmentId, toDate);
+  openingBalance += objDues.getDues(objDues.condominiumId, appartmentId, toDate);
 
   openingBalance = formatNumberToNorAmount(openingBalance);
   html += objDues.insertTableRow('font-weight: 600;', '', '', 'Sum', sumToPay, sumIncome, overPay);

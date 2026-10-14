@@ -5,7 +5,7 @@ const today = new Date();
 const objUsers = new Users('users');
 const objCondominiums = new Condominiums('condominiums');
 const objAccounts = new Accounts('accounts');
-const objCondo = new Condo('condo');
+const objAppartments = new Appartments('appartments');
 const objTransactions = new Transactions('transactions');
 const objProjects = new Projects('projects');
 
@@ -16,7 +16,7 @@ const applicationName = "project";
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramTransactionId = Number(queryParameters.get("transactionId"));
-const paramCondoId = Number(queryParameters.get("condoId"));
+const paramCondoId = Number(queryParameters.get("appartmentId"));
 const paramAccountId = Number(queryParameters.get("accountId"));
 const paramProjectId = Number(queryParameters.get("projectId"));
 const paramFromDate = Number(queryParameters.get("fromDate"));
@@ -51,7 +51,7 @@ async function main() {
       const resident = 'Y';
       await objUsers.loadUsersTable(objProjects.condominiumId, resident, objProjects.nineNine);
       await objCondominiums.loadCondominiumsTable();
-      await objCondo.loadCondoTable(objProjects.condominiumId);
+      await objAppartments.loadCondoTable(objProjects.condominiumId);
       await objProjects.loadProjectsTable(objProjects.condominiumId);
       //const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objProjects.condominiumId);
@@ -182,7 +182,7 @@ async function events() {
       let URL = (objProjects.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}showtransactions.html?transactionId=${paramTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}&backApplication=${paramBackApplication}`;
+      URL = `${URL}showtransactions.html?transactionId=${paramTransactionId}&appartmentId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}&backApplication=${paramBackApplication}`;
       window.location.href = URL;
       */
       history.back();

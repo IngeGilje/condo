@@ -8,7 +8,7 @@ const today = new Date();
 const objUsers = new Users('users');
 const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
 const objCondominiums = new Condominiums('condominiums');
-const objCondo = new Condo('condo');
+const objAppartments = new Appartments('appartments');
 const objTransactions = new Transactions('transactions');
 const objAccounts = new Accounts('accounts');
 const objBankAccounts = new BankAccounts('bankaccounts');
@@ -51,19 +51,19 @@ async function main() {
       await objAccounts.loadAccountsTable(objImportFile.condominiumId);
       await objBankAccounts.loadBankAccountsTable(objImportFile.condominiumId);
       await objUserBankAccounts.loadUserBankAccountsTable(objImportFile.condominiumId, objImportFile.nineNine, objImportFile.nineNine);
-      await objCondo.loadCondoTable(objImportFile.condominiumId);
+      await objAppartments.loadCondoTable(objImportFile.condominiumId);
       await objSuppliers.loadSuppliersTable(objImportFile.condominiumId);
 
       const deleted = 'A';
       const accountId = objImportFile.nineNine;
-      const condoId = objImportFile.nineNine;
+      const appartmentId = objImportFile.nineNine;
       let fromDate = 0;
       let toDate = objImportFile.nineNine;
       await objDues.loadDuesTable(objImportFile.condominiumId);
 
       amount = 0;
-      const orderBy = 'condoId ASC';
-      await objTransactions.loadTransactionsTable(orderBy, objImportFile.condominiumId, deleted, condoId, accountId, objImportFile.nineNine, amount, fromDate, toDate);
+      const orderBy = 'appartmentId ASC';
+      await objTransactions.loadTransactionsTable(orderBy, objImportFile.condominiumId, deleted, appartmentId, accountId, objImportFile.nineNine, amount, fromDate, toDate);
       await objCondominiums.loadCondominiumsTable();
 
       // Name of importfile
@@ -149,8 +149,8 @@ function createTransactionsArray() {
 
       // Condo id
       bankAccountFrom = bankAccountFrom.slice(0, 11);
-      const condoId = objCondo.getCondoId(bankAccountFrom);
-      const condoName = objCondo.getCondoNameById(condoId);
+      const appartmentId = objAppartments.getCondoId(bankAccountFrom);
+      const condoName = objAppartments.getCondoNameById(appartmentId);
 
       // Income
       income = formatNorAmountToNumber(income);
@@ -213,7 +213,7 @@ function createTransactionsArray() {
         const objTransaction = {
           transactionsId: transactionsId,
           accountingDate: accountingDate,
-          condoId: condoId,
+          appartmentId: appartmentId,
           condoName: condoName,
           accountId: accountId,
           accountName: accountName,
@@ -570,7 +570,7 @@ async function updateTransactions() {
 
     const transactionId = 0;  // not in use
 
-    const condoId = Number(transaction.condoId);
+    const appartmentId = Number(transaction.appartmentId);
     const accountId = Number(transaction.accountId);
     const projectId = 0;
     const income = Number(transaction.income);
@@ -580,7 +580,7 @@ async function updateTransactions() {
     const text = transaction.text;
 
     // insert transactions row
-    await objTransactions.insertTransactionsTable(objImportFile.condominiumId, objTransactions.user, condoId, accountId, projectId, income, payment, kilowattHour, date, text, 'Y');
+    await objTransactions.insertTransactionsTable(objImportFile.condominiumId, objTransactions.user, appartmentId, accountId, projectId, income, payment, kilowattHour, date, text, 'Y');
   });
 }
 

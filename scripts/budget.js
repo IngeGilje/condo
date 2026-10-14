@@ -93,13 +93,6 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('back')) {
 
-      /*
-      let URL = (objBudgets.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      URL = `${URL}showbudgets.html?budgetId=${paramBudgetId}&year=${paramYear}`;
-      window.location.href = URL;
-      */
       history.back();
     };
   });
@@ -113,17 +106,6 @@ async function events() {
       await updateBudgetsRow(budgetId);
     };
   });
-
-  /*
-  // Delete budgets row
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('delete')) {
-
-      const budgetId = Number(document.querySelector('.filterBudgetId').value);
-      await deleteBudgetsRow(budgetId);
-    };
-  });
-  */
 
   // Show delete dialog
   document.addEventListener('click', async (event) => {
@@ -139,7 +121,6 @@ async function events() {
 
       const budgetId = Number(document.querySelector('.filterBudgetId').value);
       await deleteBudgetsRow(budgetId);
-      //document.querySelector('.showDialog').style.display = "none";
       const dialog = document.querySelector('.dialog');
       dialog.close();
     };
@@ -149,8 +130,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancelButton')) {
 
-      //document.querySelector('.showDialog').style.display = "none";
-      const dialog = document.querySelector('.dialog');
+       const dialog = document.querySelector('.dialog');
       dialog.close();
     };
   });
@@ -181,8 +161,6 @@ function showFilter(budgetId) {
 
   // Start filter
   let html = startBoxFilter("Forfall");
-
-  //const rowNumberBudget = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
 
   // Show budgets
   html += objBudgets.showSelectedBudgetsNew('filterBudgetId', 'Budsjett', budgetId, 'Velg Budsjett', '', true);
