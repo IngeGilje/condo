@@ -124,7 +124,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      const confirmation = inputDialog("dialog", "Vil du slette kontoen?");
+      inputDialog("dialog", "Vil du slette kontoen?");
     };
   });
 

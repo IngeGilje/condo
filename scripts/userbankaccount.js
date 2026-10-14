@@ -96,12 +96,12 @@ async function events() {
     };
   });
   */
- 
+
   // Show delete dialog
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      const confirmation = inputDialog("confimation", "Vil du slette bankkontoen?");
+      inputDialog("dialog", "Vil du slette bankkontoen?");
     };
   });
 
@@ -112,7 +112,7 @@ async function events() {
       const userBankAccountId = Number(document.querySelector('.filterUserBankAccountId').value);
       await deleteUserBankAccountsRow(userBankAccountId);
       //document.querySelector('.showDialog').style.display = "none";
-       const dialog = document.querySelector('.dialog');
+      const dialog = document.querySelector('.dialog');
       dialog.close();
     };
   });
@@ -122,7 +122,7 @@ async function events() {
     if (event.target.classList.contains('cancelButton')) {
 
       //document.querySelector('.showDialog').style.display = "none";
-       const dialog = document.querySelector('.dialog');
+      const dialog = document.querySelector('.dialog');
       dialog.close();
     };
   });
