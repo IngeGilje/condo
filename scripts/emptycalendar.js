@@ -145,7 +145,9 @@ document.addEventListener('click', async (event) => {
 
     const emptyCalendarId = Number(document.querySelector('.filterEmptyCalendarId').value)
     await deleteEmptyCalendarsRow(emptyCalendarId);
-    document.querySelector('.showDialog').style.display = "none";
+    //document.querySelector('.showDialog').style.display = "none";
+     const dialog = document.querySelector('.dialog');
+      dialog.close();
   };
 });
 
@@ -153,7 +155,9 @@ document.addEventListener('click', async (event) => {
 document.addEventListener('click', async (event) => {
   if (event.target.classList.contains('cancelButton')) {
 
-    document.querySelector('.showDialog').style.display = "none";
+    //document.querySelector('.showDialog').style.display = "none";
+     const dialog = document.querySelector('.dialog');
+      dialog.close();
   };
 });
 

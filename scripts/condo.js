@@ -55,7 +55,7 @@ async function main() {
     }
   } else {
 
-        showMessage('Server er ikke startet.'); 
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -100,7 +100,7 @@ async function events() {
     };
   });
   */
-// Show delete dialog
+  // Show delete dialog
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
@@ -112,16 +112,21 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('okButton')) {
 
-     const condoId = Number(document.querySelector('.filterCondoId').value);
+      const condoId = Number(document.querySelector('.filterCondoId').value);
       await deleteCondoRow(condoId);
-      document.querySelector('.showDialog').style.display = "none";
+      //document.querySelector('.showDialog').style.display = "none";
+      const dialog = document.querySelector('.dialog');
+      dialog.close();
     };
   });
 
   // Not OK to delete a condo row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancelButton')) {
-      document.querySelector('.showDialog').style.display = "none";
+
+      //document.querySelector('.showDialog').style.display = "none";
+      const dialog = document.querySelector('.dialog');
+      dialog.close();
     };
   });
 

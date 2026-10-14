@@ -110,14 +110,18 @@ async function events() {
 
       let bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
       await deleteBankAccountsRow(bankAccountId);
-      document.querySelector('.showDialog').style.display = "none";
+      //document.querySelector('.showDialog').style.display = "none";
+      const dialog = document.querySelector('.dialog');
+      dialog.close();
     };
   });
 
   // Not OK to delete a accounsts row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancelButton')) {
-      document.querySelector('.showDialog').style.display = "none";
+      //document.querySelector('.showDialog').style.display = "none";
+      const dialog = document.querySelector('.dialog');
+      dialog.close();
     };
   });
 

@@ -124,7 +124,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      const confirmation = inputDialog("confimation", "Vil du slette kontoen?");
+      const confirmation = inputDialog("dialog", "Vil du slette kontoen?");
     };
   });
 
@@ -134,14 +134,19 @@ async function events() {
 
       const accountId = Number(document.querySelector('.filterAccountId').value);
       await deleteAccountsRow(accountId);
-      document.querySelector('.showDialog').style.display = "none";
+      //document.querySelector('.showDialog').style.display = "none";
+      const dialog = document.querySelector('.dialog');
+      dialog.close();
     };
   });
 
   // Not OK to delete a accounsts row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancelButton')) {
-      document.querySelector('.showDialog').style.display = "none";
+
+      //document.querySelector('.showDialog').style.display = "none";
+      const dialog = document.querySelector('.dialog');
+      dialog.close();
     };
   });
 }

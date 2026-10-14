@@ -83,7 +83,7 @@ async function main() {
     }
   } else {
 
-        showMessage('Server er ikke startet.'); 
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -163,14 +163,18 @@ async function events() {
 
       const year = Number(document.querySelector('.filterYear').value);
       await deleteCommonCostsRow(year);
-      document.querySelector('.showDialog').style.display = "none";
+      //document.querySelector('.showDialog').style.display = "none";
+      const dialog = document.querySelector('.dialog');
+      dialog.close();
     };
   });
 
   // Not OK to delete a commoncosts row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancelButton')) {
-      document.querySelector('.showDialog').style.display = "none";
+      //document.querySelector('.showDialog').style.display = "none";
+      const dialog = document.querySelector('.dialog');
+      dialog.close();
     };
   });
 

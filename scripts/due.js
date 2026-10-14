@@ -145,14 +145,19 @@ async function events() {
 
       const dueId = Number(document.querySelector('.dueId').value);
       deleteDuesRow(dueId);
-      document.querySelector('.showDialog').style.display = "none";
+      //document.querySelector('.showDialog').style.display = "none";
+      const dialog = document.querySelector('.dialog');
+      dialog.close();
     };
   });
 
   // Not OK to delete a dues row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancelButton')) {
-      document.querySelector('.showDialog').style.display = "none";
+
+      //document.querySelector('.showDialog').style.display = "none";
+      const dialog = document.querySelector('.dialog');
+      dialog.close();
     };
   });
 

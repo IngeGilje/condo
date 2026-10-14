@@ -139,7 +139,9 @@ async function events() {
 
       const budgetId = Number(document.querySelector('.filterBudgetId').value);
       await deleteBudgetsRow(budgetId);
-      document.querySelector('.showDialog').style.display = "none";
+      //document.querySelector('.showDialog').style.display = "none";
+      const dialog = document.querySelector('.dialog');
+      dialog.close();
     };
   });
 
@@ -147,7 +149,9 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancelButton')) {
 
-      document.querySelector('.showDialog').style.display = "none";
+      //document.querySelector('.showDialog').style.display = "none";
+      const dialog = document.querySelector('.dialog');
+      dialog.close();
     };
   });
 

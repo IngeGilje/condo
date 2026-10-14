@@ -2,7 +2,8 @@
 <html lang="nb-NO">
 
 <head>
-  <title>Banktransaksjoner</title>
+
+  <title>Konto</title>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,41 +13,41 @@
 
 <body>
 
+  <!-- start inputDialog -->
+  <dialog class="confimation card grid centered-dialog">
+    <p>
+      Vil du slette kontoen?
+    </p>
 
+    <!-- start inputButton -->
+    <button class="okButton secondary" type="submit">
+      Ja
+    </button>
+    <!-- end inputButton -->
 
-    <!-- start inputDialog -->
-    <div 
-      class="grid"
-    >
-    <dialog 
-      class="confimation card grid centered-dialog"
-    >
-      <p>
-        Vil du slette kontoen?
-      </p>
-  
-  <!-- start inputButton -->
-  <button
-    class="okButton secondary"
-    type="submit"
-  >
-    Ja
-  </button>
-  <!-- end inputButton -->
-  
-  <!-- start inputButton -->
-  <button
-    class="cancelButton secondary"
-    type="button"
-  >
-    Nei
-  </button>
-  <!-- end inputButton -->
-  
-      </dialog>
-    </div>
-    <!-- end inputDialog -->
-  
+    <!-- start inputButton -->
+    <button class="cancelButton secondary" type="button">
+      Nei
+    </button>
+    <!-- end inputButton -->
+
+  </dialog>
+  <!-- end inputDialog -->
+
+  <script>
+    const dialog = document.querySelector(".centered-dialog");
+
+    dialog.showModal();
+
+    document.querySelector(".okButton").onclick = () => {
+      dialog.close("yes");
+    };
+
+    document.querySelector(".cancelButton").onclick = () => {
+      dialog.close("no");
+    };
+  </script>
+
 </body>
 
 </html>
