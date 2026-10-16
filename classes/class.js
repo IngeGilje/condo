@@ -1011,38 +1011,6 @@ function showTableButton(className, text, month, year) {
   `;
 }
 
-/*
-// Input wide text
-function inputWideText(className, label, value, colSpan, enableChanges) {
-
-  const colspan = `wide wide${colSpan}`;
-  let html = `
-    <!-- start inputWideText -->
-    <div 
-      class="field ${colspan}"
-    >
-    <label
-      for="${className}"
-    >
-      ${label}
-    </label>
-    <input
-      type="text"
-      class="${className}"
-      id="${className}"
-      value="${value}"
-      ${(enableChanges) ? '' : 'readonly'}
-    >
-    </div>
-    <!-- end inputWideText -->
-
-  `;
-
-  return html;
-}
-*/
-
-
 // Start buttons
 function startButtons() {
 
@@ -1688,6 +1656,7 @@ function endBoxFilter() {
   `;
 }
 
+/*
 // Input wide text in a grid
 function inputGridWideText(className, label, text, maxLength, rows) {
 
@@ -1707,6 +1676,29 @@ function inputGridWideText(className, label, text, maxLength, rows) {
         maxlength="${maxLength}"
       >${text}</textarea>
   </div>
+  `;
+}
+*/
+
+// Input wide text in a grid
+function inputGridWideText(className, label, text, maxLength, rows) {
+
+  return `
+    <div class="field">
+      <label 
+        for="${className}"
+      >
+        ${label}
+      </label>
+
+      <textarea
+        id="${className}"
+        class="${className}"
+        name="${className}"
+        rows="${rows}"
+        maxlength="${maxLength}"
+      >${text}</textarea>
+    </div>
   `;
 }
 
@@ -1885,6 +1877,35 @@ function inputDate(className, label, value, enableChanges) {
       >
     </div>
     <!-- end inputDate -->
+  `;
+  return html;
+}
+
+// input date
+function inputDateNew(className, label, value, enableChanges) {
+
+  const html = `
+    <!-- start inputDateNew -->
+    <div
+      class="field"
+    >
+      <label
+        for="${className}"
+      >
+        ${label}
+      </label>
+      <input 
+        type="date"
+        class="${className}"
+        id="${className}" 
+        value="${value}"
+        ${(enableChanges) 
+          ? '' 
+          : 'readonly'
+        }
+      >
+    </div>
+    <!-- end inputDateNew -->
   `;
   return html;
 }
@@ -2087,6 +2108,7 @@ function validateValuesNew(className, errorMessage, selectedValue, ...values) {
   return isValid;
 }
 
+/*
 // validate the iso date format yyyy-mm-dd
 function validateISODate(className, date, errorMessage) {
 
@@ -2124,6 +2146,7 @@ function validateISODate(className, date, errorMessage) {
   if (!isValid && errorMessage.length > 0) showMessage(errorMessage);
   return isValid;
 }
+*/
 
 // Validate number
 function validateIntervalNew(className, errorMessage, number, minNumber, maxNumber) {

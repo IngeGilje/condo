@@ -30,7 +30,7 @@ async function main() {
     } else {
 
       // Show menu
-      let html = objUsers.showMenu(objUsers.securityLevel);
+      const html = objUsers.showMenu(objUsers.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       await loadAllTables(objUsers.condominiumId);

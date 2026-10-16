@@ -34,7 +34,7 @@ async function main() {
     } else {
 
       // Show menu
-      let html = objLiquidity.showMenu(objLiquidity.securityLevel);
+      const html = objLiquidity.showMenu(objLiquidity.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       await objBankAccounts.loadBankAccountsTable(objLiquidity.condominiumId);
@@ -43,7 +43,8 @@ async function main() {
       const fromDate = 20200101;
       let toDate = getCurrentDate();
       toDate = formatNorDateToNumber(toDate);
-      await objTransactions.loadTransactionsTable(orderBy, objLiquidity.condominiumId, 'N', objLiquidity.nineNine, objLiquidity.nineNine, objLiquidity.nineNine, 0, fromDate, toDate);
+      //await objTransactions.loadTransactionsTable(orderBy, objLiquidity.condominiumId, 'N', objLiquidity.nineNine, objLiquidity.nineNine, objLiquidity.nineNine, 0, fromDate, toDate);
+      await objTransactions.loadTransactionsTableNew(objLiquidity.condominiumId)
 
       // Show filter
       showFilter();
@@ -100,7 +101,10 @@ function showLiquidity() {
 
   for (month = 1; month < 13; month++) {
     if (month < 10) month = "0" + String(month);
-    let date = year + String(month) + "31";
+
+    // last day in month
+    const day = new Date(year, month, 0).getDate();
+    let date = year + String(month) + String(day);
     arrayMonth[month - 1] = objTransactions.getBankBalance(Number(date)) / 100;
   }
 

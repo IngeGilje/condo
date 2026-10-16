@@ -45,7 +45,7 @@ async function main() {
     } else {
 
       // Show menu
-      let html = objProjects.showMenu(objProjects.securityLevel);
+      const html = objProjects.showMenu(objProjects.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
@@ -162,30 +162,15 @@ async function events() {
 
   // return to bank account transactions
   document.addEventListener('click', async (event) => {
-    //if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
     if (event.target.classList.contains("back")) {
-
-      /*
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objAccounts.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
- 
-      // Extract the number in the class name
-      let accountId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        accountId = Number(className.slice(prefix.length));
-      }
  
       let URL = (objProjects.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}showtransactions.html?transactionId=${paramTransactionId}&appartmentId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}&backApplication=${paramBackApplication}`;
       window.location.href = URL;
-      */
-      history.back();
+
+      //history.back();
     };
   });
 }

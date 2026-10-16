@@ -12,23 +12,23 @@ const applicationName = "bankaccount";
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate LogIn
-if ((objBankAccounts.condominiumId === 0) || (objBankAccounts.user === null)) {
+// Call main when script loads
+main();
+async function main() {
 
-  // LogIn is not valid
-  const URL = (objUsers.serverStatus === 1)
-    ? 'http://ingegilje.no/login.html'
-    : 'http://localhost/login.html';
-  window.location.href = URL;
-} else {
+  // Validate LogIn
+  if ((objBankAccounts.condominiumId === 0) || (objBankAccounts.user === null)) {
 
-  // Show menu
-  let html = objCondominiums.showMenu(objBankAccounts.securityLevel);
-  document.querySelector('.menuVertical').innerHTML = html;
+    // LogIn is not valid
+    const URL = (objUsers.serverStatus === 1)
+      ? 'http://ingegilje.no/login.html'
+      : 'http://localhost/login.html';
+    window.location.href = URL;
+  } else {
 
-  // Call main when script loads
-  main();
-  async function main() {
+    // Show menu
+    const html = objBankAccounts.showMenu(objBankAccounts.securityLevel);
+    document.querySelector('.menuVertical').innerHTML = html;
 
     // Check if server is running
     if (await objUsers.checkServer()) {
@@ -85,17 +85,6 @@ async function events() {
     };
   });
 
-  /*
-  // Delete bankaccounts row
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('delete')) {
-
-      //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-      let bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
-      await deleteBankAccountsRow(bankAccountId);
-    };
-  });
-  */
   // Show delete dialog
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
@@ -137,36 +126,16 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      /*
       let url = (objBankAccounts.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}login.html`;
       window.location.href = url;
-      */
-      history.back();
+
+      //history.back();
     };
   });
 }
-
-/*
-async function deleteBankAccount() {
-
-  const bankAccountId = Number(document.querySelector('.select-bankaccounts-bankAccountId').value);
-  if (bankAccountId >= 0) {
-
-    // Check if bank account exist
-    const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
-    if (rowNumberBankAccount !== -1) {
-
-      // Delete bank bankaccounts row
-
-
-      await objBankAccounts.deleteBankAccountsTable(bankAccountId, objBankAccounts.user);
-    }
-  }
-}
-*/
 
 // Show filter
 function showFilter(bankAccountId) {

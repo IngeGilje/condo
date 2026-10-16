@@ -13,39 +13,430 @@
 
 <body>
 
-  <!-- start inputDialog -->
-  <dialog class="confimation card grid centered-dialog">
-    <p>
-      Vil du slette kontoen?
-    </p>
 
-    <!-- start inputButton -->
-    <button class="okButton secondary" type="submit">
-      Ja
-    </button>
-    <!-- end inputButton -->
+  <!-- start showMenu -->
+  <section class="card">
+    <h1 class="card-title">
+      Meny
+    </h1>
+    <div class="grid grid-menu">
 
-    <!-- start inputButton -->
-    <button class="cancelButton secondary" type="button">
-      Nei
-    </button>
-    <!-- end inputButton -->
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="news-news">
+          Nyheter
+        </label>
+        <select id="news-news" onchange="window.location.href=this.value">
+          <option value="http://localhost/shownews.html">
+            Vis Nyheter
+          </option>
+          <option value="http://localhost/news.html">
+            Rediger Nyheter
+          </option>
+          <option value="http://localhost/news.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
 
-  </dialog>
-  <!-- end inputDialog -->
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="emptycalendar-emptycalendar">
+          Tømmekalender
+        </label>
+        <select id="emptycalendar-emptycalendar" onchange="window.location.href=this.value">
+          <option value="http://localhost/showemptycalendars.html">
+            Vis Tømmekalender
+          </option>
+          <option value="http://localhost/emptycalendar.html">
+            Rediger Tømmekalender
+          </option>
+          <option value="http://localhost/emptycalendar.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
 
-  <script>
-    const dialog = document.querySelector(".centered-dialog");
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="condominium-condominium">
+          Sameie
+        </label>
+        <select id="condominium-condominium" onchange="window.location.href=this.value">
+          <option value="http://localhost/condominium.html">
+            Rediger Sameie
+          </option>
+          <option value="http://localhost/bankaccount.html">
+            Rediger Bankkonto
+          </option>
+          <option value="http://localhost/showaccounts.html">
+            Vis Konti
+          </option>
+          <option value="http://localhost/account.html">
+            Rediger Konto
+          </option>
+          <option value="http://localhost/condominium.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
 
-    dialog.showModal();
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="user-user">
+          Bruker
+        </label>
+        <select id="user-user" onchange="window.location.href=this.value">
+          <option value="http://localhost/user.html">
+            Rediger Bruker
+          </option>
+          <option value="http://localhost/password.html">
+            Rediger Passord
+          </option>
+          <option value="http://localhost/appartment.html">
+            Rediger Leilighet
+          </option>
+          <option value="http://localhost/userbankaccount.html">
+            Rediger Bankkonto
+          </option>
+          <option value="http://localhost/user.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
 
-    document.querySelector(".okButton").onclick = () => {
-      dialog.close("yes");
-    };
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="transaction-transaction">
+          Transaksjoner
+        </label>
+        <select id="transaction-transaction" onchange="window.location.href=this.value">
+          <option value="http://localhost/showtransactions.html">
+            Vis Transaksjoner
+          </option>
+          <option value="http://localhost/transaction.html">
+            Rediger Transaksjon
+          </option>
+          <option value="http://localhost/annualaccount.html">
+            Vis Årsregnskap
+          </option>
+          <option value="http://localhost/importfile.html">
+            Hent transaksjoner
+          </option>
+          <option value="http://localhost/liquidity.html">
+            Vis Likviditet
+          </option>
+          <option value="http://localhost/showtransactions.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
 
-    document.querySelector(".cancelButton").onclick = () => {
-      dialog.close("no");
-    };
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="due-due">
+          Forfall
+        </label>
+        <select id="due-due" onchange="window.location.href=this.value">
+          <option value="http://localhost/showdues.html">
+            Vis Forfall
+          </option>
+          <option value="http://localhost/due.html">
+            Rediger Forfall
+          </option>
+          <option value="http://localhost/supplier.html">
+            Rediger Leverandør
+          </option>
+          <option value="http://localhost/showcommoncosts.html">
+            Vis Felleskostnader
+          </option>
+          <option value="http://localhost/commoncost.html">
+            Rediger Felleskostnad
+          </option>
+          <option value="http://localhost/overview.html">
+            Vis Betalingsoversikt
+          </option>
+          <option value="http://localhost/showdues.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
+
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="project-project">
+          Prosjekt
+        </label>
+        <select id="project-project" onchange="window.location.href=this.value">
+          <option value="http://localhost/showprojects.html">
+            Vis Prosjekt
+          </option>
+          <option value="http://localhost/project.html">
+            Rediger Prosjekt
+          </option>
+          <option value="http://localhost/project.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
+
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="project-project">
+          Budsjett
+        </label>
+        <select id="project-project" onchange="window.location.href=this.value">
+          <option value="http://localhost/showbudgets.html">
+            Vis Budsjett
+          </option>
+          <option value="http://localhost/budget.html">
+            Rediger Budsjett
+          </option>
+          <option value="http://localhost/budget.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
+
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="logIn-logIn">
+          Logg Ut
+        </label>
+        <select id="logIn-logIn" onchange="window.location.href=this.value">
+          <option value="http://localhost/login.html">
+            Logg ut
+          </option>
+          <option value="http://localhost/login.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
+
+    </div>
+  </section>
+  <!-- end showMenu -->
+  <!-- start showMenu -->
+  <section class="card">
+    <h1 class="card-title">
+      Meny
+    </h1>
+    <div class="grid grid-menu">
+
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="news-news">
+          Nyheter
+        </label>
+        <select id="news-news" onchange="window.location.href=this.value">
+          <option value="http://localhost/shownews.html">
+            Vis Nyheter
+          </option>
+          <option value="http://localhost/news.html">
+            Rediger Nyheter
+          </option>
+          <option value="http://localhost/news.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
+
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="emptycalendar-emptycalendar">
+          Tømmekalender
+        </label>
+        <select id="emptycalendar-emptycalendar" onchange="window.location.href=this.value">
+          <option value="http://localhost/showemptycalendars.html">
+            Vis Tømmekalender
+          </option>
+          <option value="http://localhost/emptycalendar.html">
+            Rediger Tømmekalender
+          </option>
+          <option value="http://localhost/emptycalendar.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
+
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="condominium-condominium">
+          Sameie
+        </label>
+        <select id="condominium-condominium" onchange="window.location.href=this.value">
+          <option value="http://localhost/condominium.html">
+            Rediger Sameie
+          </option>
+          <option value="http://localhost/bankaccount.html">
+            Rediger Bankkonto
+          </option>
+          <option value="http://localhost/showaccounts.html">
+            Vis Konti
+          </option>
+          <option value="http://localhost/account.html">
+            Rediger Konto
+          </option>
+          <option value="http://localhost/condominium.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
+
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="user-user">
+          Bruker
+        </label>
+        <select id="user-user" onchange="window.location.href=this.value">
+          <option value="http://localhost/user.html">
+            Rediger Bruker
+          </option>
+          <option value="http://localhost/password.html">
+            Rediger Passord
+          </option>
+          <option value="http://localhost/appartment.html">
+            Rediger Leilighet
+          </option>
+          <option value="http://localhost/userbankaccount.html">
+            Rediger Bankkonto
+          </option>
+          <option value="http://localhost/user.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
+
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="transaction-transaction">
+          Transaksjoner
+        </label>
+        <select id="transaction-transaction" onchange="window.location.href=this.value">
+          <option value="http://localhost/showtransactions.html">
+            Vis Transaksjoner
+          </option>
+          <option value="http://localhost/transaction.html">
+            Rediger Transaksjon
+          </option>
+          <option value="http://localhost/annualaccount.html">
+            Vis Årsregnskap
+          </option>
+          <option value="http://localhost/importfile.html">
+            Hent transaksjoner
+          </option>
+          <option value="http://localhost/liquidity.html">
+            Vis Likviditet
+          </option>
+          <option value="http://localhost/showtransactions.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
+
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="due-due">
+          Forfall
+        </label>
+        <select id="due-due" onchange="window.location.href=this.value">
+          <option value="http://localhost/showdues.html">
+            Vis Forfall
+          </option>
+          <option value="http://localhost/due.html">
+            Rediger Forfall
+          </option>
+          <option value="http://localhost/supplier.html">
+            Rediger Leverandør
+          </option>
+          <option value="http://localhost/showcommoncosts.html">
+            Vis Felleskostnader
+          </option>
+          <option value="http://localhost/commoncost.html">
+            Rediger Felleskostnad
+          </option>
+          <option value="http://localhost/overview.html">
+            Vis Betalingsoversikt
+          </option>
+          <option value="http://localhost/showdues.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
+
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="project-project">
+          Prosjekt
+        </label>
+        <select id="project-project" onchange="window.location.href=this.value">
+          <option value="http://localhost/showprojects.html">
+            Vis Prosjekt
+          </option>
+          <option value="http://localhost/project.html">
+            Rediger Prosjekt
+          </option>
+          <option value="http://localhost/project.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
+
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="project-project">
+          Budsjett
+        </label>
+        <select id="project-project" onchange="window.location.href=this.value">
+          <option value="http://localhost/showbudgets.html">
+            Vis Budsjett
+          </option>
+          <option value="http://localhost/budget.html">
+            Rediger Budsjett
+          </option>
+          <option value="http://localhost/budget.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
+
+      <!-- start showVerticalMenu -->
+      <div class="field">
+        <label for="logIn-logIn">
+          Logg Ut
+        </label>
+        <select id="logIn-logIn" onchange="window.location.href=this.value">
+          <option value="http://localhost/login.html">
+            Logg ut
+          </option>
+          <option value="http://localhost/login.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
+
+    </div>
+  </section>
+  <!-- end showMenu -->
+
   </script>
 
 </body>

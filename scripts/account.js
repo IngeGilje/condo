@@ -40,7 +40,7 @@ async function main() {
     } else {
 
       // Show menu
-      let html = objAccounts.showMenu(objAccounts.securityLevel);
+      const html = objAccounts.showMenu(objAccounts.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
@@ -109,14 +109,13 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('back')) {
 
-      /*
       let URL = (objAccounts.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}showaccounts.html?accountId=${paramAccountId}&fixedCost=${paramFixedCost}`;
       window.location.href = URL;
-      */
-      history.back();
+
+      //history.back();
     };
   });
 

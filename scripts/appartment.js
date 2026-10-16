@@ -29,7 +29,7 @@ async function main() {
     } else {
 
       // Show menu
-      let html = objAppartments.showMenu(objAppartments.securityLevel);
+      const html = objAppartments.showMenu(objAppartments.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';

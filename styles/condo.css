@@ -123,33 +123,9 @@ body {
   top: 20px;
 }
 
-/*
-.filter-card .grid-voucher {
-  grid-template-columns: minmax(0, 1fr);
-}
-*/
-
 .filter-grid {
   grid-template-columns: repeat(5, minmax(0, 1fr));
   max-width: 720px;
-}
-
-.field,
-.filter-field {
-  position: relative;
-  min-width: 0;
-}
-
-.field.wide2 {
-  grid-column: span 2;
-}
-
-.field.wide3 {
-  grid-column: span 3;
-}
-
-.text-field {
-  grid-column: 1 / -1;
 }
 
 /* Form controls and labels */
@@ -209,29 +185,6 @@ select:disabled {
   color: #475467;
 }
 
-.field label {
-  position: absolute;
-  z-index: 1;
-  top: -8px;
-  left: 12px;
-  padding: 0 6px;
-  background: var(--surface);
-  color: #475467;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.field:focus-within label {
-  color: var(--primary);
-}
-
-.filter-field label {
-  display: block;
-  margin-bottom: 6px;
-  color: #475569;
-  font-weight: 600;
-}
-
 .number {
   text-align: right;
   font-variant-numeric: tabular-nums;
@@ -245,16 +198,6 @@ select:disabled {
 
 .input-valid {
   background: var(--surface);
-}
-
-.field-position {
-  width: min(250px, 100%);
-  margin: 0 0 15px 35px;
-}
-
-.field-position-menu {
-  margin: 0 0 5px 15px;
-  text-align: center;
 }
 
 .line,
@@ -353,15 +296,18 @@ td {
   text-align: left;
 }
 
+/*
 th {
   background: #f8fafc;
   color: #475467;
   font-weight: 600;
 }
+*/
 
-.green-background {
-  background: #e0f0e0;
-  text-align: center;
+th {
+  background: #f8fafc;
+  color: #475467;
+  font-weight: 750;
 }
 
 .table-container {
@@ -703,14 +649,8 @@ iframe {
 
   .grid-menu,
   .grid-form,
-  /*.grid-voucher,*/
   .filter-grid {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .field.wide2,
-  .field.wide3 {
-    grid-column: 1 / -1;
   }
 
   .actions {
@@ -724,9 +664,7 @@ iframe {
   }
 
   .danger,
-  .table-container,
-  .field-position,
-  .field-position-menu {
+  .table-container {
     margin-left: 0;
   }
 
@@ -759,4 +697,67 @@ dialog.centered-dialog {
 /* Prevent .grid from displaying a closed dialog */
 dialog.centered-dialog:not([open]) {
   display: none;
+}
+
+/* Field */
+.field,
+.filter-field {
+  position: relative;
+  min-width: 0;
+}
+
+/*
+.text-field {
+  grid-column: 1 / -1;
+}
+*/
+
+/*
+.field label {
+  position: absolute;
+  z-index: 1;
+  top: -8px;
+  left: 12px;
+  padding: 0 6px;
+  background: var(--surface);
+  color: #475467;
+  font-size: 12px;
+  font-weight: 600;
+}
+*/
+
+.field label {
+  z-index: 1;
+  left: 12px;
+  padding: 0 6px;
+  background: var(--surface);
+  color: #475467;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.field:focus-within label {
+  color: var(--primary);
+}
+
+.filter-field label {
+  display: block;
+  margin-bottom: 6px;
+  color: #475569;
+  font-weight: 600;
+}
+
+.field-position {
+  width: min(250px, 100%);
+  margin: 0 0 15px 35px;
+}
+
+.field-position-menu {
+  margin: 0 0 5px 15px;
+  text-align: center;
+}
+
+.field-position,
+.field-position-menu {
+  margin-left: 0;
 }

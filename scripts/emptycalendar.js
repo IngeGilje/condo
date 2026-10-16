@@ -37,7 +37,7 @@ async function main() {
     } else {
 
       // Show menu
-      let html = objEmptyCalendars.showMenu(objEmptyCalendars.securityLevel);
+      const html = objEmptyCalendars.showMenu(objEmptyCalendars.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       await objAppartments.loadCondoTable(objEmptyCalendars.condominiumId);
@@ -99,14 +99,14 @@ async function events() {
   document.addEventListener('click', async (event) => {
     //if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
     if (event.target.classList.contains("back")) {
-      /*
+
       let URL = (objEmptyCalendars.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}showemptycalendars.html?emptyingCalendarsId=${paramemptyCalendarId}&year=${paramYear}&month=${paramMonth}`;
       window.location.href = URL;
-      */
-      history.back();
+
+      //history.back();
     }
   })
 
@@ -282,10 +282,12 @@ async function updateEmptyingCalendarRow(emptyCalendarId) {
   appartmentId = Number(document.querySelector('.appartmentId').value);
   const validCondoId = validateIntervalNew('appartmentId', 'Ugyldig ansvarlig', appartmentId, 1, objAppartments.nineNine);
 
+  /*
   // date
   let date = document.querySelector('.emptyingCalendarDate').value;
   let validDate = validateISODate('emptyingCalendarDate', date, 'Ugyldig Dato');
   date = formatISODateToNumber(date);
+  */
 
   let residualWaste = document.querySelector('.residualWaste').value;
   const validResidualWaste = validateValuesNew('residualWaste', 'Ugylgig valg', residualWaste, 'Nei', 'Ja');
@@ -313,7 +315,7 @@ async function updateEmptyingCalendarRow(emptyCalendarId) {
   if (christmasTree === "Nei") christmasTree = 'N';
 
   // Validate emptycalendar columns
-  if (validCondoId && validDate && validPaper && validResidualWaste && validFood && validPlastic && validChristmasTree) {
+  if (validCondoId && validPaper && validResidualWaste && validFood && validPlastic && validChristmasTree) {
 
     document.querySelector('.showMessage').style.display = "none";
 

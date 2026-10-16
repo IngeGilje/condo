@@ -35,7 +35,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objCommonCosts.showMenu(objCommonCosts.securityLevel);
+      const html = objCommonCosts.showMenu(objCommonCosts.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
@@ -55,14 +55,17 @@ async function main() {
       const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCommonCosts.condominiumId);
       let fromMonth = objCondominiums.arrayCondominiums[rowNumberCondominium]?.fromMonth ?? '';
       if (fromMonth < 10) fromMonth = "0" + fromMonth;
-      let fromDate = (accountYear - 1) + fromMonth + "01";
+      let fromDate = String(accountYear - 1) + String(fromMonth) + "01";
 
       // To date
       let toMonth = objCondominiums.arrayCondominiums[rowNumberCondominium]?.toMonth ?? '';
       if (toMonth < 10) toMonth = "0" + toMonth;
-      let toDate = accountYear + toMonth + "31";
 
-      showFilter(accountYear, fromDate, toDate);
+      // last day in month
+      const day = new Date(accountYear, toMonth, 0).getDate();
+      let toDate = String(accountYear) + String(toMonth) + String(day);
+
+      showFilter(accountYear, Number(fromDate), Number(toDate));
 
       const deleted = "N";
       fromDate = document.querySelector('.filterFromDate').value;
@@ -76,8 +79,9 @@ async function main() {
       if (rowNumberCondominium !== -1) {
 
         // Show annual accounts
-        const orderBy = 'appartmentId ASC';
-        await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, deleted, objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, fromDate, toDate);
+        //const orderBy = 'appartmentId ASC';
+        //await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, deleted, objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, fromDate, toDate);
+        await objTransactions.loadTransactionsTableNew(objCommonCosts.condominiumId);
         showAnnualAccounts();
 
         // Show income for next year
@@ -94,7 +98,7 @@ async function main() {
     }
   } else {
 
-        showMessage('Server er ikke startet.'); 
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -134,8 +138,9 @@ async function events() {
       const year = Number(document.querySelector('.filterAccountYear').value);
       await objBudgets.loadBudgetsTable(objCommonCosts.condominiumId, year, objCommonCosts.nineNine);
 
-      const orderBy = 'appartmentId ASC';
-      await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, deleted, objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, fromDate, toDate);
+      //const orderBy = 'appartmentId ASC';
+      //await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, deleted, objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, fromDate, toDate);
+      await objTransactions.loadTransactionsTableNew(objCommonCosts.condominiumId);
       showAnnualAccounts();
 
       // Show income for next year
@@ -152,19 +157,19 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      /*
       let url = (objCommonCosts.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}login.html`;
       window.location.href = url;
-      */
-     history.back();
+
+      //history.back();
     };
   });
 }
 
-// Accumulate all Transactions for specified account id
+// Accumulate all transactions for specified account id
+// and time interval
 function getTotalMovementsBankAccount(accountId) {
 
   let accountAmount = 0;
@@ -177,9 +182,14 @@ function getTotalMovementsBankAccount(accountId) {
 
   objTransactions.arrayTransactions.forEach((bankTransaction) => {
 
-    if (Number(bankTransaction.date) >= fromDate
-      && (Number(bankTransaction.date) <= toDate
-        && bankTransaction.accountId === accountId)) {
+    if (bankTransaction.accountId === 75) {
+      console.log(bankTransaction.date);
+    }
+
+    if ((bankTransaction.deleted === "N")
+      && (bankTransaction.date >= fromDate)
+      && (bankTransaction.date <= toDate)
+      && (bankTransaction.accountId === accountId)) {
 
       accountAmount += Number(bankTransaction.income);
       accountAmount += Number(bankTransaction.payment);
@@ -210,27 +220,22 @@ function getBudgetAmount(accountId, year) {
 function showFilter(accountYear, fromDate, toDate) {
 
   // Start frame
-  //let html = startFrame('filter-frame');
   let html = startLineFilter('filter-frame');
 
   // Show year
   html += showSelectedNumbers('filterAccountYear', 'Regnskapsår', accountYear, 2020, 2030, true);
 
   // From date
-  //html += inputDate('filterFromDate', 'Fra Dato', fromDate, true);
   fromDate = formatNumberToISODate(fromDate);
-  html += inputDate('filterFromDate', 'Fra Dato', fromDate, true);
+  html += inputDateNew('filterFromDate', 'Fra Dato', fromDate, true);
 
   // To date
   // Current date
-  //html += showDate('Til Dato', 'filterToDate', toDate, true)
-  //html += inputDate('filterToDate', 'Til Dato', toDate, true);
   toDate = formatNumberToISODate(toDate);
   html += inputDate('filterToDate', 'Til Dato', toDate, true)
 
   // price per square meter per month
-  const commonCostSquareMeter = getpriceSquaremeter(accountYear+1);
-  //html += showAmount('Pris per m2', 'filterCommonCostSquareMeter', commonCostSquareMeter, true);
+  const commonCostSquareMeter = getpriceSquaremeter(accountYear + 1);
   html += inputText('filterCommonCostSquareMeter', 'Budsjett per m2', commonCostSquareMeter, 11, true);
 
   // End filter
@@ -262,8 +267,6 @@ function showAnnualAccounts() {
     const numAccountAmount = Number(formatNorAmountToNumber(accountAmount));
 
     if (numBudgetAmount !== 0 || numAccountAmount !== 0) {
-
-      //html += objCommonCosts.insertTableRow('', '');
 
       // account name
       html += showTableText('name', account.name);
@@ -339,12 +342,7 @@ function showIncomeNextYear() {
 
     // Fixed cost per month per condo
     fixedCostCondoMonth = Number(objCommonCosts.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo);
-
-    // Get fixed costs per year
-    // 12 month and 7 condos
-    //let fixedCost = String(Math.round(numFixedCost / 12 / 7) * (-1));
   }
-  //html += "</tr>"
 
   objAppartments.arrayCondo.forEach((condo) => {
 

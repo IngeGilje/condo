@@ -12,8 +12,6 @@ const applicationName = "budget";
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramBudgetId = Number(queryParameters.get("budgetId"));
-const paramYear = Number(queryParameters.get("year"));
-const paramBackApplication = queryParameters.get("backApplication");
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -36,7 +34,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objBudgets.showMenu(objBudgets.securityLevel);
+      const html = objBudgets.showMenu(objBudgets.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
@@ -44,19 +42,12 @@ async function main() {
       //const fixedCost = "A";
       await objAccounts.loadAccountsTable(objBudgets.condominiumId);
 
-      // budgetId
-      let budgetId = 0;
-      if (paramBudgetId) {
 
-        budgetId = paramBudgetId;
-      } else {
+      await objBudgets.getHighestBudgetId(objBudgets.condominiumId);
 
-        await objBudgets.getHighestBudgetId(objBudgets.condominiumId);
-
-        // Check for empty array
-        budgetId = 0;
-        if (objBudgets.arrayBudgets.length > 0) budgetId = objBudgets.arrayBudgets[0].budgetId;
-      }
+      // Check for empty array
+      budgetId = 0;
+      if (objBudgets.arrayBudgets.length > 0) budgetId = objBudgets.arrayBudgets[0].budgetId;
 
       await objBudgets.loadBudgetsTable(objBudgets.condominiumId, objBudgets.nineNine, objBudgets.nineNine);
 
@@ -93,7 +84,13 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('back')) {
 
-      history.back();
+      let URL = (objBudgets.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      URL = `${URL}showbudgets.html`;
+      window.location.href = URL;
+
+      //history.back();
     };
   });
 
@@ -130,7 +127,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancelButton')) {
 
-       const dialog = document.querySelector('.dialog');
+      const dialog = document.querySelector('.dialog');
       dialog.close();
     };
   });
@@ -210,13 +207,7 @@ function showBudget(budgetId) {
 
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-
-    // check for return back to an application
-    if (paramBackApplication) {
-
-      html += inputButton("back secondary", "Tilbake", "button");
-    }
-
+    html += inputButton("back secondary", "Tilbake", "button");
     html += inputButton("delete danger", "Slett", "button");
   }
 

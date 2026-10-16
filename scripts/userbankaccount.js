@@ -30,7 +30,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objUserBankAccounts.showMenu(objUserBankAccounts.securityLevel);
+      const html = objUserBankAccounts.showMenu(objUserBankAccounts.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';

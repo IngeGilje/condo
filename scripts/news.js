@@ -29,7 +29,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objNews.showMenu(objNews.securityLevel);
+      const html = objNews.showMenu(objNews.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';

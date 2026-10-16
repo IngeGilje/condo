@@ -117,8 +117,8 @@ class Transactions extends Condos {
     }
   }
 
-  // get transactions from transactions table
-  async loadTransactionTable(condominiumId, fixedCost) {
+  // load transactions from transactions table
+  async loadTransactionsTableNew(condominiumId) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/transactions'
@@ -132,9 +132,8 @@ class Transactions extends Condos {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          action: 'select',
-          condominiumId: condominiumId,
-          fixedCost: fixedCost
+          action: 'selectnew',
+          condominiumId: condominiumId
         })
       });
 
@@ -303,7 +302,9 @@ class Transactions extends Condos {
     let amountPeriod = 0;
 
     this.arrayTransactions.forEach((transaction) => {
-      if (transaction.date >= fromDate && transaction.date <= toDate) {
+      if ((transaction.deleted === "N")
+        && (transaction.date >= fromDate)
+        && (transaction.date <= toDate)) {
 
         // check for fixed cost
         const rowNumberAccount = objAccounts.arrayAccounts.findIndex((account) => account.accountId === transaction.accountId);
@@ -377,7 +378,9 @@ class Transactions extends Condos {
     this.arrayTransactions.forEach(transaction => {
 
       // Accoumulate all transactions up to the selected date
-      if ((transaction.date >= fromDate) && (transaction.date <= toDate)) {
+      if ((transaction.deleted === "N")
+        && (transaction.date >= fromDate)
+        && (transaction.date <= toDate)) {
 
         // Add payment and income to bank balance
         bankBalance += transaction.income + transaction.payment;

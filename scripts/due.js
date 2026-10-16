@@ -39,7 +39,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objDues.showMenu(objDues.securityLevel);
+      const html = objDues.showMenu(objDues.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
@@ -109,14 +109,13 @@ async function events() {
     //if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
     if (event.target.classList.contains("back")) {
 
-      /*
       let URL = (objDues.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}showdues.html?dueId=${paramDueId}&year=${paramYear}&backApplication=${paramBackApplication}`;
       window.location.href = URL;
-      */
-      history.back();
+
+      //history.back();
     };
   });
 

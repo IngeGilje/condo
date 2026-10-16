@@ -1525,7 +1525,7 @@ async function main() {
           try {
 
             const condominiumId = Number(req.body.condominiumId);
- 
+
             let SQLquery = `
             SELECT * FROM appartments
             WHERE condominiumId = ${condominiumId}
@@ -2158,6 +2158,30 @@ async function main() {
             `;
             if (!orderBy) SQLquery += `
             ORDER BY date DESC, income DESC;
+            `;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'selectnew': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM transactions 
+            WHERE condominiumId = ${condominiumId};
             `;
 
             console.log('SQLquery: ', SQLquery);

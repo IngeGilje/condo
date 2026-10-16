@@ -41,7 +41,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objCommonCosts.showMenu(objCommonCosts.securityLevel);
+      const html = objCommonCosts.showMenu(objCommonCosts.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';

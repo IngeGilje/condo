@@ -43,7 +43,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objCommonCosts.showMenu(objCommonCosts.securityLevel);
+      const html = objCommonCosts.showMenu(objCommonCosts.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
@@ -53,8 +53,9 @@ async function main() {
       await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
       await objBudgets.loadBudgetsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine, objCommonCosts.nineNine);
       await objBankAccounts.loadBankAccountsTable(objCommonCosts.condominiumId);
-      const orderBy = 'date DESC, income DESC';
-      await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, 'N', objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, 20200101, 20291231, false);
+      //const orderBy = 'date DESC, income DESC';
+      //await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, 'N', objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, 20200101, 20291231, false);
+      await objTransactions.loadTransactionsTableNew(objCommonCosts.condominiumId);
 
       //const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objCommonCosts.condominiumId);
@@ -245,14 +246,16 @@ function showCommonCost(year) {
 
   // todate
   const toYear = Number(document.querySelector('.filterYear').value);
-  const toDate = String(toYear) + String(month) + "31";
+
+  // last day in month
+  const day = new Date(toYear, month, 0).getDate();
+  const toDate = String(toYear) + String(month) + String(day);
 
   let calculatedFixedCost = objTransactions.getFixedCostPeriod(Number(fromDate), Number(toDate));
   calculatedFixedCost = calculatedFixedCost / 12;
   calculatedFixedCost = calculatedFixedCost / 7;
   calculatedFixedCost = formatNumberToNorAmount(-calculatedFixedCost);
   html += inputText('calculatedFixedCost', 'Beregnet Fast Kostnad', calculatedFixedCost, 11, enableChanges);
-  //html += "<div></div>";
 
   html += endGrid();
 

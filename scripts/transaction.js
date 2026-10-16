@@ -47,7 +47,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objTransactions.showMenu(objTransactions.securityLevel);
+      const html = objTransactions.showMenu(objTransactions.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
@@ -107,17 +107,15 @@ async function events() {
 
   // return to bank account transactions
   document.addEventListener('click', async (event) => {
-    //if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
     if (event.target.classList.contains("back")) {
 
-      /*
       let URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}${paramBackApplication}?transactionId=${paramTransactionId}&appartmentId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}&backApplication=${paramBackApplication}`;
       window.location.href = URL;
-      */
-      history.back();
+
+      //history.back();
     };
   });
 
@@ -148,7 +146,7 @@ async function events() {
     };
   });
   */
-// Show delete dialog
+  // Show delete dialog
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
@@ -163,7 +161,7 @@ async function events() {
       let transactionId = Number(document.querySelector(".filterTransactionId").value);
       await deleteTransactionsRow(transactionId);
       //document.querySelector('.showDialog').style.display = "none";
-       const dialog = document.querySelector('.dialog');
+      const dialog = document.querySelector('.dialog');
       dialog.close();
     };
   });
@@ -173,7 +171,7 @@ async function events() {
     if (event.target.classList.contains('cancelButton')) {
 
       //document.querySelector('.showDialog').style.display = "none";
-       const dialog = document.querySelector('.dialog');
+      const dialog = document.querySelector('.dialog');
       dialog.close();
     };
   });

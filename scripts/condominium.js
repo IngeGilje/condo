@@ -31,7 +31,7 @@ async function main() {
     } else {
 
       // Show menu
-      let html = objCondominiums.showMenu(objCondominiums.securityLevel);
+      const html = objCondominiums.showMenu(objCondominiums.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       await objCondominiums.loadCondominiumsTable();
@@ -64,7 +64,6 @@ async function events() {
     if (event.target.classList.contains('filterCondominiumId')) {
 
       // Show condominium
-      //const fixedCost = 'A';
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       await objAccounts.loadAccountsTable(condominiumId);
       showCondominium(condominiumId);
@@ -81,16 +80,6 @@ async function events() {
     };
   });
 
-  /*
-  // Delete condominiums row
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('delete')) {
-
-      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-      await deleteCondominiumsRow(condominiumId);
-    };
-  });
-  */
   // Show delete dialog
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
@@ -128,28 +117,6 @@ async function events() {
       resetValues();
     };
   });
-
-  /*
-  // Cancel
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('cancel')) {
-
-      // Reload condominiums table
-      await objCondominiums.loadCondominiumsTable();
-
-      let condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-      if (condominiumId === 0) condominiumId = objCondominiums.arrayCondominiums.at(-1)?.condominiumId ?? 0;
-
-      await objCondominiums.loadCondominiumsTable();
-
-      // Show filter
-      showFilter(condominiumId);
-
-      // Show condominium
-      showCondominium(objCondominiums.condominiumId);
-    };
-  });
-  */
 
   // Log out
   document.addEventListener('click', async (event) => {
@@ -189,36 +156,23 @@ function showCondominium(condominiumId) {
   let name = objCondominiums.arrayCondominiums[rowNumberCondominium]?.name.trim() ?? '';
   html += inputText("name", "Navn", name, 45, enableChanges);
   html += "<div></div>";
-  //html += "<div></div>";
 
   // street
-  /*
-  const street = (rowNumberCondominium === -1)
-    ? ''
-    : objCondominiums.arrayCondominiums[rowNumberCondominium].street;
-  */
   const street = objCondominiums.arrayCondominiums[rowNumberCondominium]?.street ?? 0;
   html += inputText("street", "Gatenavn", street, 45, enableChanges);
 
   // address2
   const address2 = objCondominiums.arrayCondominiums[rowNumberCondominium]?.address2.trim() ?? '';
   html += inputText("address2", "Adresse2", address2, 45, enableChanges);
-  //html += "<div></div>";
 
   // postalCode
-  /*
-  let postalCode = (rowNumberCondominium === -1)
-    ? ''
-    : objCondominiums.arrayCondominiums[rowNumberCondominium].postalCode;
-  */
-  const postalCode = objCondominiums.arrayCondominiums[rowNumberCondominium]?.postalCode ?? "";
+   const postalCode = objCondominiums.arrayCondominiums[rowNumberCondominium]?.postalCode ?? "";
   //if (postalCode === '0') postalCode = "";
   html += inputText("postalCode", "Postnummer", postalCode, 4, enableChanges);
 
   // city
   const city = objCondominiums.arrayCondominiums[rowNumberCondominium]?.city.trim() ?? '';
   html += inputText("city", "Poststed", city, 45, enableChanges);
-  //html += "<div></div>";
 
   // phone
   const phone = objCondominiums.arrayCondominiums[rowNumberCondominium]?.phone.trim() ?? '';
@@ -227,7 +181,6 @@ function showCondominium(condominiumId) {
   // email
   const email = objCondominiums.arrayCondominiums[rowNumberCondominium]?.email.trim() ?? '';
   html += inputText("email", "E-mail", email, 45, enableChanges);
-  //html += "<div></div>";
 
   // income Remote Heating AccountId
   const incomeRemoteHeatingAccountId = objCondominiums.arrayCondominiums[rowNumberCondominium]?.incomeRemoteHeatingAccountId ?? 0;
@@ -236,21 +189,14 @@ function showCondominium(condominiumId) {
   // payment Remote Heating AccountId
   const paymentRemoteHeatingAccountId = objCondominiums.arrayCondominiums[rowNumberCondominium]?.paymentRemoteHeatingAccountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('paymentRemoteHeatingAccountId', 'Ugiftskonto Fjernvarme', paymentRemoteHeatingAccountId, 'Velg konto', '', enableChanges);
-  //html += "<div></div>";
-
+ 
   // common Cost AccountId
-  /*
-  const commonCostAccountId = (rowNumberCondominium === -1)
-    ? ''
-    : objCondominiums.arrayCondominiums[rowNumberCondominium].commonCostAccountId;
-  */
   const commonCostAccountId = objCondominiums.arrayCondominiums[rowNumberCondominium]?.commonCostAccountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('commonCostAccountId', 'Inntektskonto Fellesskostnad', commonCostAccountId, 'Velg konto', '', enableChanges);
 
   // organizationNumber
   const organizationNumber = objCondominiums.arrayCondominiums[rowNumberCondominium]?.organizationNumber ?? '';
   html += inputText("organizationNumber", "Organisasjonsnummer", organizationNumber, 9, enableChanges);
-  //html += "<div></div>";
 
   // from month
   const fromMonth = objCondominiums.arrayCondominiums[rowNumberCondominium]?.fromMonth ?? 0;
@@ -259,11 +205,9 @@ function showCondominium(condominiumId) {
   // to month
   const toMonth = objCondominiums.arrayCondominiums[rowNumberCondominium]?.toMonth ?? 0;
   html += showSelectedMonthsNew("toMonth", "Til måned regnskapsår", toMonth, enableChanges);
-  //html += "<div></div>";
 
   // import Path
   const importPath = objCondominiums.arrayCondominiums[rowNumberCondominium]?.importPath.trim() ?? '';
-  //html += inputWideText("importPath", "Plassering av data", importPath, 2, enableChanges);
   html += inputGridWideText("importPath", "Plassering av data", importPath, 100, 2)
 
   html += endGrid();

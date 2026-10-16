@@ -41,7 +41,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objVoucher.showMenu(objVoucher.securityLevel);
+      const html = objVoucher.showMenu(objVoucher.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       //const fixedCost = 'A';
@@ -71,14 +71,14 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('back')) {
 
-      /*
+
       let URL = (objVoucher.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}showtransactions.html?transactionId=${paramTransactionId}&appartmentId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}`;
       window.location.href = URL;
-      */
-      history.back();
+
+      //history.back();
     };
   });
 }

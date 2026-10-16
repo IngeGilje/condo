@@ -43,7 +43,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objProjects.showMenu(objProjects.securityLevel);
+      const html = objProjects.showMenu(objProjects.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';

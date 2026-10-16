@@ -37,7 +37,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objEmptyCalendars.showMenu(objEmptyCalendars.securityLevel);
+      const html = objEmptyCalendars.showMenu(objEmptyCalendars.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       await objAppartments.loadCondoTable(objEmptyCalendars.condominiumId);
@@ -59,7 +59,7 @@ async function main() {
     }
   } else {
 
-        showMessage('Server er ikke startet.'); 
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -117,7 +117,7 @@ function showFilter(year, month) {
   let html = startLineFilter('filter-frame');
 
   // Show years
-  html += showSelectedNumbers('filterYear', 'År',year, 2020, 2030,  true);
+  html += showSelectedNumbers('filterYear', 'År', year, 2020, 2030, true);
 
   // Show months
   html += showSelectedMonthsNew('filterMonth', 'Måned', month, true);
@@ -134,11 +134,14 @@ function showEmptyCalendars(year, month) {
   const text = findNameOfMonth(month) + " " + String(year);
 
   let html = startTable("Tømmeplan", text);
-  html += tableHeader( "Ansvarlig", "Dato", "Restavfall", "Papiravfall", "Matavfall", "Plastavfall", "Juletre", " ");
+  html += tableHeader("Ansvarlig", "Dato", "Restavfall", "Papiravfall", "Matavfall", "Plastavfall", "Juletre", " ");
 
   if (Number(document.querySelector('.filterMonth').value) < 10) month = "0" + month;
   const fromDate = Number(document.querySelector('.filterYear').value + month + "01");
-  const toDate = Number(document.querySelector('.filterYear').value + month + "31");
+
+  // last day in month
+  const day = new Date(year, month, 0).getDate();
+  const toDate = Number(document.querySelector('.filterYear').value + month + String(day));
   if (objEmptyCalendars.arrayEmptyCalendars.length > 0) {
     objEmptyCalendars.arrayEmptyCalendars.forEach((emptycalendar) => {
 

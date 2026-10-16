@@ -9,11 +9,6 @@ const objBudgets = new Budgets('budgets');
 const enableChanges = (objBudgets.securityLevel > 5);
 const applicationName = "showbudgets";
 
-// query parameters
-const queryParameters = new URLSearchParams(window.location.search);
-const paramProjectId = Number(queryParameters.get("projectId"));
-const paramYear = Number(queryParameters.get("year"));
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -35,7 +30,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objBudgets.showMenu(objBudgets.securityLevel);
+      const html = objBudgets.showMenu(objBudgets.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
@@ -43,13 +38,9 @@ async function main() {
       //const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objBudgets.condominiumId);
 
-      // Show header
-      //showHeader();
-
       // Show filter
       showFilter();
 
-      //const accountId = Number(document.querySelector('.filterAccountId').value);
       const year = Number(document.querySelector('.filterYear').value);
       await objBudgets.loadBudgetsTable(objBudgets.condominiumId, year, objBudgets.nineNine);
 
@@ -61,7 +52,7 @@ async function main() {
     }
   } else {
 
-        showMessage('Server er ikke startet.'); 
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -102,85 +93,11 @@ async function events() {
       let URL = (objBudgets.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}budget.html?&backApplication=${applicationName}.html&budgetId=${budgetId}&year=${year}`;
+      URL = `${URL}budget.html`;
       window.location.href = URL;
     };
   });
 }
-
-/*
-// update a accounts row
-document.addEventListener('change', async (event) => {
-
-  const arrayPrefixes = ['accountId', 'amount', 'text'];
-
-  if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
-    || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))
-    || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[2]))) {
-
-    // Find the first matching class
-    const className = arrayPrefixes
-      .map(prefix => objBudgets.getClassByPrefix(event.target, prefix))
-      .find(Boolean); // find the first non-null/undefined one
-
-    // Extract the number in the class name
-    let budgetId = 0;
-    let prefix = "";
-    if (className) {
-      prefix = arrayPrefixes.find(p => className.startsWith(p));
-      budgetId = Number(className.slice(prefix.length));
-    }
-
-    // Update amount
-    await updateBudgetsRow(budgetId);
-  };
-});
-*/
-
-/*
-// Delete budgets row
-document.addEventListener('click', async (event) => {
-
-  const arrayPrefixes = ['delete'];
-  if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
-
-    // Find the first matching class
-    const className = arrayPrefixes
-      .map(prefix => objBudgets.getClassByPrefix(event.target, prefix))
-      .find(Boolean); // find the first non-null/undefined one
-
-    // Extract the number in the class name
-    let budgetId = 0;
-    let prefix = "";
-    if (className) {
-      prefix = arrayPrefixes.find(p => className.startsWith(p));
-      budgetId = Number(className.slice(prefix.length));
-    }
-
-    await deleteBudgetRow(budgetId, className);
-
-    const year = Number(document.querySelector('.filterYear').value);
-    const accountId = Number(document.querySelector('.filterAccountId').value);
-    await objBudgets.loadBudgetsTable(objBudgets.condominiumId, year, accountId);
-
-    showBudgets();
-  };
-});
-*/
-
-/*
-// Log out
-document.addEventListener('click', async (event) => {
-  if (event.target.classList.contains('logOut')) {
-
-    let url = (objBudgets.serverStatus === 1)
-      ? 'http://ingegilje.no/'
-      : 'http://localhost/';
-    url = `${url}login.html`;
-    window.location.href = url;
-  };
-});
-*/
 
 // Calculate sum budget
 function calculateSum() {

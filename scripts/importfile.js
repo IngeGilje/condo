@@ -40,7 +40,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objImportFile.showMenu(objImportFile.securityLevel);
+      const html = objImportFile.showMenu(objImportFile.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       let transactionFile = true;
@@ -54,16 +54,17 @@ async function main() {
       await objAppartments.loadCondoTable(objImportFile.condominiumId);
       await objSuppliers.loadSuppliersTable(objImportFile.condominiumId);
 
-      const deleted = 'A';
-      const accountId = objImportFile.nineNine;
-      const appartmentId = objImportFile.nineNine;
-      let fromDate = 0;
-      let toDate = objImportFile.nineNine;
+      //const deleted = 'A';
+      //const accountId = objImportFile.nineNine;
+      //const appartmentId = objImportFile.nineNine;
+      //let fromDate = 0;
+      //let toDate = objImportFile.nineNine;
       await objDues.loadDuesTable(objImportFile.condominiumId);
 
-      amount = 0;
-      const orderBy = 'appartmentId ASC';
-      await objTransactions.loadTransactionsTable(orderBy, objImportFile.condominiumId, deleted, appartmentId, accountId, objImportFile.nineNine, amount, fromDate, toDate);
+      //amount = 0;
+      //const orderBy = 'appartmentId ASC';
+      //await objTransactions.loadTransactionsTable(orderBy, objImportFile.condominiumId, deleted, appartmentId, accountId, objImportFile.nineNine, amount, fromDate, toDate);
+      await objTransactions.loadTransactionsTableNew(objImportFile.condominiumId);
       await objCondominiums.loadCondominiumsTable();
 
       // Name of importfile
@@ -468,10 +469,9 @@ function checkTransaction(income, payment, date) {
 
   objTransactions.arrayTransactions.forEach((bankTransaction) => {
 
-    if (bankTransaction.transactionId === 1300) {
-      console.log('transactionId: ', bankTransaction.transactionId);
-    }
-    if (bankTransaction.income === income && bankTransaction.payment === payment && bankTransaction.date === date) {
+    if ((bankTransaction.income === income)
+      && (bankTransaction.payment === payment)
+      && (bankTransaction.date === date)) {
 
       bankTransactionExist = true;
     }
@@ -496,7 +496,7 @@ function showTransactions() {
 
     rowNumber++;
 
-    // insert a table row (<tr></td>)
+    // insert a table row
     html += objImportFile.insertTableRow('');
 
     // Date

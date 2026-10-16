@@ -12,25 +12,31 @@ const applicationName = "supplier";
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate LogIn
-if ((objSuppliers.condominiumId === 0) || (objSuppliers.user === null)) {
+// Call main when script loads
+main();
+async function main() {
 
-  // LogIn is not valid
-  const URL = (objUsers.serverStatus === 1)
-    ? 'http://ingegilje.no/login.html'
-    : 'http://localhost/login.html';
-  window.location.href = URL;
-} else {
+  // Validate LogIn
+  if ((objSuppliers.condominiumId === 0) || (objSuppliers.user === null)) {
 
-  // Call main when script loads
-  main();
-  async function main() {
+    // LogIn is not valid
+    const URL = (objUsers.serverStatus === 1)
+      ? 'http://ingegilje.no/login.html'
+      : 'http://localhost/login.html';
+    window.location.href = URL;
+  } else {
+
+    /*
+    // Call main when script loads
+    main();
+    async function main() {
+    */
 
     // Check if server is running
     if (await objUsers.checkServer()) {
 
       // Show menu
-      let html = objSuppliers.showMenu(objSuppliers.securityLevel);
+      const html = objSuppliers.showMenu(objSuppliers.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
@@ -52,7 +58,7 @@ if ((objSuppliers.condominiumId === 0) || (objSuppliers.user === null)) {
       events();
     } else {
 
-          showMessage('Server er ikke startet.'); 
+      showMessage('Server er ikke startet.');
     }
   }
 }
@@ -107,7 +113,7 @@ async function events() {
       const supplierId = Number(document.querySelector('.filterSupplierId').value);
       await deleteSuppliersRow(supplierId);
       //document.querySelector('.showDialog').style.display = "none";
-       const dialog = document.querySelector('.dialog');
+      const dialog = document.querySelector('.dialog');
       dialog.close();
     };
   });
@@ -117,7 +123,7 @@ async function events() {
     if (event.target.classList.contains('cancelButton')) {
 
       //document.querySelector('.showDialog').style.display = "none";
-       const dialog = document.querySelector('.dialog');
+      const dialog = document.querySelector('.dialog');
       dialog.close();
     };
   });
