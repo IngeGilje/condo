@@ -6,7 +6,7 @@ class Transactions extends Condos {
 
   // Transactions information
   arrayTransactions = Array;
-  #arrayTransactions = Array;
+  //#arrayTransactions = Array;
 
   // Show transactions
   showSelectedTransactionsNew(className, transactionId, selectNone, selectAll, enableChanges) {
@@ -122,7 +122,7 @@ class Transactions extends Condos {
   */
 
   // load transactions from transactions table
-  async loadTransactionsTableNew(condominiumId, alternativeArray = false) {
+  async loadTransactionsTable(condominiumId) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/transactions'
@@ -142,9 +142,8 @@ class Transactions extends Condos {
       });
 
       if (!response.ok) throw new Error("Network error (transactions)");
-      (alternativeArray)
-        ? this.#arrayTransactions = await response.json()
-        : this.arrayTransactions = await response.json();
+
+      this.arrayTransactions = await response.json();
     } catch (error) {
       console.log("Error loading transactions:", error);
     }

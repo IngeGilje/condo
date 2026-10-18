@@ -55,7 +55,7 @@ async function main() {
       await objBankAccounts.loadBankAccountsTable(objCommonCosts.condominiumId);
       //const orderBy = 'date DESC, income DESC';
       //await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, 'N', objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, 20200101, 20291231, false);
-      await objTransactions.loadTransactionsTableNew(objCommonCosts.condominiumId);
+      await objTransactions.loadTransactionsTable(objCommonCosts.condominiumId);
       objTransactions.arrayTransactions.sort((a, b) => b.date -  a.date);
 
 

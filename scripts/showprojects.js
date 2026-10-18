@@ -71,7 +71,7 @@ async function main() {
 
         //const orderBy = 'date DESC';
         //await objTransactions.loadTransactionsTable(orderBy, objProjects.condominiumId, 'N', objProjects.nineNine, objProjects.nineNine, objProjects.nineNine, 0, 2019010, 20991231);
-        await objTransactions.loadTransactionsTableNew(objProjects.condominiumId);
+        await objTransactions.loadTransactionsTable(objProjects.condominiumId);
         objTransactions.arrayTransactions.sort((a, b) => b.date - a.date);
 
         // show bank account transactions this project

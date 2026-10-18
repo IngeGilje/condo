@@ -64,7 +64,7 @@ async function main() {
       await objDues.loadDuesTable(objDues.condominiumId);
       //const orderBy = 'date DESC';
       //await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, deleted, appartmentId, objDues.nineNine, objDues.nineNine, 0, fromDate, toDate);
-      await objTransactions.loadTransactionsTableNew(objTransactions.condominiumId);
+      await objTransactions.loadTransactionsTable(objTransactions.condominiumId);
       objTransactions.arrayTransactions.sort((a, b) => b.date - a.date);
 
       // Show dues

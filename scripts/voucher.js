@@ -51,7 +51,7 @@ async function main() {
       //let toDate = 20991231;
       //const orderBy = 'transactionId DESC, date DESC, income DESC';
       //await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransactions.nineNine, 0, fromDate, toDate);
-      await objTransactions.loadTransactionsTableNew(objProjects.condominiumId);
+      await objTransactions.loadTransactionsTable(objProjects.condominiumId);
       objTransactions.arrayTransactions.sort((a, b) => b.transactionId - a.transactionId);
 
       // Show result

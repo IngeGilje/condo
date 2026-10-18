@@ -81,7 +81,7 @@ async function main() {
         // Show annual accounts
         //const orderBy = 'appartmentId ASC';
         //await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, deleted, objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, fromDate, toDate);
-        await objTransactions.loadTransactionsTableNew(objCommonCosts.condominiumId);
+        await objTransactions.loadTransactionsTable(objCommonCosts.condominiumId);
         objTransactions.arrayTransactions.sort((a, b) => a.appartmentId - b.appartmentId);
         showAnnualAccounts();
 

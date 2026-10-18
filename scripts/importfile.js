@@ -64,7 +64,7 @@ async function main() {
       //amount = 0;
       //const orderBy = 'appartmentId ASC';
       //await objTransactions.loadTransactionsTable(orderBy, objImportFile.condominiumId, deleted, appartmentId, accountId, objImportFile.nineNine, amount, fromDate, toDate);
-      await objTransactions.loadTransactionsTableNew(objImportFile.condominiumId);
+      await objTransactions.loadTransactionsTable(objImportFile.condominiumId);
       objTransactions.arrayTransactions.sort((a, b) => a.appartmentId -  b.appartmentId);
       await objCondominiums.loadCondominiumsTable();
 

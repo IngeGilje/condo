@@ -62,7 +62,7 @@ async function main() {
       await objProjects.loadProjectsTable(objTransactions.condominiumId);
       //const orderBy = 'date DESC, income DESC';
       //await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20991231);
-      await objTransactions.loadTransactionsTableNew(objProjects.condominiumId);
+      await objTransactions.loadTransactionsTable(objProjects.condominiumId);
       objTransactions.arrayTransactions.sort((a, b) => b.date - a.date);
 
       // show filter
@@ -80,7 +80,7 @@ async function main() {
       }
 
       //await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20991231);
-      await objTransactions.loadTransactionsTableNew(objProjects.condominiumId);
+      await objTransactions.loadTransactionsTable(objProjects.condominiumId);
       objTransactions.arrayTransactions.sort((a, b) => b.date - a.date);
 
       showFilter(transactionId);
@@ -402,7 +402,7 @@ async function updateTransactionRow(transactionId) {
 
     //const orderBy = 'date DESC, income DESC';
     //await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20291231);
-    await objTransactions.loadTransactionsTableNew(objProjects.condominiumId);
+    await objTransactions.loadTransactionsTable(objProjects.condominiumId);
     objTransactions.arrayTransactions.sort((a, b) => b.date - a.date);
 
     if (enableChanges) {
@@ -475,7 +475,7 @@ async function deleteTransactionsRow(transactionId) {
 
   //const orderBy = 'date DESC, income DESC';
   //await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20991231);
-  await objTransactions.loadTransactionsTableNew(objProjects.condominiumId);
+  await objTransactions.loadTransactionsTable(objProjects.condominiumId);
   objTransactions.arrayTransactions.sort((a, b) => b.date - a.date);
 
   // Show filter

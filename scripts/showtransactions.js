@@ -88,7 +88,7 @@ async function main() {
 
       //const orderBy = 'date DESC, income DESC';
       //await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 20200101, objTransactions.nineNine);
-      await objTransactions.loadTransactionsTableNew(objTransactions.condominiumId);
+      await objTransactions.loadTransactionsTable(objTransactions.condominiumId);
       objTransactions.arrayTransactions.sort((a, b) => b.date - a.date);
 
       // Show transactions

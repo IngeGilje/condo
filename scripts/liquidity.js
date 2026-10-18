@@ -44,7 +44,7 @@ async function main() {
       let toDate = getCurrentDate();
       toDate = formatNorDateToNumber(toDate);
       //await objTransactions.loadTransactionsTable(orderBy, objLiquidity.condominiumId, 'N', objLiquidity.nineNine, objLiquidity.nineNine, objLiquidity.nineNine, 0, fromDate, toDate);
-      await objTransactions.loadTransactionsTableNew(objLiquidity.condominiumId);
+      await objTransactions.loadTransactionsTable(objLiquidity.condominiumId);
       objTransactions.arrayTransactions.sort((a, b) => a.appartmentId -  b.appartmentId);
 
       // Show filter
