@@ -1,11 +1,12 @@
 
 class Appartments extends Condos {
 
-  // Condo information
-  arrayCondo;
+  // appartment information
+  arrayAppartments;
 
-  // Find selected condo id
-  getSelectedCondoId(className) {
+  /*
+  // Find selected appartment id
+  getSelectedAppartments(className) {
 
     let appartmentId = 0;
 
@@ -14,33 +15,33 @@ class Appartments extends Condos {
 
       appartmentId = Number(document.querySelector(`.${className}`).value);
       appartmentId = (appartmentId === 0)
-        ? this.arrayCondo.at(-1)?.appartmentId ?? 0
+        ? this.arrayAppartments.at(-1)?.appartmentId ?? 0
         : appartmentId;
     } else {
 
-      // Get last id in last object in condo array
-      appartmentId = (this.arrayCondo.length > 0)
-        ? this.arrayCondo.at(-1)?.appartmentId ?? 0
+      // Get last id in last object in appartments array
+      appartmentId = (this.arrayAppartments.length > 0)
+        ? this.arrayAppartments.at(-1)?.appartmentId ?? 0
         : 0;
     }
 
     return appartmentId;
   }
+  */
 
-  getCondoNameById(appartmentId) {
+  getAppartmentNameById(appartmentId) {
 
-    //let condoName;
-    const rowNumberCondo = this.arrayCondo.findIndex(condo => condo.appartmentId === appartmentId);
-    const condoName = this.arrayCondo[rowNumberCondo]?.name ?? '';
-    return condoName;
+    const rowNumberAppartments = this.arrayAppartments.findIndex(appartment => appartment.appartmentId === appartmentId);
+    const appartmentName = this.arrayAppartments[rowNumberAppartments]?.name ?? '';
+    return appartmentName;
   }
 
-  // Select condo Id
+  // Select appartment Id
   selectCondoId(appartmentId, className) {
 
-    // Check if condo id exist
-    const rowNumberCondo = this.arrayCondo.findIndex(condo => condo.appartmentId === appartmentId);
-    if (rowNumberCondo !== -1) {
+    // Check if appartment id exist
+    const rowNumberAppartments = this.arrayAppartments.findIndex(appartment => appartment.appartmentId === appartmentId);
+    if (rowNumberAppartments !== -1) {
 
       document.querySelector(`.select-${className}`).value =
         appartmentId;
@@ -51,7 +52,7 @@ class Appartments extends Condos {
     }
   }
 
-  showSelectedCondos(className, style, appartmentId, selectNone, selectAll, enableChanges) {
+  showSelectedAppartments(className, style, appartmentId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -65,22 +66,22 @@ class Appartments extends Condos {
         ${(enableChanges) ? '' : 'disabled'}
       >`;
 
-    // Check if condos array is empty
-    if (this.arrayCondo.length > 0) {
-      this.arrayCondo.forEach((condo) => {
+    // Check if appartments array is empty
+    if (this.arrayAppartments.length > 0) {
+      this.arrayAppartments.forEach((appartment) => {
 
         html += `
         <option 
-          value=${condo.appartmentId}
-          ${(condo.appartmentId === appartmentId) ? 'selected' : ''}
+          value=${appartment.appartmentId}
+          ${(appartment.appartmentId === appartmentId) ? 'selected' : ''}
         >
-          &nbsp;&nbsp;${condo.name.trim()}&nbsp;&nbsp;
+          &nbsp;&nbsp;${appartment.name.trim()}&nbsp;&nbsp;
         </option>`;
-        if (condo.appartmentId === appartmentId) selectedValue = true;
+        if (appartment.appartmentId === appartmentId) selectedValue = true;
       });
     } else {
 
-      // No condos
+      // No appartments
       html += `
       <option 
         value="0" 
@@ -92,7 +93,7 @@ class Appartments extends Condos {
     }
 
     // Select all
-    if (selectAll && (this.arrayCondo.length > 0)) {
+    if (selectAll && (this.arrayAppartments.length > 0)) {
 
       html += `
       <option 
@@ -105,7 +106,7 @@ class Appartments extends Condos {
     }
 
     // Select none
-    if (selectNone && (this.arrayCondo.length > 0)) {
+    if (selectNone && (this.arrayAppartments.length > 0)) {
       html += `
       <option 
         value=0
@@ -123,13 +124,13 @@ class Appartments extends Condos {
     return html;
   }
 
-  // Show condos
-  showSelectedCondosNew(className, label, appartmentId, selectNone, selectAll, enableChanges) {
+  // Show appartments
+  showSelectedAppartmentsNew(className, label, appartmentId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
     let html = `
-    <!-- start showSelectedCondosNew -->
+    <!-- start showSelectedAppartmentsNew -->
     <div 
       class="field"
     >
@@ -143,22 +144,22 @@ class Appartments extends Condos {
       >
     `;
 
-    // Check if condos array is empty
-    if (this.arrayCondo.length > 0) {
-      this.arrayCondo.forEach((condo) => {
+    // Check if appartments array is empty
+    if (this.arrayAppartments.length > 0) {
+      this.arrayAppartments.forEach(appartment => {
 
         html += `
         <option 
-          value=${condo.appartmentId}
-          ${(condo.appartmentId === appartmentId) ? 'selected' : ''}
+          value=${appartment.appartmentId}
+          ${(appartment.appartmentId === appartmentId) ? 'selected' : ''}
         >
-          ${condo.name.trim()}
+          ${appartment.name.trim()}
         </option>`;
-        if (condo.appartmentId === appartmentId) selectedValue = true;
+        if (appartment.appartmentId === appartmentId) selectedValue = true;
       });
     } else {
 
-      // No condos
+      // No appartments
       html += `
       <option 
         value="0" 
@@ -170,7 +171,7 @@ class Appartments extends Condos {
     }
 
     // Select all
-    if (selectAll && (this.arrayCondo.length > 0)) {
+    if (selectAll && (this.arrayAppartments.length > 0)) {
 
       html += `
       <option 
@@ -183,7 +184,7 @@ class Appartments extends Condos {
     }
 
     // Select none
-    if (selectNone && (this.arrayCondo.length > 0)) {
+    if (selectNone && (this.arrayAppartments.length > 0)) {
       html += `
       <option 
         value=0
@@ -197,36 +198,19 @@ class Appartments extends Condos {
     html += `
       </select >
     </div>
-    <!-- end showSelectedCondosNew -->
+    <!-- end showSelectedAppartmentsNew -->
     `;
 
     return html;
   }
 
-  // Show condos 
-  showLineFilterCondos(className, label, appartmentId, selectNone, selectAll, enableChanges) {
+  // Show appartments 
+  showLineFilterAppartments(className, label, appartmentId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
-    /*
     let html = `
-    <!-- start showLineFilterCondos -->
-    <div 
-      class="field"
-    >
-      <label for="${className}">
-        ${label}
-      </label>
-      <select 
-        id="${className}"
-        class="${className}"
-        ${(enableChanges) ? '' : 'readonly'}
-      >
-    `;
-    */
-
-    let html = `
-    <!-- start showLineFilterCondos -->
+    <!-- start showLineFilterAppartments -->
     <div 
       class="filter-field"
     >
@@ -248,22 +232,22 @@ class Appartments extends Condos {
           >
     `;
 
-    // Check if condos array is empty
-    if (this.arrayCondo.length > 0) {
-      this.arrayCondo.forEach((condo) => {
+    // Check if appartments array is empty
+    if (this.arrayAppartments.length > 0) {
+      this.arrayAppartments.forEach(appartment => {
 
         html += `
         <option 
-          value=${condo.appartmentId}
-          ${(condo.appartmentId === appartmentId) ? 'selected' : ''}
+          value=${appartment.appartmentId}
+          ${(appartment.appartmentId === appartmentId) ? 'selected' : ''}
         >
-          ${condo.name.trim()}
+          ${appartment.name.trim()}
         </option>`;
-        if (condo.appartmentId === appartmentId) selectedValue = true;
+        if (appartment.appartmentId === appartmentId) selectedValue = true;
       });
     } else {
 
-      // No condos
+      // No appartments
       html += `
       <option 
         value="0" 
@@ -275,7 +259,7 @@ class Appartments extends Condos {
     }
 
     // Select all
-    if (selectAll && (this.arrayCondo.length > 0)) {
+    if (selectAll && (this.arrayAppartments.length > 0)) {
 
       html += `
       <option 
@@ -288,7 +272,7 @@ class Appartments extends Condos {
     }
 
     // Select none
-    if (selectNone && (this.arrayCondo.length > 0)) {
+    if (selectNone && (this.arrayAppartments.length > 0)) {
       html += `
       <option 
         value=0
@@ -304,16 +288,16 @@ class Appartments extends Condos {
         </div>
       </div>
     </div>
-    <!-- end showLineFilterCondos -->
+    <!-- end showLineFilterAppartments -->
     `;
 
     return html;
   }
 
-  // get condo
-  async loadCondoTable(condominiumId) {
+  // get appartments
+  async loadAppartmentsTable(condominiumId) {
 
-    // Get condo
+    // Get appartment
     const URL = (this.serverStatus === 1)
       ? '/api/appartments'
       : 'http://localhost:3000/appartments';
@@ -329,15 +313,15 @@ class Appartments extends Condos {
           condominiumId: condominiumId
         })
       });
-      if (!response.ok) throw new Error("Network error (condo)");
-      this.arrayCondo = await response.json();
+      if (!response.ok) throw new Error("Network error (appartment.");
+      this.arrayAppartments = await response.json();
     } catch (error) {
-      console.log("Error loading condos:", error);
+      console.log("Error loading appartments:", error);
     }
   }
 
   // Get the highest ID in the table
-  async getHighestCondoId(condominiumId) {
+  async getHighestAppartmentd(condominiumId) {
     const URL = (this.serverStatus === 1)
       ? '/api/appartments'
       : 'http://localhost:3000/appartments';
@@ -353,15 +337,15 @@ class Appartments extends Condos {
           condominiumId: condominiumId
         })
       });
-      if (!response.ok) throw new Error("Network error (condo)");
-      this.arrayCondo = await response.json();
+      if (!response.ok) throw new Error("Network error (appartment.");
+      this.arrayAppartments = await response.json();
     } catch (error) {
-      console.log("Error selecting condos:", error);
+      console.log("Error selecting appartments:", error);
     }
   }
 
-  // update condo row in condo table
-  async updateCondoTable(appartmentId, user, name, street, address2, postalCode, city, squareMeters) {
+  // update appartments row
+  async updateAppartmentTable(appartmentId, user, name, street, address2, postalCode, city, squareMeters) {
 
     if (address2 === 'undefined') address2 = '';
     const URL = (this.serverStatus === 1)
@@ -387,15 +371,15 @@ class Appartments extends Condos {
           squareMeters: squareMeters
         })
       });
-      if (!response.ok) throw new Error("Network error (condo)");
-      this.arrayCondo = await response.json();
+      if (!response.ok) throw new Error("Network error (appartment");
+      this.arrayAppartments = await response.json();
     } catch (error) {
-      console.log("Error updating condo:", error);
+      console.log("Error updating appartments:", error);
     }
   }
 
-  // insert condo row in condo table
-  async insertCondoTable(condominiumId, user, name, street, address2, postalCode, city, squareMeters) {
+  // insert appartments row
+  async insertAppartmentTable(condominiumId, user, name, street, address2, postalCode, city, squareMeters) {
     if (address2 === 'undefined') address2 = '';
     const URL = (this.serverStatus === 1)
       ? '/api/appartments'
@@ -419,15 +403,15 @@ class Appartments extends Condos {
           squareMeters: squareMeters
         })
       });
-      if (!response.ok) throw new Error("Network error (condo)");
-      this.arrayCondo = await response.json();
+      if (!response.ok) throw new Error("Network error (appartment)");
+      this.arrayAppartments = await response.json();
     } catch (error) {
-      console.log("Error inserting condo:", error);
+      console.log("Error inserting appartment:", error);
     }
   }
 
-  // delete condo row
-  async deleteCondoTable(appartmentId, user) {
+  // delete appartments row
+  async deleteAppartmentTable(appartmentId, user) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/appartments'
@@ -445,10 +429,10 @@ class Appartments extends Condos {
           user: user
         })
       });
-      if (!response.ok) throw new Error("Network error (condo)");
-      this.arrayCondo = await response.json();
+      if (!response.ok) throw new Error("Network error (appartments)");
+      this.arrayAppartments = await response.json();
     } catch (error) {
-      console.log("Error deleting condo:", error);
+      console.log("Error deleting appartments:", error);
     }
   }
 }

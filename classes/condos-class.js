@@ -131,7 +131,7 @@ class Condos {
     },
     {
       applicationName: 'appartment.html',
-      className: "condo",
+      className: "appartment",
       text: "Rediger Leilighet",
       securityLevel: 6
     },
@@ -494,8 +494,8 @@ class Condos {
     return (bankAccountName);
   }
 
-  // get condo Id from From Bank Account
-  getCondoId(fromBankAccount) {
+  // get appartment Id from From Bank Account
+  getAppartmentId(fromBankAccount) {
 
     let appartmentId = 0;
 
@@ -1573,13 +1573,15 @@ function generatePassword(passwordLength, includeLowercase, includeUppercase, in
   return password;
 }
 
+/*
 // Removes the iframe
 function removeIframe() {
-  const iframe = document.getElementById("div-condo-login");
+  const iframe = document.getElementById("div-appartment-login");
   if (iframe) {
     iframe.remove();
   }
 }
+*/
 
 // Enable/ disable button
 function disableButton(className, disabled) {

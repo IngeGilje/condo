@@ -40,7 +40,7 @@ async function main() {
       const html = objEmptyCalendars.showMenu(objEmptyCalendars.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      await objAppartments.loadCondoTable(objEmptyCalendars.condominiumId);
+      await objAppartments.loadAppartmentsTable(objEmptyCalendars.condominiumId);
 
       // Show filter
       calendarDate = getCurrentDate();
@@ -151,8 +151,8 @@ function showEmptyCalendars(year, month) {
         html += "<tr>";
 
         // appartmentId 1
-        const condoName = objAppartments.getCondoNameById(emptycalendar.appartmentId);
-        html += showTableText("condoId22", condoName);
+        const appartmentName = objAppartments.getAppartmentNameById(emptycalendar.appartmentId);
+        html += showTableText("condoId22", appartmentName);
 
         // date 2
         let date = emptycalendar.date;

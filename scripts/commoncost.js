@@ -49,13 +49,15 @@ async function main() {
       const resident = 'Y';
       await objUsers.loadUsersTable(objCommonCosts.condominiumId, resident, objCommonCosts.nineNine);
       await objCondominiums.loadCondominiumsTable();
-      await objAppartments.loadCondoTable(objCommonCosts.condominiumId);
+      await objAppartments.loadAppartmentsTable(objCommonCosts.condominiumId);
       await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
       await objBudgets.loadBudgetsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine, objCommonCosts.nineNine);
       await objBankAccounts.loadBankAccountsTable(objCommonCosts.condominiumId);
       //const orderBy = 'date DESC, income DESC';
       //await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, 'N', objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, 20200101, 20291231, false);
       await objTransactions.loadTransactionsTableNew(objCommonCosts.condominiumId);
+      objTransactions.arrayTransactions.sort((a, b) => b.date -  a.date);
+
 
       //const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objCommonCosts.condominiumId);
@@ -115,7 +117,7 @@ async function events() {
   // update a commoncosts row
   document.addEventListener('change', async (event) => {
 
-    const arrayPrefixes = ['commonCostSquareMeter', 'fixedCostCondo'];
+    const arrayPrefixes = ['commonCostSquareMeter', 'fixedCostAppartment'];
 
     if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
       || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))) {
@@ -225,11 +227,11 @@ function showCommonCost(year) {
   html += "<div></div>";
   //html += "<div></div>";
 
-  // fixed cost per condo per year
-  let fixedCostCondo = 0;
-  if (rowNumberCommonCost !== -1) fixedCostCondo = objCommonCosts.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo;
-  fixedCostCondo = formatNumberToNorAmount(fixedCostCondo);
-  html += inputText('fixedCostCondo', 'Fast kostnad', fixedCostCondo, 11, enableChanges);
+  // fixed cost per appartment per year
+  let fixedCostAppartment = 0;
+  if (rowNumberCommonCost !== -1) fixedCostAppartment = objCommonCosts.arrayCommonCosts[rowNumberCommonCost].fixedCostAppartment;
+  fixedCostAppartment = formatNumberToNorAmount(fixedCostAppartment);
+  html += inputText('fixedCostAppartment', 'Fast kostnad', fixedCostAppartment, 11, enableChanges);
 
   // calculated fixed cost
   // month
@@ -377,13 +379,13 @@ async function updateCommonCostsRow(year) {
   commonCostSquareMeter = formatNorAmountToNumber(commonCostSquareMeter);
   const validCommonCostSquareMeter = validateIntervalNew('commonCostSquareMeter', 'Ugyldig Felleskost/m2', commonCostSquareMeter, 0, objCommonCosts.nineNine);
 
-  // fix common cost per condo
-  let fixedCostCondo = document.querySelector('.fixedCostCondo').value;
-  fixedCostCondo = formatNorAmountToNumber(fixedCostCondo);
-  const validFixedCostCondo = validateIntervalNew('fixedCostCondo', 'Ugyldig fast kost per leilighet', fixedCostCondo, 0, objCommonCosts.nineNine);
+  // fix common cost per appartment
+  let fixedCostAppartment = document.querySelector('.fixedCostAppartment').value;
+  fixedCostAppartment = formatNorAmountToNumber(fixedCostAppartment);
+  const validfixedCostAppartment = validateIntervalNew('fixedCostAppartment', 'Ugyldig fast kost per leilighet', fixedCostAppartment, 0, objCommonCosts.nineNine);
 
   // Validate commoncosts columns
-  if (validYear && validCommonCostSquareMeter && validFixedCostCondo) {
+  if (validYear && validCommonCostSquareMeter && validfixedCostAppartment) {
 
     document.querySelector('.showMessage').style.display = "none";
 
@@ -391,11 +393,11 @@ async function updateCommonCostsRow(year) {
     if (rowNumberCommonCost !== -1) {
 
       // update a commoncosts row
-      await objCommonCosts.updateCommonCostsTable(objCommonCosts.user, commonCostId, year, commonCostSquareMeter, fixedCostCondo);
+      await objCommonCosts.updateCommonCostsTable(objCommonCosts.user, commonCostId, year, commonCostSquareMeter, fixedCostAppartment);
     } else {
 
       // Insert a commoncosts row
-      await objCommonCosts.insertCommonCostsTable(objCommonCosts.condominiumId, objCommonCosts.user, year, commonCostSquareMeter, fixedCostCondo);
+      await objCommonCosts.insertCommonCostsTable(objCommonCosts.condominiumId, objCommonCosts.user, year, commonCostSquareMeter, fixedCostAppartment);
       await objCommonCosts.getHighestCommonCostId(objCommonCosts.condominiumId);
       commonCostId = objCommonCosts.arrayCommonCosts[0].commonCostId;
     }

@@ -175,7 +175,6 @@ function showNews(newsId) {
   // title
   const title = objNews.arrayNews[rowNumberNews]?.title ?? '';
   html += inputGridWideText('title', "Tittel", title, 45, 1);
-  //html += "<div></div>";
 
   // content
   const content = objNews.arrayNews[rowNumberNews]?.content ?? '';

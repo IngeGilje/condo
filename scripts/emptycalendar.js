@@ -40,7 +40,7 @@ async function main() {
       const html = objEmptyCalendars.showMenu(objEmptyCalendars.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      await objAppartments.loadCondoTable(objEmptyCalendars.condominiumId);
+      await objAppartments.loadAppartmentsTable(objEmptyCalendars.condominiumId);
 
       // Show filter
       let emptyCalendarId = 0;
@@ -189,9 +189,9 @@ function showEmptyCalendar(emptyCalendarId) {
   emptyingCalendarDate = formatNumberToISODate(emptyingCalendarDate);
   html += inputDate('emptyingCalendarDate', 'Dato', emptyingCalendarDate, enableChanges);
 
-  // condo
+  // appartment id
   const appartmentId = objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar]?.appartmentId ?? 0;
-  html += objAppartments.showSelectedCondosNew('appartmentId', 'Ansvarlig', appartmentId, 'Velg ansvarlig', '', true);
+  html += objAppartments.showSelectedAppartmentsNew('appartmentId', 'Ansvarlig', appartmentId, 'Velg ansvarlig', '', true);
 
   // residual waste 
   let residualWaste = objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar]?.residualWaste ?? "N";

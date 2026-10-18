@@ -24,14 +24,16 @@ class Transactions extends Condos {
     if (this.arrayTransactions.length > 0) {
       this.arrayTransactions.forEach((transaction) => {
 
-        html += `
+        if (transaction.deleted === "N") {
+          html += `
         <option 
           value=${transaction.transactionId}
           ${(transaction.transactionId === transactionId) ? 'selected' : ''}
         >
           ${transaction.transactionId}
         </option>`;
-        if (transaction.transactionId === transactionId) selectedValue = true;
+          if (transaction.transactionId === transactionId) selectedValue = true;
+        }
       });
     } else {
 
@@ -79,6 +81,7 @@ class Transactions extends Condos {
     return html;
   }
 
+  /*
   // get transactions
   async loadTransactionsTable(orderBy, condominiumId, deleted, appartmentId, accountId, projectId, amount, fromDate, toDate, alternativeArray = false) {
 
@@ -116,9 +119,10 @@ class Transactions extends Condos {
       console.log("Error loading Transactions:", error);
     }
   }
+  */
 
   // load transactions from transactions table
-  async loadTransactionsTableNew(condominiumId) {
+  async loadTransactionsTableNew(condominiumId, alternativeArray = false) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/transactions'
@@ -132,13 +136,15 @@ class Transactions extends Condos {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          action: 'selectnew',
+          action: 'select',
           condominiumId: condominiumId
         })
       });
 
       if (!response.ok) throw new Error("Network error (transactions)");
-      this.arrayTransactions = await response.json();
+      (alternativeArray)
+        ? this.#arrayTransactions = await response.json()
+        : this.arrayTransactions = await response.json();
     } catch (error) {
       console.log("Error loading transactions:", error);
     }
@@ -322,21 +328,28 @@ class Transactions extends Condos {
     return amountPeriod;
   }
 
+  /*
   // get Transactions from start (20200101) to toDate
-  async getTransactions(condominiumId, appartmentId, toDate) {
+  async getOpeningBalance(appartmentId, toDate) {
 
     let openingBalance = 0;
 
-    const orderBy = 'date ASC';
-    await this.loadTransactionsTable(orderBy, condominiumId, 'N', appartmentId, this.nineNine, this.nineNine, 0, 20200101, toDate, true);
-    objTransactions.#arrayTransactions.forEach((bankAccountMovement) => {
+    //const orderBy = 'date ASC';
+    //await this.loadTransactionsTable(orderBy, condominiumId, 'N', appartmentId, this.nineNine, this.nineNine, 0, 20200101, toDate, true);
+    this.arrayTransactions.forEach((transaction) => {
 
-      openingBalance += bankAccountMovement.income;
-      openingBalance += bankAccountMovement.payment;
+      if ((transaction.deleted === "N")
+        && (transaction.appartmentId === appartmentId)
+        && (transaction.date >= 20200101 && transaction.date <= toDate)) {
+
+        openingBalance += transaction.income;
+        openingBalance += transaction.payment;
+      }
     });
 
     return openingBalance;
   }
+  */
 
   // Get the highest ID in the table
   async getHighestTransactionId(condominiumId) {

@@ -186,7 +186,7 @@ function showUser(userId) {
 
   // appartmentId
   const appartmentId = objUsers.arrayUsers[rowNumberUser]?.appartmentId ?? 0;
-  html += objAppartments.showSelectedCondosNew('appartmentId', 'Leilighet', appartmentId, '', 'Velg leilighet', enableChanges);
+  html += objAppartments.showSelectedAppartmentsNew('appartmentId', 'Leilighet', appartmentId, '', 'Velg leilighet', enableChanges);
   html += "<div></div>";
 
   // email
@@ -378,7 +378,7 @@ function resetValues() {
   // reset e-mail
   document.querySelector('.email').value = '';
 
-  // reset condo Id
+  // reset appartment Id
   document.querySelector('.appartmentId').value = 0;
 
   // reset first name
@@ -415,5 +415,5 @@ async function loadAllTables(condominiumId) {
 
   await objUsers.loadUsersTable(condominiumId, resident, objUsers.nineNine);
   await objCondominiums.loadCondominiumsTable(condominiumId);
-  await objAppartments.loadCondoTable(condominiumId);
+  await objAppartments.loadAppartmentsTable(condominiumId);
 };

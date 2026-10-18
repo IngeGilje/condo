@@ -1,7 +1,7 @@
 // Import of bank transaction file 
 
-// transactions
-let arrayTransactions = [];
+// csv file for bank transactions
+let arrayBankTransactions = [];
 
 // Activate objects
 const today = new Date();
@@ -51,7 +51,7 @@ async function main() {
       await objAccounts.loadAccountsTable(objImportFile.condominiumId);
       await objBankAccounts.loadBankAccountsTable(objImportFile.condominiumId);
       await objUserBankAccounts.loadUserBankAccountsTable(objImportFile.condominiumId, objImportFile.nineNine, objImportFile.nineNine);
-      await objAppartments.loadCondoTable(objImportFile.condominiumId);
+      await objAppartments.loadAppartmentsTable(objImportFile.condominiumId);
       await objSuppliers.loadSuppliersTable(objImportFile.condominiumId);
 
       //const deleted = 'A';
@@ -65,6 +65,7 @@ async function main() {
       //const orderBy = 'appartmentId ASC';
       //await objTransactions.loadTransactionsTable(orderBy, objImportFile.condominiumId, deleted, appartmentId, accountId, objImportFile.nineNine, amount, fromDate, toDate);
       await objTransactions.loadTransactionsTableNew(objImportFile.condominiumId);
+      objTransactions.arrayTransactions.sort((a, b) => a.appartmentId -  b.appartmentId);
       await objCondominiums.loadCondominiumsTable();
 
       // Name of importfile
@@ -148,10 +149,10 @@ function createTransactionsArray() {
       // remove first and last "
       text = text.replace(/^"|"$/g, '');
 
-      // Condo id
+      // appartment id
       bankAccountFrom = bankAccountFrom.slice(0, 11);
-      const appartmentId = objAppartments.getCondoId(bankAccountFrom);
-      const condoName = objAppartments.getCondoNameById(appartmentId);
+      const appartmentId = objAppartments.getAppartmentId(bankAccountFrom);
+      const appartmentName = objAppartments.getAppartmentNameById(appartmentId);
 
       // Income
       income = formatNorAmountToNumber(income);
@@ -215,7 +216,7 @@ function createTransactionsArray() {
           transactionsId: transactionsId,
           accountingDate: accountingDate,
           appartmentId: appartmentId,
-          condoName: condoName,
+          appartmentName: appartmentName,
           accountId: accountId,
           accountName: accountName,
           fromBankAccount: bankAccountFrom,
@@ -227,7 +228,8 @@ function createTransactionsArray() {
           text: text
         };
 
-        arrayTransactions.push(objTransaction);
+        // csv file for bank transactions
+        arrayBankTransactions.push(objTransaction);
       }
     }
   });
@@ -384,94 +386,16 @@ async function updateOpeningClosingBalance() {
   });
 };
 
-// Get opening balance
-function getOpeningBalance() {
-
-  textFile.forEach((row) => {
-
-    [accountingDate, description, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
-      row.split(';');
-
-    if (accountingDate.includes("Inngående saldo")) {
-
-      // remove first and last " in openingBalance
-      openingBalance = description.replace(/\./g, "");
-      openingBalance = openingBalance.replace(/\"/g, "");
-      openingBalance = openingBalance.replace(/ /g, "");
-    }
-  });
-
-  return openingBalance;
-}
-
-// Get opening balance date
-function getOpeningBalanceDate() {
-
-  let openingBalanceDate;
-
-  textFile.forEach((row) => {
-
-    [accountingDate, description, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
-      row.split(';');
-
-    if (accountingDate.includes("Inngående saldo pr")) {
-
-      openingBalanceDate = accountingDate.match(/\d{2}\.\d{2}\.\d{4}/);
-    }
-  });
-
-  return openingBalanceDate ? openingBalanceDate[0] : null;
-}
-
-/*
-// Get closing balance date
-function getClosingBalanceDate() {
- 
-  let closingBalanceDate;
- 
-  textFile.forEach((row) => {
- 
-    [accountingDate, description, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
-      row.split(';');
- 
-    if (accountingDate.includes("Utgående saldo pr")) {
- 
-      closingBalanceDate =
-        accountingDate.match(/\d{2}\.\d{2}\.\d{4}/);
-    }
-  });
- 
-  return (closingBalanceDate) ? closingBalanceDate[0] : null;
-}
-*/
-
-/*
-// reset Transactions
-function resetTransactions() {
-
-  // Show columns
-  //document.querySelector(".div-importfile-columnLineNumber").innerHTML = '';
-  document.querySelector(".div-importfile-columnAccountingDate").innerHTML = '';
-  document.querySelector(".div-importfile-columnName").innerHTML = '';
-  document.querySelector(".div-importfile-columnAccountName").innerHTML = '';
-  document.querySelector(".div-importfile-columnFromBankAccount").innerHTML = '';
-  document.querySelector(".div-importfile-columnToBankAccount").innerHTML = '';
-  document.querySelector(".div-importfile-columnIncome").innerHTML = '';
-  document.querySelector(".div-importfile-columnPayment").innerHTML = '';
-  document.querySelector(".div-importfile-columnText").innerHTML = '';
-}
-*/
-
 // Check if Transactions exists
 function checkTransaction(income, payment, date) {
 
   let bankTransactionExist = false;
 
-  objTransactions.arrayTransactions.forEach((bankTransaction) => {
+  objTransactions.arrayTransactions.forEach((transaction) => {
 
-    if ((bankTransaction.income === income)
-      && (bankTransaction.payment === payment)
-      && (bankTransaction.date === date)) {
+    if ((transaction.income === income)
+      && (transaction.payment === payment)
+      && (transaction.date === date)) {
 
       bankTransactionExist = true;
     }
@@ -492,8 +416,9 @@ function showTransactions() {
 
   rowNumber = 0;
 
-  arrayTransactions.forEach((transaction) => {
-
+  // csv file for bank transactions
+  arrayBankTransactions.forEach((transaction) => {
+    
     rowNumber++;
 
     // insert a table row
@@ -503,9 +428,9 @@ function showTransactions() {
     let className = `accountingDate${rowNumber}`;
     html += showTableText(className, transaction.accountingDate);
 
-    // Condo name
-    className = `condoName${rowNumber}`;
-    html += showTableText(className, transaction.condoName);
+    // appartment name
+    className = `appartmentName${rowNumber}`;
+    html += showTableText(className, transaction.appartmentName);
 
     // Account name
     className = `accountName${rowNumber}`;
@@ -566,7 +491,8 @@ function showTransactions() {
 // Update transactions table
 async function updateTransactions() {
 
-  arrayTransactions.forEach(async (transaction) => {
+  // csv file for bank transactions
+  arrayBankTransactions.forEach(async (transaction) => {
 
     const transactionId = 0;  // not in use
 

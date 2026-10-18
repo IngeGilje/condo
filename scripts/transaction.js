@@ -56,12 +56,14 @@ async function main() {
       await objAccounts.loadAccountsTable(objTransactions.condominiumId);
       await objBankAccounts.loadBankAccountsTable(objTransactions.condominiumId);
       await objUserBankAccounts.loadUserBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine, objTransactions.nineNine);
-      await objAppartments.loadCondoTable(objTransactions.condominiumId);
+      await objAppartments.loadAppartmentsTable(objTransactions.condominiumId);
       await objCondominiums.loadCondominiumsTable();
       await objSuppliers.loadSuppliersTable(objTransactions.condominiumId);
       await objProjects.loadProjectsTable(objTransactions.condominiumId);
-      const orderBy = 'date DESC, income DESC';
-      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20991231);
+      //const orderBy = 'date DESC, income DESC';
+      //await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20991231);
+      await objTransactions.loadTransactionsTableNew(objProjects.condominiumId);
+      objTransactions.arrayTransactions.sort((a, b) => b.date - a.date);
 
       // show filter
       let transactionId = 0;
@@ -77,7 +79,9 @@ async function main() {
         transactionId = paramTransactionId;
       }
 
-      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20991231);
+      //await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20991231);
+      await objTransactions.loadTransactionsTableNew(objProjects.condominiumId);
+      objTransactions.arrayTransactions.sort((a, b) => b.date - a.date);
 
       showFilter(transactionId);
 
@@ -264,64 +268,33 @@ function showTransaction(transactionId) {
   html += "<div></div>";
   //html += "<div></div>";
 
-  // Condo
-  /*
-  let appartmentId = (rowNumberTransaction === -1)
-    ? ''
-    : objTransactions.arrayTransactions[rowNumberTransaction].appartmentId;
-  */
+  // appartment Id
   const appartmentId = objTransactions.arrayTransactions[rowNumberTransaction]?.appartmentId ?? 0;
-  html += objAppartments.showSelectedCondosNew('appartmentId', 'Leilighet', appartmentId, 'Velg leilighet', '', enableChanges);
+  html += objAppartments.showSelectedAppartmentsNew('appartmentId', 'Leilighet', appartmentId, 'Velg leilighet', '', enableChanges);
 
   // Account
-  /*
-  let accountId = (rowNumberTransaction === -1)
-    ? ''
-    : objTransactions.arrayTransactions[rowNumberTransaction].accountId;
-  */
   const accountId = objTransactions.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('accountId', 'Konto', accountId, 'Velg konto', '', enableChanges);
 
   // project
-  /*
-  let projectId = (rowNumberTransaction === -1)
-    ? ''
-    : objTransactions.arrayTransactions[rowNumberTransaction].projectId;
-  */
   const projectId = objTransactions.arrayTransactions[rowNumberTransaction]?.projectId ?? 0;
   html += objProjects.showSelectedProjectsNew('projectId', 'Prosjekt', projectId, 'Velg prosjekt', '', enableChanges);
 
   // income
-  /*
-  let income = (rowNumberTransaction === -1)
-    ? ''
-    : objTransactions.arrayTransactions[rowNumberTransaction].income;
-  */
   let income = objTransactions.arrayTransactions[rowNumberTransaction]?.income ?? '';
   income = formatNumberToNorAmount(income);
   //html += showTextNew('Inntekt', 'income', income, enableChanges, "Inntekt");
   html += inputText('income', 'Inntekt', income, 11, enableChanges);
 
   // payment
-  /*
-  let payment = (rowNumberTransaction === -1)
-    ? "0"
-    : objTransactions.arrayTransactions[rowNumberTransaction].payment;
-  */
   let payment = objTransactions.arrayTransactions[rowNumberTransaction]?.payment ?? 0;
   payment = formatNumberToNorAmount(payment);
   //html += showTextNew('Betaling', 'payment', payment, enableChanges, "Betaling");
   html += inputText('payment', 'Betaling', payment, 11, enableChanges);
 
   // kilowattHour
-  /*
-  let kilowattHour = (rowNumberTransaction === -1)
-    ? "0"
-    : objTransactions.arrayTransactions[rowNumberTransaction].kilowattHour;
-  */
   let kilowattHour = objTransactions.arrayTransactions[rowNumberTransaction]?.kilowattHour ?? '';
   kilowattHour = formatNumberToNorAmount(kilowattHour);
-  //html += showTextNew('KilowatTimer', 'kilowattHour', kilowattHour, enableChanges, "KilowatTimer");
   html += inputText('kilowattHour', 'KilowatTimer', kilowattHour, 11, enableChanges);
 
   // Text
@@ -427,8 +400,10 @@ async function updateTransactionRow(transactionId) {
       transactionId = objTransactions.arrayTransactions[0].transactionId;
     }
 
-    const orderBy = 'date DESC, income DESC';
-    await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20291231);
+    //const orderBy = 'date DESC, income DESC';
+    //await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20291231);
+    await objTransactions.loadTransactionsTableNew(objProjects.condominiumId);
+    objTransactions.arrayTransactions.sort((a, b) => b.date - a.date);
 
     if (enableChanges) {
       disableButton('delete', false);
@@ -453,7 +428,7 @@ function resetValues() {
   // date
   document.querySelector('.transactionDate').value = '';
 
-  // condo Id
+  // appartment Id
   document.querySelector('.appartmentId').value = 0;
 
   // account Id
@@ -498,8 +473,10 @@ async function deleteTransactionsRow(transactionId) {
     if (objTransactions.arrayTransactions.length > 0) transactionId = objTransactions.arrayTransactions[0].transactionId;
   }
 
-  const orderBy = 'date DESC, income DESC';
-  await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20991231);
+  //const orderBy = 'date DESC, income DESC';
+  //await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20991231);
+  await objTransactions.loadTransactionsTableNew(objProjects.condominiumId);
+  objTransactions.arrayTransactions.sort((a, b) => b.date - a.date);
 
   // Show filter
   showFilter(transactionId);

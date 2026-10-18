@@ -6,7 +6,7 @@ const objUsers = new Users('users');
 const objCondominiums = new Condominiums('condominiums');
 const objAccounts = new Accounts('accounts');
 const objAppartments = new Appartments('appartments');
-const objTransactions = new Transactions('transactions');
+//const objTransactions = new Transactions('transactions');
 const objProjects = new Projects('projects');
 
 // Fixed values
@@ -51,7 +51,7 @@ async function main() {
       const resident = 'Y';
       await objUsers.loadUsersTable(objProjects.condominiumId, resident, objProjects.nineNine);
       await objCondominiums.loadCondominiumsTable();
-      await objAppartments.loadCondoTable(objProjects.condominiumId);
+      await objAppartments.loadAppartmentsTable(objProjects.condominiumId);
       await objProjects.loadProjectsTable(objProjects.condominiumId);
       //const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objProjects.condominiumId);
@@ -69,9 +69,9 @@ async function main() {
       if (rowNumberCondominium !== -1) {
 
         const projectId = Number(document.querySelector('.filterProjectId').value);
-        const orderBy = 'date DESC';
-        await objTransactions.loadTransactionsTable(orderBy, objProjects.condominiumId, 'N', objProjects.nineNine, objProjects.nineNine, projectId, 0, 2019010, 20991231);
-
+        //const orderBy = 'date DESC';
+        //await objTransactions.loadTransactionsTable(orderBy, objProjects.condominiumId, 'N', objProjects.nineNine, objProjects.nineNine, projectId, 0, 2019010, 20991231);
+ 
         // Show project per year
         showProject(projectId);
 

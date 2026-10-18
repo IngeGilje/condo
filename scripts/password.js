@@ -42,7 +42,7 @@ async function main() {
         ? await objUsers.loadUsersTable(objUsers.condominiumId, resident, objUsers.nineNine)
         : await objUsers.loadUsersTable(objUsers.condominiumId, resident, objUsers.userId);
       await objCondominiums.loadCondominiumsTable(objUsers.condominiumId);
-      await objAppartments.loadCondoTable(objUsers.condominiumId);
+      await objAppartments.loadAppartmentsTable(objUsers.condominiumId);
 
       // Show filter
       showFilter(objUsers.userId);

@@ -41,7 +41,7 @@ async function main() {
       const resident = 'Y';
       await objUsers.loadUsersTable(objCommonCosts.condominiumId, resident, objCommonCosts.nineNine);
       await objCondominiums.loadCondominiumsTable();
-      await objAppartments.loadCondoTable(objCommonCosts.condominiumId);
+      await objAppartments.loadAppartmentsTable(objCommonCosts.condominiumId);
       await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
       await objBudgets.loadBudgetsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine, objCommonCosts.nineNine);
       await objBankAccounts.loadBankAccountsTable(objCommonCosts.condominiumId);
@@ -82,6 +82,7 @@ async function main() {
         //const orderBy = 'appartmentId ASC';
         //await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, deleted, objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, fromDate, toDate);
         await objTransactions.loadTransactionsTableNew(objCommonCosts.condominiumId);
+        objTransactions.arrayTransactions.sort((a, b) => a.appartmentId - b.appartmentId);
         showAnnualAccounts();
 
         // Show income for next year
@@ -140,7 +141,6 @@ async function events() {
 
       //const orderBy = 'appartmentId ASC';
       //await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, deleted, objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, fromDate, toDate);
-      await objTransactions.loadTransactionsTableNew(objCommonCosts.condominiumId);
       showAnnualAccounts();
 
       // Show income for next year
@@ -181,10 +181,6 @@ function getTotalMovementsBankAccount(accountId) {
   toDate = Number(objCommonCosts.formatDateToNumber(toDate));
 
   objTransactions.arrayTransactions.forEach((bankTransaction) => {
-
-    if (bankTransaction.accountId === 75) {
-      console.log(bankTransaction.date);
-    }
 
     if ((bankTransaction.deleted === "N")
       && (bankTransaction.date >= fromDate)
@@ -329,74 +325,74 @@ function showIncomeNextYear() {
   let html = startTable(`Budsjeterte Leieinntekter for ${budgetYear}`, "");
   html += tableHeader('Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
 
-  let totalCommonCostsCondoMonth = 0;
-  let totalCommonCostsCondoYear = 0;
+  let totalCommonCostsAppartmentMonth = 0;
+  let totalCommonCostsAppartmentYear = 0;
   let totalSquareMeters = 0;
   let totalFixedCostsCondoYear = 0;
 
   // Get fixed costs per month
   const year = Number(document.querySelector(".filterAccountYear").value);
-  let fixedCostCondoMonth = 0;
+  let fixedCostAppartmentMonth = 0;
   const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.year === (year + 1));
   if (rowNumberCommonCost !== -1) {
 
-    // Fixed cost per month per condo
-    fixedCostCondoMonth = Number(objCommonCosts.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo);
+    // Fixed cost per month per appartment
+    fixedCostAppartmentMonth = Number(objCommonCosts.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo);
   }
 
-  objAppartments.arrayCondo.forEach((condo) => {
+  objAppartments.arrayAppartments.forEach((appartment) => {
 
     // insert a table row (<tr></td>)
     html += objCommonCosts.insertTableRow('');
 
-    // condo name
-    className = `name${condo.appartmentId}`;
-    html += showTableText(className, condo.name);
+    // appartment name
+    className = `name${appartment.appartmentId}`;
+    html += showTableText(className, appartment.name);
 
     // Square meters
-    let squareMeters = formatNumberToNorAmount(condo.squareMeters);
-    className = `squareMeters${condo.appartmentId}`;
+    let squareMeters = formatNumberToNorAmount(appartment.squareMeters);
+    className = `squareMeters${appartment.appartmentId}`;
     html += showTableText(className, squareMeters);
 
-    // fixed cost per month per condo
-    fixedCostCondoMonth = formatNumberToNorAmount(fixedCostCondoMonth);
-    className = `fixedCostCondoMonth${condo.appartmentId}`;
-    html += showTableText(className, fixedCostCondoMonth);
+    // fixed cost per month per appartment
+    fixedCostAppartmentMonth = formatNumberToNorAmount(fixedCostAppartmentMonth);
+    className = `fixedCostAppartmentMonth${appartment.appartmentId}`;
+    html += showTableText(className, fixedCostAppartmentMonth);
 
-    // Common cost per month per condo
+    // Common cost per month per appartment
     let commonCostSquareMeter = document.querySelector('.filterCommonCostSquareMeter').value;
     commonCostSquareMeter = formatNorAmountToNumber(commonCostSquareMeter);
     squareMeters = formatNorAmountToNumber(squareMeters);
-    let commonCostsMonth = ((squareMeters * commonCostSquareMeter) / 100) + formatNorAmountToNumber(fixedCostCondoMonth);
+    let commonCostsMonth = ((squareMeters * commonCostSquareMeter) / 100) + formatNorAmountToNumber(fixedCostAppartmentMonth);
     commonCostsMonth = formatNumberToNorAmount(commonCostsMonth);
-    className = `commonCostsMonth${condo.appartmentId}`;
+    className = `commonCostsMonth${appartment.appartmentId}`;
     html += showTableText(className, commonCostsMonth);
 
-    // Common cost per year per condo
+    // Common cost per year per appartment
     commonCostsMonth = formatNorAmountToNumber(commonCostsMonth);
-    fixedCostCondoMonth = formatNorAmountToNumber(fixedCostCondoMonth);
-    //let commonCostsCondoYear = (commonCostsMonth + fixedCostCondoMonth) * 12;
+    fixedCostAppartmentMonth = formatNorAmountToNumber(fixedCostAppartmentMonth);
+    //let commonCostsCondoYear = (commonCostsMonth + fixedCostAppartmentMonth) * 12;
     let commonCostsCondoYear = commonCostsMonth * 12;
     commonCostsCondoYear = formatNumberToNorAmount(commonCostsCondoYear);
-    className = `commonCostsCondoYear${condo.appartmentId}`;
+    className = `commonCostsCondoYear${appartment.appartmentId}`;
     html += showTableText(className, commonCostsCondoYear);
 
     html += "</tr>";
 
     // Accomulate
     totalSquareMeters += Number(squareMeters);
-    totalFixedCostsCondoYear += Number(fixedCostCondoMonth);
-    totalCommonCostsCondoMonth += Number(commonCostsMonth);
+    totalFixedCostsCondoYear += Number(fixedCostAppartmentMonth);
+    totalCommonCostsAppartmentMonth += Number(commonCostsMonth);
     commonCostsCondoYear = formatNorAmountToNumber(commonCostsCondoYear)
-    totalCommonCostsCondoYear += commonCostsCondoYear;
+    totalCommonCostsAppartmentYear += commonCostsCondoYear;
   });
 
   totalSquareMeters = formatNumberToNorAmount(totalSquareMeters);
   totalFixedCostsCondoYear = formatNumberToNorAmount(totalFixedCostsCondoYear);
-  totalCommonCostsCondoMonth = formatNumberToNorAmount(totalCommonCostsCondoMonth);
-  totalCommonCostsCondoYear = formatNumberToNorAmount(totalCommonCostsCondoYear);
+  totalCommonCostsAppartmentMonth = formatNumberToNorAmount(totalCommonCostsAppartmentMonth);
+  totalCommonCostsAppartmentYear = formatNumberToNorAmount(totalCommonCostsAppartmentYear);
 
-  html += objCommonCosts.insertTableRow('', 'Sum', totalSquareMeters, totalFixedCostsCondoYear, totalCommonCostsCondoMonth, totalCommonCostsCondoYear);
+  html += objCommonCosts.insertTableRow('', 'Sum', totalSquareMeters, totalFixedCostsCondoYear, totalCommonCostsAppartmentMonth, totalCommonCostsAppartmentYear);
   html += "</tr>";
 
   // empty table row

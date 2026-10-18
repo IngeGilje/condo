@@ -2118,6 +2118,7 @@ async function main() {
 
       switch (action) {
 
+        /*
         case 'select': {
 
           const orderBy = req.body.orderBy;
@@ -2172,8 +2173,9 @@ async function main() {
           }
           break;
         }
+        */
 
-        case 'selectnew': {
+        case 'select': {
 
           const condominiumId = Number(req.body.condominiumId);
 

@@ -40,7 +40,7 @@ async function main() {
 
       const resident = 'Y';
       await objUsers.loadUsersTable(objDues.condominiumId, resident, objDues.nineNine);
-      await objAppartments.loadCondoTable(objDues.condominiumId);
+      await objAppartments.loadAppartmentsTable(objDues.condominiumId);
 
       // Show filter
       const date = getCurrentDate();
@@ -69,11 +69,11 @@ async function events() {
   document.addEventListener('change', async (event) => {
     if ((event.target.classList.contains('filterYear'))
       || (event.target.classList.contains('filterMonth'))
-      || (event.target.classList.contains('filterCondoId'))) {
+      || (event.target.classList.contains('filterAppartmentId'))) {
 
       const year = Number(document.querySelector(".filterYear").value);
       const month = Number(document.querySelector(".filterMonth").value);
-      const appartmentId = Number(document.querySelector(".filterCondoId").value);
+      const appartmentId = Number(document.querySelector(".filterAppartmentId").value);
       showFilter(year, month, appartmentId);
       await objDues.loadDuesTable(objDues.condominiumId);
 
@@ -130,8 +130,8 @@ function showFilter(year, month, appartmentId) {
   // month
   html += showSelectedMonthsNew('filterMonth', 'Måned', Number(month), enableChanges);
 
-  // condo
-  html += objAppartments.showSelectedCondosNew('filterCondoId', 'leilighet', appartmentId, 'Velg leilighet', '', true);
+  // appartment
+  html += objAppartments.showSelectedAppartmentsNew('filterAppartmentId', 'leilighet', appartmentId, 'Velg leilighet', '', true);
 
   // End table filter
   html += endLineFilter();
@@ -147,7 +147,7 @@ function showDues() {
 
   const filterYear = Number(document.querySelector(".filterYear").value);
   const filterMonth = Number(document.querySelector(".filterMonth").value);
-  const filterCondoId = Number(document.querySelector(".filterCondoId").value);
+  const filterAppartmentId = Number(document.querySelector(".filterAppartmentId").value);
 
  let html = startTable("Forfall", "");
   html += tableHeader( 'Dato', 'Leilighet', `K.timer`, 'Beløp', '');
@@ -161,7 +161,7 @@ function showDues() {
     const month = String(date).slice(4, 6);
     if ((Number(year) === filterYear)
       && (Number(month) === filterMonth || filterMonth === objDues.nineNine)
-      && (due.appartmentId === filterCondoId || filterCondoId === 0)) {
+      && (due.appartmentId === filterAppartmentId || filterAppartmentId === 0)) {
 
       // insert a table row (<tr></td>)
       html += objDues.insertTableRow('');
@@ -175,8 +175,8 @@ function showDues() {
       // appartmentId
       const appartmentId = due.appartmentId;
       className = `appartmentId${due.dueId}`;
-      const condoName = objAppartments.getCondoNameById(due.appartmentId);
-      html += showTableText(className, condoName);
+      const appartmentName = objAppartments.getAppartmentNameById(due.appartmentId);
+      html += showTableText(className, appartmentName);
 
       // kilowattHour
       let kilowattHour = due.kilowattHour;
@@ -214,7 +214,7 @@ function showDues() {
     }
   });
 
-  // How much to pay for remote heating for all condos
+  // How much to pay for remote heating for all appartments
   totalPriceYear = formatNumberToNorAmount(totalPriceYear);
 
   html += objDues.insertTableRow('', '', 'Totalt', totalPriceYear, '', '');
